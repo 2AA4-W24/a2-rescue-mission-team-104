@@ -224,11 +224,10 @@ public class Statistics {
 
             while (pois_line != null) {
 
-                JSONObject current_obj = new JSONObject(pois_line);
-                pois_json_arr.add(current_obj);
+                System.out.println(pois_line);
 
             }
-
+//            System.out.println(pois_json_arr);
 
 
 

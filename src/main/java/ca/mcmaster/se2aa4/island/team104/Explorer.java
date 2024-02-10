@@ -99,6 +99,10 @@ public class Explorer implements IExplorerRaid {
 
             decision.put("action", "echo");
 
+            if (begin == 3) {
+                init_heading = false;
+            }
+
             if (init_heading) {
 
                 switch (initial_head) {
@@ -168,7 +172,6 @@ public class Explorer implements IExplorerRaid {
         //////     code added      //////
 
         //this code fetches the value of range
-        if (Objects.equals(next_action, "echo")) {
             if (!extraInfo.isEmpty()) {
                 found = extraInfo.getString("found");
                 range = extraInfo.getInt("range");
@@ -176,10 +179,10 @@ public class Explorer implements IExplorerRaid {
                 if (range == 0 && !init_heading) {
                     next_action = "stop";
                 }
-                if (begin == 3) {
+                else if (begin == 3) {
                     next_action = "fly";
                 }
-            }
+
 
 
             //only checks for initial heading
