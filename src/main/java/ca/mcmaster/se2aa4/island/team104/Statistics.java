@@ -6,7 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONPointerException;
+import org.apache.commons.io.IOUtils;
 
+import java.io.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -61,38 +65,38 @@ public class Statistics {
     //takes in !!response!! JSONObject to get range parameter
     void updateRange(JSONObject info) {
 
-        //!!response!! object (from explorer) is empty
-        if (!info.isEmpty()) {
+        try {
 
-            logger.warn("The JSONObject passed is empty");
-        }
-        //!!extras!! is empty
-        else if (info.getJSONObject("extras").isEmpty()) {
-
-            logger.warn("The extras parameter is empty.");
-        }
-        else {
-
+            //create JSON objects for "extras" parameter
             JSONObject extraInfo = info.getJSONObject("extras");
 
-            //try to get range from extras parameter
-            try {
-                range = extraInfo.getInt("range");
+            //get range from "range" parameter in "extras"
+            range = extraInfo.getInt("range");
 
-            } catch (JSONException e) {
+        } catch (JSONException e) {
+
+            //!!response!! object (from explorer) is empty
+            if (!info.isEmpty()) {
+
+                logger.warn("The JSONObject passed is empty");
+            }
+            //!!extras!! is empty
+            else if (info.getJSONObject("extras").isEmpty()) {
+
+                logger.warn("The extras parameter is empty.");
+            }
+            else {
 
                 logger.info("There was an error fetching range.");
+
             }
 
         }
 
-
     }
 
+    //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
     void updateFound(JSONObject info) {
-
-
-
 
             try {
                 //create JSONObject for extras parameter
@@ -123,7 +127,7 @@ public class Statistics {
 
     }
 
-    //takes in !!response!! JSONObject to parse
+    //takes in !!response!! JSONObject to parse and adds creek id to creek list
     void updateCreeks(JSONObject info) {
 
         try {
@@ -159,8 +163,79 @@ public class Statistics {
                 logger.warn("The extras parameter is empty.");
             }
             else {
-                logger.info("There was an error fetching found.");
+                logger.info("There was an error fetching creek.");
             }
+        }
+
+    }
+
+    //takes in !!response!! JSONObject to parse and adds creek id to creek list
+    void updateSites(JSONObject info) {
+
+        try {
+
+            //create JSONObject for extras parameter
+            JSONObject extraInfo = info.getJSONObject("extras");
+
+            //if creeks parameters is empty throw exception otherwise parse
+            if (extraInfo.getJSONArray("sites").isEmpty()) {
+                throw new JSONException("sites is empty");
+            }
+            else {
+
+                //create JSONArray to loop through
+                JSONArray sites_json = new JSONArray();
+                sites_json = extraInfo.getJSONArray("sites");
+
+                //create loop to get all elements into list
+                for (int i = 0; i < sites_json.length(); i++) {
+
+                    //add elements from JSONArray to sites ArrayList
+                    creeks.add(sites_json.getString(i));
+                }
+
+            }
+
+        } catch (JSONException e) {
+            if (!info.isEmpty()) {
+                logger.warn("The JSONObject passed is empty");
+            }
+            else if (info.getJSONObject("extras").isEmpty()) {
+                logger.warn("The extras parameter is empty.");
+            }
+            else {
+                logger.info("There was an error fetching site.");
+            }
+        }
+
+    }
+
+    //once drone stops, this function will use the pois.json to get coordinates of sites
+    void compileSites() {
+
+        try {
+
+            //read _pois.json file
+            FileReader pois_file = new FileReader("./outputs/_pois.json");
+            BufferedReader pois_buffer = new BufferedReader(pois_file);
+            ArrayList<JSONObject> pois_json_arr = new ArrayList<JSONObject>();
+            String pois_line = pois_buffer.readLine();
+
+
+            while (pois_line != null) {
+
+                JSONObject current_obj = new JSONObject(pois_line);
+                pois_json_arr.add(current_obj);
+
+            }
+
+
+
+
+
+
+        } catch (IOException e) {
+            logger.error("_pois.json file not found.");
         }
 
     }
