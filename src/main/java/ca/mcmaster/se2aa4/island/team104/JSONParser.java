@@ -53,6 +53,7 @@ public class JSONParser {
 
 
 
+
     /* 
     public String getHeading() {
         String direction = initial.getString("heading");

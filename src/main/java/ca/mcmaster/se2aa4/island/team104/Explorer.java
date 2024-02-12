@@ -20,7 +20,7 @@ public class Explorer implements IExplorerRaid {
 
     String next_action = "echo";
     int start = 0; //if start = 0 dont start making decisions
-    String initial_head = "";
+    String initial_head;
     int budget;
     Integer range = 1;
     String found = "OUT_OF_RANGE";
@@ -34,20 +34,20 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public void initialize(String s) {
-        logger.info("** Initializing the Exploration Command Center");
+        logger.info("\n************ Initializing the Exploration Command Center ************");
+        
         JSONParser parser = new JSONParser();
         parser.loadString(s);
-        logger.info("** Initialization info:\n {}", parser.viewJSON().toString(2));
-        
-        String direction = parser.getValue("heading");
-        Integer batteryLevel = parser.getIntValue("budget");
+        logger.info(
+            "************ Initialization info: {}\n", parser.viewJSON());
+        //.toString(2)
+        initial_head = parser.getValue("heading");
+        budget = parser.getIntValue("budget");
 
-        initial_head = direction;
-        budget = batteryLevel;
+        logger.info("** The drone is facing {}", initial_head);
+        logger.info("** Battery level is {}", budget);
 
-
-        logger.info("The drone is facing {}", direction);
-        logger.info("Battery level is {}", batteryLevel);
+        logger.info("\n************ Initialize End\n");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Explorer implements IExplorerRaid {
         ////////   code added    ///////
 
 
-        logger.info("this is start: " + start + "this is found: " + found);
+        logger.info("this is start: " + start + " this is found: " + found);
         //this tells if the drone should stop/fly/echo --> will keep flying until range = 0
         if (Objects.equals(next_action, "stop")) {
             decision.put("action", "stop");
