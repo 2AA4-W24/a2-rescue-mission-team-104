@@ -13,7 +13,7 @@ import org.json.JSONTokener;
 
 import java.util.Objects;
 
-
+// mvn exec:java -q -Dexec.args="./maps/map03.json"
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
@@ -30,14 +30,17 @@ public class Explorer implements IExplorerRaid {
     boolean[] can_go = new boolean[4]; //lets you know in which direction drone can go in
     String flight_direction = "E";
 
+    
 
     @Override
     public void initialize(String s) {
         logger.info("** Initializing the Exploration Command Center");
-        JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
-        logger.info("** Initialization info:\n {}",info.toString(2));
-        String direction = info.getString("heading");
-        Integer batteryLevel = info.getInt("budget");
+        JSONParser parser = new JSONParser();
+        parser.loadString(s);
+        logger.info("** Initialization info:\n {}", parser.viewJSON().toString(2));
+        
+        String direction = parser.getValue("heading");
+        Integer batteryLevel = parser.getIntValue("budget");
 
         initial_head = direction;
         budget = batteryLevel;
