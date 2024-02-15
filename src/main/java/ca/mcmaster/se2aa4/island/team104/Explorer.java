@@ -30,13 +30,12 @@ public class Explorer implements IExplorerRaid {
     boolean[] can_go = new boolean[4]; //lets you know in which direction drone can go in
     String flight_direction = "E";
 
-    
+    JSONParser parser = new JSONParser();
 
     @Override
     public void initialize(String s) {
         logger.info("\n************ Initializing the Exploration Command Center ************");
         
-        JSONParser parser = new JSONParser();
         JSONObject initial = parser.loadString(s);
         logger.info("************ Initialization info: {}\n", initial);
     
