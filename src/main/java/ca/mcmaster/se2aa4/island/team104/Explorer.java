@@ -37,7 +37,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("\n************ Initializing the Exploration Command Center ************");
         
         JSONParser parser = new JSONParser();
-        parser.loadString(s);
+        JSONObject initial = parser.loadString(s);
         logger.info(
             "************ Initialization info: {}\n", parser.viewJSON());
         //.toString(2)
@@ -56,8 +56,8 @@ public class Explorer implements IExplorerRaid {
 
         ////////   code added    ///////
 
-
         logger.info("this is start: " + start + " this is found: " + found);
+
         //this tells if the drone should stop/fly/echo --> will keep flying until range = 0
         if (Objects.equals(next_action, "stop")) {
             decision.put("action", "stop");

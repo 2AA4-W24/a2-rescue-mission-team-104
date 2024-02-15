@@ -11,42 +11,44 @@ import org.json.JSONTokener;
 public class JSONParser {
     private final Logger logger = LogManager.getLogger();
 
-    private JSONObject jsonObject;
-
-    public JSONParser() {
-        this.jsonObject = new JSONObject();
+    public JSONObject createJSON() {
+        return new JSONObject();
     }
-    public JSONObject viewJSON() {
-        return this.jsonObject;
-    }
-    public void loadString(String s){
-        try {
-            this.jsonObject = new JSONObject(new JSONTokener(new StringReader(s)));
+  
+    public JSONObject loadString(String s){
+        try {            
             logger.info("JSON String loaded");
+            return new JSONObject(new JSONTokener(new StringReader(s)));
         } catch (JSONException e) {
             logger.error("Error in loaded string");
+            return null;
         }
     }
-    public void put(String key, String value) {
-        this.jsonObject.put(key, value);
+    public void put(JSONObject json, String key, String value) {
+        json.put(key, value);
         logger.info("Placed " + key + ": " + value);
 
     }
-    public String getValue(String key) {
-        if (this.jsonObject.has(key)) {
-            return this.jsonObject.getString(key);
+    public String getValue(JSONObject json, String key) {
+        if (json.has(key)) {
+            return json.getString(key);
         } else {
             logger.info("Key does not exist");
             return null;
         }
     }
-    public Integer getIntValue(String key) {
-        if (this.jsonObject.has(key)) {
-            return this.jsonObject.getInt(key);
+    public Integer getIntValue(JSONObject json, String key) {
+        if (json.has(key)) {
+            return json.getInt(key);
         } else {
             logger.info("Key does not exist");
             return null;
         }
+    }
+    
+    public JSONObject mergeJSONObjects(JSONObject json1, JSONObject json2, String key1, String key2, String value2) {
+        //{...,"parameters": {"direction": "E"}}
+        return json1.put(key1, json2.put(key2, value2));
     }
 
 
