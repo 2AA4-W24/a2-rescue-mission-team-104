@@ -38,11 +38,10 @@ public class Explorer implements IExplorerRaid {
         
         JSONParser parser = new JSONParser();
         JSONObject initial = parser.loadString(s);
-        logger.info(
-            "************ Initialization info: {}\n", parser.viewJSON());
-        //.toString(2)
-        initial_head = parser.getValue("heading");
-        budget = parser.getIntValue("budget");
+        logger.info("************ Initialization info: {}\n", initial);
+    
+        initial_head = parser.getValue(initial, "heading");
+        budget = parser.getIntValue(initial, "budget");
 
         logger.info("** The drone is facing {}", initial_head);
         logger.info("** Battery level is {}", budget);
