@@ -25,6 +25,8 @@ public class Statistics {
     String heading;
 
     int range;
+
+    //results of echo/scan
     String found;
 
     //ids of creeks found
@@ -42,18 +44,15 @@ public class Statistics {
 
     //takes in initial JSONObject to parse and get initial budget
     void initBudget(JSONObject info) {
-
         budget = info.getInt("budget");
-
     }
 
     //takes in cost to deduct from budget
     void updateBudget(int cost) {
-
         //don't have enough money
         if (budget < cost) {
-
             logger.warn("You don't have enough battery");
+            
         }
         //otherwise deduct
         else {
@@ -228,10 +227,6 @@ public class Statistics {
 
             }
 //            System.out.println(pois_json_arr);
-
-
-
-
 
         } catch (IOException e) {
             logger.error("_pois.json file not found.");
