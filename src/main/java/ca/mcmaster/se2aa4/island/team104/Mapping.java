@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Mapping {
 
-    Map<Tiles, Integer[]> pois = new HashMap<>();
+    Map<Tiles, Position> pois = new HashMap<>();
 
     ArrayList<Integer[]> history; //will be replaced by position type
 
@@ -19,7 +19,7 @@ public class Mapping {
     from the enum.
 
      */
-    Integer[] position;
+    Position position;
     Statistics stats;
 
     void markTile() {
