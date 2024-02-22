@@ -34,6 +34,7 @@ public class Mapping {
         //for site
         else if (stats.site_found) {
             tile_type = Tiles.SITE;
+            stats.site_found = false; //make it false now that it is marked
         }
 
         //for ground

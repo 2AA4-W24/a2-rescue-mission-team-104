@@ -35,19 +35,14 @@ public class Statistics {
 
     Actions act;
 
-    /* 
-    //ids of creeks found
-    ArrayList<String> creeks;
+    Boolean creek_found = false;
 
-    //ids of sites found
-    String sites;
+    Boolean site_found = false;
 
-    //x and y of specified creek
-    Map<String, float[]> creek_locations;
+    String creek = "";
 
-    //x and y of specified site
-    Map<String, float[]> site_locations;
-    */
+    String site = "";
+
     JSONParser parser = new JSONParser();
 
     //takes in initial JSONObject to parse and get initial budget
@@ -107,12 +102,14 @@ public class Statistics {
     //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
     void updateFound(JSONObject info) {
 
+        //I used parser instead, so now we can remove try and catch (since it's done in json parser)
+
             try {
                 //create JSONObject for extras parameter
                 JSONObject extraInfo = info.getJSONObject("extras");
 
-                //update found based on "found" parameter
-                found = extraInfo.getString("found");
+                found = parser.getValue(extraInfo, "found");
+
 
             } catch (JSONException e) {
 
@@ -130,8 +127,8 @@ public class Statistics {
             }
     }
 
-    //initalize stats with explorer start
-    public void intializeStats(String s) {
+    //initialize stats with explorer start
+    public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
         setBudget(initial);
         updateHeading(initial);
@@ -144,91 +141,65 @@ public class Statistics {
         updateHeading(info);
         updateFound(info);
         updateRange(info);
+
+        updateCreeks(info);
+        updateSites(info);
     }
 
-/* 
+
     //takes in !!response!! JSONObject to parse and adds creek id to creek list
     void updateCreeks(JSONObject info) {
 
-        try {
+        //create JSONObject for extras parameter
+        JSONObject extraInfo = info.getJSONObject("extras");
 
-            //create JSONObject for extras parameter
-            JSONObject extraInfo = info.getJSONObject("extras");
+        if (parser.getValue(extraInfo, "creeks") == null) {
+            creek_found = false;
 
-            //if creeks parameters is empty throw exception otherwise parse
-            if (extraInfo.getJSONArray("creeks").isEmpty()) {
-                throw new JSONException("creeks is empty");
-            }
-            else {
-
-                //create JSONArray to loop through
-                JSONArray creeks_json = new JSONArray();
-                creeks_json = extraInfo.getJSONArray("creeks");
-
-                //create loop to get all elements into list
-                for (int i = 0; i < creeks_json.length(); i++) {
-
-                    //add elements from JSONArray to creeks ArrayList
-                    creeks.add(creeks_json.getString(i));
-                }
-
-            }
-
-        } catch (JSONException e) {
-            if (!info.isEmpty()) {
-                logger.warn("The JSONObject passed is empty");
-            }
-            //!!extras!! is empty
-            else if (info.getJSONObject("extras").isEmpty()) {
-                logger.warn("The extras parameter is empty.");
-            }
-            else {
-                logger.info("There was an error fetching creek.");
-            }
         }
+        else {
 
+            //create JSONArray to loop through
+            JSONArray creeks_json = new JSONArray();
+            creeks_json = extraInfo.getJSONArray("creeks");
+
+            //create loop to get all elements into list
+            for (int i = 0; i < creeks_json.length(); i++) {
+
+                //converts creek id of JSONArray to string
+                creek = creeks_json.get(i).toString();
+                creek_found = true;
+            }
+
+        }
     }
-/* 
-    //takes in !!response!! JSONObject to parse and adds creek id to creek list
+
     void updateSites(JSONObject info) {
 
-        try {
+        //create JSONObject for extras parameter
+        JSONObject extraInfo = info.getJSONObject("extras");
 
-            //create JSONObject for extras parameter
-            JSONObject extraInfo = info.getJSONObject("extras");
+        if (parser.getValue(extraInfo, "sites") == null) {
+            site_found = false;
 
-            //if creeks parameters is empty throw exception otherwise parse
-            if (extraInfo.getJSONArray("sites").isEmpty()) {
-                throw new JSONException("sites is empty");
-            }
-            else {
-
-                //create JSONArray to loop through
-                JSONArray sites_json = new JSONArray();
-                sites_json = extraInfo.getJSONArray("sites");
-
-                //create loop to get all elements into list
-                for (int i = 0; i < sites_json.length(); i++) {
-
-                    //add elements from JSONArray to sites ArrayList
-                    creeks.add(sites_json.getString(i));
-                }
-
-            }
-
-        } catch (JSONException e) {
-            if (!info.isEmpty()) {
-                logger.warn("The JSONObject passed is empty");
-            }
-            else if (info.getJSONObject("extras").isEmpty()) {
-                logger.warn("The extras parameter is empty.");
-            }
-            else {
-                logger.info("There was an error fetching site.");
-            }
         }
+        else {
 
+            //create JSONArray to loop through
+            JSONArray sites_json = new JSONArray();
+            sites_json = extraInfo.getJSONArray("sites");
+
+            //create loop to get all elements into list
+            for (int i = 0; i < sites_json.length(); i++) {
+
+                //converts creek id of JSONArray to string
+                site = sites_json.get(i).toString();
+                site_found = true;
+            }
+
+        }
     }
+
 /* 
     //once drone stops, this function will use the pois.json to get coordinates of sites
     void compileSites() {
