@@ -24,11 +24,18 @@ public class Statistics {
     //current heading of drone
     String heading;
 
-    int range;
+    //current state - turn into enum?
+    String state;
+
+    //results of echo
+    Integer range;
 
     //results of echo/scan
     String found;
 
+    Actions act;
+
+    /* 
     //ids of creeks found
     ArrayList<String> creeks;
 
@@ -40,58 +47,61 @@ public class Statistics {
 
     //x and y of specified site
     Map<String, float[]> site_locations;
-
+    */
+    JSONParser parser = new JSONParser();
 
     //takes in initial JSONObject to parse and get initial budget
-    void initBudget(JSONObject info) {
-        budget = info.getInt("budget");
+    private void setBudget(JSONObject initInfo) {
+        budget = parser.getIntValue(initInfo, "cost");
     }
 
     //takes in cost to deduct from budget
-    void updateBudget(int cost) {
+    private void updateBudget(JSONObject info) {
+        Integer cost = parser.getIntValue(info, "cost");
         //don't have enough money
         if (budget < cost) {
             logger.warn("You don't have enough battery");
-            
         }
         //otherwise deduct
         else {
             budget -= cost;
         }
+    }
 
+    private void updateHeading(JSONObject info) {
+        heading = parser.getValue(info, "heading");
+    }
+
+    //keeps track of state decided in decision maker
+    void updateState(String current_state) {
+        state = current_state;
     }
 
     //takes in !!response!! JSONObject to get range parameter
     void updateRange(JSONObject info) {
 
         try {
-
             //create JSON objects for "extras" parameter
-            JSONObject extraInfo = info.getJSONObject("extras");
+            JSONObject extraInfo = parser.createJSON();
+            parser.put(extraInfo, "extras", parser.getValue(info, "extras"));
 
             //get range from "range" parameter in "extras"
-            range = extraInfo.getInt("range");
+            range = parser.getIntValue(extraInfo, "range");
 
         } catch (JSONException e) {
-
             //!!response!! object (from explorer) is empty
             if (!info.isEmpty()) {
-
                 logger.warn("The JSONObject passed is empty");
             }
             //!!extras!! is empty
             else if (info.getJSONObject("extras").isEmpty()) {
-
                 logger.warn("The extras parameter is empty.");
             }
             else {
-
                 logger.info("There was an error fetching range.");
 
             }
-
         }
-
     }
 
     //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
@@ -108,24 +118,35 @@ public class Statistics {
 
                 //!!response!! object (from explorer) is empty
                 if (!info.isEmpty()) {
-
                     logger.warn("The JSONObject passed is empty");
                 }
                 //!!extras!! is empty
                 else if (info.getJSONObject("extras").isEmpty()) {
-
                     logger.warn("The extras parameter is empty.");
                 }
                 else {
-
                     logger.info("There was an error fetching found.");
                 }
             }
-
-
-
     }
 
+    //initalize stats with explorer start
+    public void intializeStats(String s) {
+        JSONObject initial = parser.loadString(s);
+        setBudget(initial);
+        updateHeading(initial);
+    }
+
+    //updates statistics with each response
+    public void updateStats(String s) {
+        JSONObject info = parser.loadString(s);
+        updateBudget(info);
+        updateHeading(info);
+        updateFound(info);
+        updateRange(info);
+    }
+
+/* 
     //takes in !!response!! JSONObject to parse and adds creek id to creek list
     void updateCreeks(JSONObject info) {
 
@@ -167,7 +188,7 @@ public class Statistics {
         }
 
     }
-
+/* 
     //takes in !!response!! JSONObject to parse and adds creek id to creek list
     void updateSites(JSONObject info) {
 
@@ -208,7 +229,7 @@ public class Statistics {
         }
 
     }
-
+/* 
     //once drone stops, this function will use the pois.json to get coordinates of sites
     void compileSites() {
 
@@ -233,5 +254,5 @@ public class Statistics {
         }
 
     }
-
+*/
 }
