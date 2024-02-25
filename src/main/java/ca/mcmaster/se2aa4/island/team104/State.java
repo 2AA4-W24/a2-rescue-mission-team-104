@@ -1,23 +1,24 @@
 package ca.mcmaster.se2aa4.island.team104;
 
-import org.junit.Test;
-
 public enum State {
 
+    INIT,
     FIND_ISLAND,
     GO_TO_ISLAND,
     COAST_THE_COAST,
     FIND_SITE,
     STOP;
 
-    public void incrementState(State state) {
+    State incrementState(State state) {
 
         switch (state) {
+            case INIT -> state = FIND_ISLAND;
             case FIND_ISLAND -> state = GO_TO_ISLAND;
             case GO_TO_ISLAND -> state = COAST_THE_COAST;
             case COAST_THE_COAST -> state = FIND_SITE;
             case FIND_SITE -> state = STOP;
         }
+        return state;
     }
 
     public void decrementState(State state) {
@@ -37,7 +38,7 @@ public enum State {
     }
 
     public void startExploration(State state) {
-        state = FIND_ISLAND;
+        state = INIT;
     }
 
 

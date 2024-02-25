@@ -19,21 +19,19 @@ public class Statistics {
     private final Logger logger = LogManager.getLogger();
 
     //energy of drone
-    int budget;
+    Integer budget;
 
     //current heading of drone
-    String heading;
+    Orientation heading = Orientation.N; //setting as default
 
     //current state - turn into enum?
-    String state;
+    State state = State.INIT;
 
     //results of echo
     Integer range;
 
     //results of echo/scan
     String found;
-
-    Actions act;
 
     Boolean creek_found = false;
 
@@ -47,7 +45,9 @@ public class Statistics {
 
     //takes in initial JSONObject to parse and get initial budget
     private void setBudget(JSONObject initInfo) {
-        budget = parser.getIntValue(initInfo, "cost");
+
+        budget = parser.getIntValue(initInfo, "budget");
+        logger.info("This is budget: " + budget);
     }
 
     //takes in cost to deduct from budget
@@ -64,12 +64,12 @@ public class Statistics {
     }
 
     private void updateHeading(JSONObject info) {
-        heading = parser.getValue(info, "heading");
-    }
 
-    //keeps track of state decided in decision maker
-    void updateState(String current_state) {
-        state = current_state;
+        String current_head = parser.getValue(info, "heading");
+        logger.info("This is current_head:" + current_head);
+        //convert heading to Orientation type
+        heading = heading.giveOrientation(current_head);
+        logger.info("the heading: " + heading);
     }
 
     //takes in !!response!! JSONObject to get range parameter
@@ -130,8 +130,11 @@ public class Statistics {
     //initialize stats with explorer start
     public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
+
         setBudget(initial);
         updateHeading(initial);
+        logger.info("initialization complete. budget: " + budget + " heading: " + heading + " state: " + state);
+
     }
 
     //updates statistics with each response
@@ -200,30 +203,4 @@ public class Statistics {
         }
     }
 
-/* 
-    //once drone stops, this function will use the pois.json to get coordinates of sites
-    void compileSites() {
-
-        try {
-
-            //read _pois.json file
-            FileReader pois_file = new FileReader("./outputs/_pois.json");
-            BufferedReader pois_buffer = new BufferedReader(pois_file);
-            ArrayList<JSONObject> pois_json_arr = new ArrayList<JSONObject>();
-            String pois_line = pois_buffer.readLine();
-
-
-            while (pois_line != null) {
-
-                System.out.println(pois_line);
-
-            }
-//            System.out.println(pois_json_arr);
-
-        } catch (IOException e) {
-            logger.error("_pois.json file not found.");
-        }
-
-    }
-*/
 }
