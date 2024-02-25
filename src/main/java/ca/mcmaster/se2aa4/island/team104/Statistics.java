@@ -45,6 +45,7 @@ public class Statistics {
 
     JSONParser parser = new JSONParser();
 
+
     //takes in initial JSONObject to parse and get initial budget
     private void setBudget(JSONObject initial) {
         this.budget = parser.getIntValue(initial, "budget");
