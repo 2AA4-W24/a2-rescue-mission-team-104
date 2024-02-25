@@ -31,7 +31,7 @@ public class JSONParser {
     }
     public String getValue(JSONObject json, String key) {
         if (json.has(key)) {
-            return String.valueOf(json.getString(key));
+            return json.getString(key);
         } else {
             logger.info("Key does not exist");
             return null;

@@ -13,6 +13,8 @@ import org.json.JSONTokener;
 
 import java.util.Objects;
 
+import javax.xml.stream.events.StartDocument;
+
 // mvn exec:java -q -Dexec.args="./maps/map03.json"
 public class Explorer implements IExplorerRaid {
 
@@ -31,21 +33,14 @@ public class Explorer implements IExplorerRaid {
     String flight_direction = "E";
 
     JSONParser parser = new JSONParser();
+    Statistics stats = new Statistics();
 
     @Override
     public void initialize(String s) {
         logger.info("\n************ Initializing the Exploration Command Center ************");
-        
-        JSONObject initial = parser.loadString(s);
-        logger.info("************ Initialization info: {}\n", initial);
-    
-        initial_head = parser.getValue(initial, "heading");
-        budget = parser.getIntValue(initial, "budget");
-
-        logger.info("** The drone is facing {}", initial_head);
-        logger.info("** Battery level is {}", budget);
-
-        logger.info("\n************ Initialize End\n");
+        stats.initializeStats(s);
+        budget = 7000;
+        initial_head = "E";
     }
 
     @Override
@@ -129,31 +124,6 @@ public class Explorer implements IExplorerRaid {
             next_action = "fly";
         }
 
-//        else if (start == 0) {
-//            decision.put("action", "echo");
-//            JSONObject checker = new JSONObject();
-//
-//            if (count == 0) {
-//                checker.put("direction", initial_head);
-//                start = 0;
-//            }
-//
-//            decision.put("parameters", checker);
-//        }
-
-        // if initial head is == East --> scan East North South
-            //if east found: ground --> go east for range
-            // if north found: ground --> go north for range
-            // ...
-        // if initial head is == North --> scan North West East
-        // if initial head is == South --> scan South East West
-        // if initial head is West --> scan west north east
-
-        //////////////////////////////////
-
-
-
-//        decision.put("action", "stop"); // we stop the exploration immediately
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }

@@ -22,7 +22,7 @@ public class Statistics {
     int budget;
 
     //current heading of drone
-    String heading;
+    Orientation heading;
 
     //current state - turn into enum?
     String state;
@@ -33,7 +33,7 @@ public class Statistics {
     //results of echo/scan
     String found;
 
-    Actions act;
+    Actions actTaken;
 
     Boolean creek_found = false;
 
@@ -46,8 +46,8 @@ public class Statistics {
     JSONParser parser = new JSONParser();
 
     //takes in initial JSONObject to parse and get initial budget
-    private void setBudget(JSONObject initInfo) {
-        budget = parser.getIntValue(initInfo, "cost");
+    private void setBudget(JSONObject initial) {
+        this.budget = parser.getIntValue(initial, "budget");
     }
 
     //takes in cost to deduct from budget
@@ -64,7 +64,7 @@ public class Statistics {
     }
 
     private void updateHeading(JSONObject info) {
-        heading = parser.getValue(info, "heading");
+        this.heading = Orientation.valueOf(parser.getValue(info, "heading"));
     }
 
     //keeps track of state decided in decision maker
@@ -130,8 +130,13 @@ public class Statistics {
     //initialize stats with explorer start
     public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
+        logger.info("************ Initialization info: {}\n", initial);
         setBudget(initial);
         updateHeading(initial);
+        logger.info("** The drone is facing {}", heading);
+        logger.info("** Battery level is {}", budget);
+
+        logger.info("\n************ Initialize End\n");
     }
 
     //updates statistics with each response
@@ -139,6 +144,7 @@ public class Statistics {
         JSONObject info = parser.loadString(s);
         updateBudget(info);
         updateHeading(info);
+
         updateFound(info);
         updateRange(info);
 

@@ -7,8 +7,6 @@ enum Actions {
     HEADING,
     STOP;
 
-    
-
     public String getAction() {
         switch (this) {
             case FLY:
