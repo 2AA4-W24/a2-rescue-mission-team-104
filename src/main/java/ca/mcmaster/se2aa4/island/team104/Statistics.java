@@ -81,10 +81,7 @@ public class Statistics {
         if (info.has("extras")) {
             JSONObject extras = info.getJSONObject("extras");
             if (extras.has("range")) {
-                Integer current_range = parser.getIntValue(extras, "range");
-                logger.info("This is current range:" + current_range);
-                logger.info("the range: " + range);
-                range = current_range;
+                range = parser.getIntValue(extras, "range");
             }
         }
     }

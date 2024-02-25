@@ -21,7 +21,7 @@ public enum State {
         return state;
     }
 
-    public void decrementState(State state) {
+    public State decrementState(State state) {
 
         switch (state) {
             case GO_TO_ISLAND -> state = FIND_ISLAND;
@@ -29,16 +29,18 @@ public enum State {
             case FIND_SITE -> state = COAST_THE_COAST;
             case STOP -> state = FIND_SITE;
         }
+
+        return state;
     }
 
 
-    public void stopExploration(State state) {
-        state = STOP;
+    public State stopExploration(State state) {
+        return state = STOP;
 
     }
 
-    public void startExploration(State state) {
-        state = INIT;
+    public State startExploration(State state) {
+        return state = INIT;
     }
 
 

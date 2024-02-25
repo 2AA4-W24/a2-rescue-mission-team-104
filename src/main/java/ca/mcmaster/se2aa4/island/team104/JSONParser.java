@@ -17,7 +17,7 @@ public class JSONParser {
   
     public JSONObject loadString(String s){
         try {            
-            logger.info("JSON String loaded");
+//            logger.info("JSON String loaded");
             return new JSONObject(new JSONTokener(new StringReader(s)));
         } catch (JSONException e) {
             logger.error("Error in loaded string");
@@ -26,7 +26,7 @@ public class JSONParser {
     }
     public void put(JSONObject json, String key, String value) {
         json.put(key, value);
-        logger.info("Placed " + key + ": " + value);
+//        logger.info("Placed " + key + ": " + value);
 
     }
     public String getValue(JSONObject json, String key) {
