@@ -51,41 +51,4 @@ public class JSONParser {
         return json1.put(key1, json2.put(key2, value2));
     }
 
-
-
-
-
-
-    /* 
-    public String getHeading() {
-        String direction = initial.getString("heading");
-        return direction;
-    }
-    public Integer getBudget() {
-        Integer budget = initial.getInt("budget");
-        return budget;
-    }
-
-    public void writeAction(String action) {
-        decision.put("action", action);
-    }
-    public void translateResult(String s){
-        this.results = new JSONObject(new JSONTokener(new StringReader(s)));
-    }
-
-    public int getCost() {
-        int cost = results.getInt("cost");
-        return cost;
-    }
-    public String getStatus() {
-        String status = results.getString("status");
-        return status;
-    }
-    public JSONObject getExtras() {
-        this.extraInfo = results.getJSONObject("extras");
-        return extraInfo;
-    }
-    private void extractExtras(JSONObject extraInfo) {
-
-    }*/
 }

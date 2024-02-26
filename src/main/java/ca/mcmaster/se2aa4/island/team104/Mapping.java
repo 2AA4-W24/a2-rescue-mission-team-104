@@ -9,9 +9,7 @@ import java.util.Objects;
 public class Mapping {
 
     Map<Position, Tiles> pois = new HashMap<>();
-
     Position position;
-    JSONParser parser = new JSONParser();
 
     void updateTile(Statistics stats) {
 

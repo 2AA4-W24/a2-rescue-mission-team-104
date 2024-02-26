@@ -18,21 +18,6 @@ public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
 
-//    String next_action = "echo";
-    int start = 0; //if start = 0 dont start making decisions
-    String initial_head;
-    int budget;
-    Integer range = 1;
-    String found = "OUT_OF_RANGE";
-    int begin = 0; //count echos before moving
-
-    boolean init_heading = true;
-    boolean[] can_go = new boolean[4]; //lets you know in which direction drone can go in
-    String flight_direction = "E";
-
-
-    //////////////////////////////////////////////////
-
     DecisionMaker dm = new DecisionMaker();
 
     JSONParser parser = new JSONParser();
@@ -44,11 +29,11 @@ public class Explorer implements IExplorerRaid {
         JSONObject initial = parser.loadString(s);
         logger.info("************ Initialization info: {}\n", initial);
     
-        initial_head = parser.getValue(initial, "heading");
-        budget = parser.getIntValue(initial, "budget");
+//        initial_head = parser.getValue(initial, "heading");
+//        budget = parser.getIntValue(initial, "budget");
 
-        logger.info("** The drone is facing {}", initial_head);
-        logger.info("** Battery level is {}", budget);
+//        logger.info("** The drone is facing {}", initial_head);
+//        logger.info("** Battery level is {}", budget);
 
         logger.info("\n************ Initialize End\n");
 

@@ -79,7 +79,6 @@ public class FindIsland {
             else {
                 current_action = Actions.FLY;
             }
-//            current_action = intersection();
             return current_action;
         }
         //no matter the direction echo forward
