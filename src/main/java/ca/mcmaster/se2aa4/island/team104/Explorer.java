@@ -28,13 +28,6 @@ public class Explorer implements IExplorerRaid {
         
         JSONObject initial = parser.loadString(s);
         logger.info("************ Initialization info: {}\n", initial);
-    
-//        initial_head = parser.getValue(initial, "heading");
-//        budget = parser.getIntValue(initial, "budget");
-
-//        logger.info("** The drone is facing {}", initial_head);
-//        logger.info("** Battery level is {}", budget);
-
         logger.info("\n************ Initialize End\n");
 
         ///////////////////////////////////////////// 2-25
@@ -49,9 +42,7 @@ public class Explorer implements IExplorerRaid {
         JSONObject decision = new JSONObject();
 
         JSONObject next_action = dm.nextAction();
-
-
-//        return decision.toString();
+        
         return next_action.toString();
     }
 
@@ -66,9 +57,7 @@ public class Explorer implements IExplorerRaid {
         JSONObject extraInfo = response.getJSONObject("extras");
         logger.info("Additional information received: {}", extraInfo);
 
-
-
-        ////////////////////////////////////
+        ////
         dm.stats.updateStats(s); //update stats
         dm.map.updateTile(dm.stats); // then update map
     }
