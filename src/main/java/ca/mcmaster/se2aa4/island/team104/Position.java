@@ -25,16 +25,17 @@ public class Position {
     
     public void updateForward(){
 
-        if (this.current_orient == Orientation.N){
+
+        if (this.current_orient.equals(Orientation.N)){
             Y++;
         }
-        else if (this.current_orient == Orientation.E){
+        else if (this.current_orient.equals(Orientation.E)){
             X++;
         }
-        else if (this.current_orient == Orientation.S){
+        else if (this.current_orient.equals(Orientation.S)){
             Y--; 
         }
-        else if (this.current_orient == Orientation.W){
+        else if (this.current_orient.equals(Orientation.W)){
             X--;
         }
     }
@@ -42,16 +43,16 @@ public class Position {
     // is this the actual movement?
     public void updateRight(){
 
-        if (this.current_orient == Orientation.N){
+        if (this.current_orient.equals(Orientation.N)){
             X++;
         }
-        else if (this.current_orient == Orientation.E){
+        else if (this.current_orient.equals(Orientation.E)){
             Y--;
         }
-        else if (this.current_orient == Orientation.S){
+        else if (this.current_orient.equals(Orientation.S)){
             X--; 
         }
-        else if (this.current_orient == Orientation.W){
+        else if (this.current_orient.equals(Orientation.W)){
             X++;
         }
 
@@ -59,16 +60,16 @@ public class Position {
 
     public void updateLeft(){
 
-        if (this.current_orient == Orientation.N){
+        if (this.current_orient.equals(Orientation.N)){
             X--;
         }
-        else if (this.current_orient == Orientation.E){
+        else if (this.current_orient.equals(Orientation.E)){
             Y++;
         }
-        else if (this.current_orient == Orientation.S){
+        else if (this.current_orient.equals(Orientation.S)){
             X++; 
         }
-        else if (this.current_orient == Orientation.W){
+        else if (this.current_orient.equals(Orientation.W)){
             X--;
         }
 

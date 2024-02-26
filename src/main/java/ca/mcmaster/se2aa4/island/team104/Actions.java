@@ -1,10 +1,15 @@
 package ca.mcmaster.se2aa4.island.team104;
 
 enum Actions {
+
+    STANDBY,
     FLY, //Fly forward
-    ECHO,
+    ECHO_FORWARD,
+    ECHO_RIGHT,
+    ECHO_LEFT,
     SCAN,
-    HEADING,
+    HEADING_RIGHT,
+    HEADING_LEFT,
     STOP;
 
     
@@ -14,13 +19,13 @@ enum Actions {
             case FLY:
                 return "fly";
             
-            case ECHO:
+            case ECHO_FORWARD, ECHO_LEFT, ECHO_RIGHT:
                 return "echo";
-            
+
             case SCAN:
                 return "scan";
 
-            case HEADING:
+            case HEADING_RIGHT, HEADING_LEFT:
                 return "heading";
 
             case STOP:
