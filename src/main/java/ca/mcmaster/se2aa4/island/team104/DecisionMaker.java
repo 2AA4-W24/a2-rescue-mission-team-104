@@ -20,11 +20,13 @@ public class DecisionMaker {
 
     //now make it so that when you see ground you get the current action of find_island and turn in that direction
     JSONObject nextAction() {
+
+
         //the 1000 is a placeholder
-        if (stats.budget > 1000) {
+        if (stats.getBudget() > 1000) {
             logger.info("this is the state: " + stats.state);
 
-            if (stats.state == State.INIT) {
+            if (stats.getState() == State.INIT) {
                 logger.info("This is action after init: "+ find_island.current_action);
 
                 JSONObject parameters = parser.createJSON();
@@ -41,14 +43,12 @@ public class DecisionMaker {
                 stats.setState(current_state.incrementState(current_state));
 
 
-
                 logger.info("new state: " + stats.getState());
                 return ret_action;
 
 
-
             }
-            if (stats.state == State.FIND_ISLAND) {
+            if (stats.getState() == State.FIND_ISLAND) {
 
                 if (Objects.equals(stats.found, "GROUND")) {
                     stats.state = stats.state.incrementState(stats.state);

@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public class Controller {
 
-    private Statistics stats = new Statistics();
+    private Statistics stats;
 
     JSONParser parser = new JSONParser();
 
@@ -28,7 +28,6 @@ public class Controller {
         //now determine extra parameters based on action
         switch (action) {
             case ECHO_FORWARD -> {
-//                JSONObject parameters = parser.createAndPut("direction", head_str);
                 parser.mergeJSONObjectsVoid(actions, parameters, "parameters", "direction",head_str);
             }
             case ECHO_RIGHT -> {
@@ -45,12 +44,12 @@ public class Controller {
             case HEADING_LEFT -> {
                 head = head.turnLeft2();
                 parser.mergeJSONObjectsVoid(actions, parameters, "parameters", "direction",head.giveStringOrientation2());
-                stats.setHeading(head);
+                stats.setHeading(head); //update heading
             }
             case HEADING_RIGHT -> {
                 head = head.turnRight2();
                 parser.mergeJSONObjectsVoid(actions, parameters, "parameters", "direction",head.giveStringOrientation2());
-                stats.setHeading(head);
+                stats.setHeading(head); //update heading
             }
             case STANDBY -> {
                 return null;
