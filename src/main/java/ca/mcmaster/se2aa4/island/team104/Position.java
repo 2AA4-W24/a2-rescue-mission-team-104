@@ -3,39 +3,38 @@ import java.util.ArrayList;
 
 public class Position {
 
+    // Keeping everything relative to where it started. 
+
     ArrayList<Integer> coordinates = new ArrayList<Integer>();
+
+    //Orientation direction  = Orientation.N;
+    //Position position = new Position(direction);
 
     //Initializing coordinate system upon beginning. 
     private Integer X = 0; 
     private Integer Y = 0;
 
-    private Orientation current_orient;
-    
-    public Position(Orientation current_orient){
-        this.current_orient = current_orient;
+    // Keeping track of orientation 
+    private Orientation current_orient = Orientation.N;
+
+    public Position(){
 
         coordinates.add(X);
         coordinates.add(Y);
     }
-
-    // Position is only keeping track of the coordinate System?
-
-    // Default orientation. sET TO north?
-   
     
     public void updateForward(){
 
-
-        if (this.current_orient.equals(Orientation.N)){
+        if (this.current_orient == Orientation.N){
             Y++;
         }
-        else if (this.current_orient.equals(Orientation.E)){
+        else if (this.current_orient == Orientation.E){
             X++;
         }
-        else if (this.current_orient.equals(Orientation.S)){
+        else if (this.current_orient == Orientation.S){
             Y--; 
         }
-        else if (this.current_orient.equals(Orientation.W)){
+        else if (this.current_orient == Orientation.W){
             X--;
         }
     }
@@ -43,34 +42,41 @@ public class Position {
     // is this the actual movement?
     public void updateRight(){
 
-        if (this.current_orient.equals(Orientation.N)){
+        if (this.current_orient == Orientation.N){
             X++;
+            current_orient = Orientation.E;
         }
-        else if (this.current_orient.equals(Orientation.E)){
+        else if (this.current_orient == Orientation.E){
             Y--;
+            current_orient = Orientation.S;
         }
-        else if (this.current_orient.equals(Orientation.S)){
+        else if (this.current_orient == Orientation.S){
             X--; 
+            current_orient = Orientation.W;
         }
-        else if (this.current_orient.equals(Orientation.W)){
+        else if (this.current_orient == Orientation.W){
             X++;
+            current_orient = Orientation.N;
         }
-
     }
 
     public void updateLeft(){
 
-        if (this.current_orient.equals(Orientation.N)){
+        if (this.current_orient == Orientation.N){
             X--;
+            current_orient = Orientation.W;
         }
-        else if (this.current_orient.equals(Orientation.E)){
+        else if (this.current_orient == Orientation.E){
             Y++;
+            current_orient = Orientation.N;
         }
-        else if (this.current_orient.equals(Orientation.S)){
+        else if (this.current_orient == Orientation.S){
             X++; 
+            current_orient = Orientation.E;
         }
-        else if (this.current_orient.equals(Orientation.W)){
+        else if (this.current_orient == Orientation.W){
             X--;
+            current_orient = Orientation.S;
         }
 
     }
