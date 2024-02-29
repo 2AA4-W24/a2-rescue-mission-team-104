@@ -51,4 +51,16 @@ public class JSONParser {
         return json1.put(key1, json2.put(key2, value2));
     }
 
+    public JSONObject createAndPut(String key, String value) {
+        JSONObject json1 = new JSONObject();
+        json1.put(key, value);
+        return json1;
+    }
+
+    public void mergeJSONObjectsVoid(JSONObject json1, JSONObject json2, String key1, String key2, String value2) {
+        //{...,"parameters": {"direction": "E"}}
+        json1.put(key1, json2.put(key2, value2));
+    }
+
+
 }

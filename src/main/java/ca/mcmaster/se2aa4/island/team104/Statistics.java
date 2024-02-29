@@ -2,17 +2,12 @@ package ca.mcmaster.se2aa4.island.team104;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.xpath.operations.Or;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONPointerException;
 import org.apache.commons.io.IOUtils;
-
-import java.io.*;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class Statistics {
 
@@ -172,6 +167,38 @@ public class Statistics {
         else {
             site_found = false;
         }
+    }
+
+    Integer getBudget() {
+        return budget;
+    }
+
+    Orientation getHeading() {
+        return heading;
+    }
+
+    State getState() {
+        return state;
+    }
+
+    Integer getRange() {
+        return range;
+    }
+
+    String getFound() {
+        return found;
+    }
+
+    Boolean getCreekBool() { return creek_found; }
+
+    Boolean getSiteBool() { return site_found; }
+
+    void setState(State new_state) {
+        state = new_state;
+    }
+
+    void setHeading(Orientation new_orient) {
+        heading = new_orient;
     }
 
 }

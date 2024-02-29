@@ -2,6 +2,8 @@ package ca.mcmaster.se2aa4.island.team104;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
+import scala.collection.parallel.ParIterableLike;
 
 import java.util.Objects;
 
@@ -11,15 +13,23 @@ public class FindIsland {
 
     Actions current_action = Actions.ECHO_FORWARD;
 
-    Integer forward_range;
+    private Integer forward_range;
 
-    Integer left_range;
+    private Integer left_range;
 
-    Integer right_range;
+    private Integer right_range;
 
-    Boolean turned = false;
+    private final Boolean turned = false;
+    Statistics stats;
 
-    Actions intersection() {
+
+    FindIsland(Statistics statistics) {
+        stats = statistics;
+
+    }
+
+
+    private Actions intersection() {
         logger.info("this is f_range: " + forward_range + " this is right range: " + right_range + " this is left range: " + left_range);
 
         //forward range has the greatest value
@@ -46,28 +56,35 @@ public class FindIsland {
         }
     }
 
-    Actions getNextMove(Statistics stats) {
+
+
+    JSONObject getNextMove() {
+
+        Controller controller = new Controller(stats);
 
         logger.info("this is current action: " + current_action);
 
         //initialization
+        if (Objects.equals(stats.getFound(), "GROUND")) {
+            stats.setState(State.GO_TO_ISLAND);
+        }
         if (current_action == Actions.STANDBY) {
             current_action = Actions.ECHO_FORWARD;
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
 
         //first echo forward then left
         if (current_action == Actions.ECHO_FORWARD) {
             forward_range = stats.range;
             current_action = Actions.ECHO_LEFT;
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
 
         //echo left then echo right
         else if (current_action == Actions.ECHO_LEFT) {
             left_range = stats.range;
             current_action = Actions.ECHO_RIGHT;
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
         //echo right then determine which is the best way to go
         else if (current_action == Actions.ECHO_RIGHT) {
@@ -79,20 +96,20 @@ public class FindIsland {
             else {
                 current_action = Actions.FLY;
             }
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
         //no matter the direction echo forward
         else if (current_action == Actions.FLY) {
             current_action = Actions.ECHO_FORWARD;
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
         else if (current_action == Actions.HEADING_LEFT) {
             current_action = Actions.ECHO_FORWARD;
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
         else if (current_action == Actions.HEADING_RIGHT) {
             current_action = Actions.ECHO_FORWARD;
-            return current_action;
+            return controller.convertActionToJSON(current_action);
         }
         else {
             logger.info("Something went wrong.");
