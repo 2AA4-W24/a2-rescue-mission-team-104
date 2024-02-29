@@ -50,7 +50,7 @@ public class DecisionMaker {
             }
             if (stats.getState() == State.FIND_ISLAND) {
 
-                if (Objects.equals(stats.found, "GROUND")) {
+                if (Objects.equals(stats.getFound(), "GROUND")) {
                     stats.state = stats.state.incrementState(stats.state);
                 }
                 else {

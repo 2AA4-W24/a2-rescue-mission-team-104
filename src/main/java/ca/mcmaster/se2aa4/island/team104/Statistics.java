@@ -9,12 +9,6 @@ import org.json.JSONObject;
 import org.json.JSONPointerException;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Map;
-
 public class Statistics {
 
     private final Logger logger = LogManager.getLogger();
@@ -194,6 +188,10 @@ public class Statistics {
     String getFound() {
         return found;
     }
+
+    Boolean getCreekBool() { return creek_found; }
+
+    Boolean getSiteBool() { return site_found; }
 
     void setState(State new_state) {
         state = new_state;
