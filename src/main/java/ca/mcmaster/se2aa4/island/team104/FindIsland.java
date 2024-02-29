@@ -65,6 +65,9 @@ public class FindIsland {
         logger.info("this is current action: " + current_action);
 
         //initialization
+        if (Objects.equals(stats.getFound(), "GROUND")) {
+            stats.setState(State.GO_TO_ISLAND);
+        }
         if (current_action == Actions.STANDBY) {
             current_action = Actions.ECHO_FORWARD;
             return controller.convertActionToJSON(current_action);

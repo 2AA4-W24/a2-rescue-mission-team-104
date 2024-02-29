@@ -9,6 +9,8 @@ public enum State {
     FIND_SITE,
     STOP;
 
+    private State ret_state;
+
     State incrementState(State state) {
 
         switch (state) {
@@ -19,6 +21,19 @@ public enum State {
             case FIND_SITE -> state = STOP;
         }
         return state;
+    }
+
+    State incrementState2() {
+
+        switch (this) {
+            case INIT -> this.ret_state = FIND_ISLAND;
+            case FIND_ISLAND -> this.ret_state = GO_TO_ISLAND;
+            case GO_TO_ISLAND -> this.ret_state = COAST_THE_COAST;
+            case COAST_THE_COAST -> this.ret_state = FIND_SITE;
+            case FIND_SITE -> this.ret_state = STOP;
+        }
+        return ret_state;
+
     }
 
     public State decrementState(State state) {

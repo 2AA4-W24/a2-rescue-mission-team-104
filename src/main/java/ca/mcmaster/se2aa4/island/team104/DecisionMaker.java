@@ -11,9 +11,13 @@ public class DecisionMaker {
     Statistics stats = new Statistics();
     Mapping map = new Mapping();
     FindIsland find_island = new FindIsland(stats);
+    CoastTheCoast coast_the_coast;
+    FindSite find_site;
     JSONParser parser = new JSONParser();
 
+
     private final Logger logger = LogManager.getLogger();
+
 
 
 
@@ -49,14 +53,16 @@ public class DecisionMaker {
 
             }
             if (stats.getState() == State.FIND_ISLAND) {
-
-                if (Objects.equals(stats.getFound(), "GROUND")) {
-                    stats.state = stats.state.incrementState(stats.state);
-                }
-                else {
-                    //return string version of Actions
-                    return find_island.getNextMove();
-                }
+                return find_island.getNextMove();
+            }
+            else if (stats.getState() == State.COAST_THE_COAST) {
+                return coast_the_coast.getNextMove();
+            }
+            else if (stats.getState() == State.FIND_SITE) {
+                return find_site.getNextMove();
+            }
+            else if (stats.getState() == State.STOP) {
+                return parser.createAndPut("action", "stop");
             }
         }
 

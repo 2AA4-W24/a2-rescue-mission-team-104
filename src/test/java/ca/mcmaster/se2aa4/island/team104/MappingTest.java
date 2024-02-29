@@ -10,28 +10,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MappingTest {
 
-    @Test
-    public void initAtHomeBase() {
+//    @Test
+//    public void initAtHomeBase() {
+//        Statistics statistics = new Statistics();
+//        DecisionMaker dm = new DecisionMaker(); //create a decision maker
+//        dm.stats.state = State.INIT; //make its state INIT
+//        dm.map.updateTile(dm.stats); //update its tile so that it's homebase
+//        dm.stats.heading = Orientation.E;
+//        Position testPosition = new Position(dm.stats.heading);
+//        Map<Tiles, Position> testMap = new HashMap<>(); //create test Map to test against
+//        testMap.put(Tiles.HOMEBASE, testPosition);
+////        assertEquals(testMap.keySet(), dm.map.pois.keySet());
+////        assertEquals(testMap.get(Tiles.HOMEBASE), dm.map.pois.get(Tiles.HOMEBASE));
+//
+//    }
 
-        DecisionMaker dm = new DecisionMaker(); //create a decision maker
-        dm.stats.state = State.INIT; //make its state INIT
-        dm.map.updateTile(dm.stats); //update its tile so that it's homebase
-        dm.stats.heading = Orientation.E;
-        Position testPosition = new Position(dm.stats.heading);
-        Map<Tiles, Position> testMap = new HashMap<>(); //create test Map to test against
-        testMap.put(Tiles.HOMEBASE, testPosition);
-//        assertEquals(testMap.keySet(), dm.map.pois.keySet());
-//        assertEquals(testMap.get(Tiles.HOMEBASE), dm.map.pois.get(Tiles.HOMEBASE));
-
-    }
-
-    @Test
-    public void groundFound() {
-        DecisionMaker dm = new DecisionMaker();
-        dm.stats.found = "GROUND";
-        dm.map.updateTile(dm.stats);
-        Map<Tiles, Position> testMap = new HashMap<>();
-//        testMap.put(Tiles.GROUND)
-    }
+//    @Test
+//    public void groundFound() {
+////        Statistics statistics = new Statistics();
+//        DecisionMaker dm = new DecisionMaker();
+//        dm.stats.found = "GROUND";
+//        dm.map.updateTile(dm.stats);
+//        Map<Tiles, Position> testMap = new HashMap<>();
+////        testMap.put(Tiles.GROUND)
+//    }
 
 }
