@@ -12,7 +12,7 @@ public class DecisionMaker {
     Statistics stats = new Statistics();
     Mapping map = new Mapping();
     FindIsland find_island = new FindIsland(stats);
-    scanIsland scan_island;
+    ScanIsland scan_island = new ScanIsland(stats);
 
     JSONParser parser = new JSONParser();
 
