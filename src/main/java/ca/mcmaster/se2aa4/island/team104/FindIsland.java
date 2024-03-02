@@ -104,7 +104,7 @@ public class FindIsland {
                 return controller.convertActionToJSON(current_action);
             }
             else {
-                stats.setState(State.COAST_THE_COAST);
+                stats.setState(State.SCAN_ISLAND);
                 return controller.convertActionToJSON(current_action);
             }
         }

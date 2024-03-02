@@ -7,24 +7,17 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class DecisionMaker {
+    private final Logger logger = LogManager.getLogger();
 
     Statistics stats = new Statistics();
     Mapping map = new Mapping();
     FindIsland find_island = new FindIsland(stats);
-    CoastTheCoast coast_the_coast;
-    FindSite find_site;
+    scanIsland scan_island;
+
     JSONParser parser = new JSONParser();
-
-
-    private final Logger logger = LogManager.getLogger();
-
-
-
-
 
     //now make it so that when you see ground you get the current action of find_island and turn in that direction
     JSONObject nextAction() {
-
 
         //the 1000 is a placeholder
         if (stats.getBudget() > 1000) {
@@ -46,21 +39,16 @@ public class DecisionMaker {
                 State current_state = stats.getState();
                 stats.setState(current_state.incrementState(current_state));
 
-
                 logger.info("new state: " + stats.getState());
                 return ret_action;
-
 
             }
             if (stats.getState() == State.FIND_ISLAND || stats.getState() == State.GO_TO_ISLAND) {
                 return find_island.getNextMove();
             }
-            else if (stats.getState() == State.COAST_THE_COAST) {
+            else if (stats.getState() == State.SCAN_ISLAND) {
                 //this is temporary so that the program doesn't return null pointer.
                 return parser.createAndPut("action", "stop");
-            }
-            else if (stats.getState() == State.FIND_SITE) {
-                return find_site.getNextMove();
             }
             else if (stats.getState() == State.STOP) {
                 return parser.createAndPut("action", "stop");

@@ -43,7 +43,7 @@ public class Explorer implements IExplorerRaid {
         JSONObject decision = new JSONObject();
 
         JSONObject next_action = dm.nextAction();
-        logger.info("action going to perform: " + next_action);
+        logger.info("*****Action going to perform: " + next_action);
 
         return next_action.toString();
     }
