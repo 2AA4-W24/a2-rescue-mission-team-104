@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104;
 import java.util.ArrayList;
-
+import org.apache.xpath.operations.Or;
 public class Position {
 
     // Keeping everything relative to where it started. 
@@ -14,48 +14,60 @@ public class Position {
     private Integer X = 0; 
     private Integer Y = 0;
 
+    ArrayList<Integer> getPosition() {
+        return this.coordinates;
+    }
+
     // Keeping track of orientation 
-    private Orientation current_orient = Orientation.N;
+    Orientation current_orient = Orientation.N;
 
     public Position(){
-
-        coordinates.add(X);
-        coordinates.add(Y);
+        coordinates.add(0, X);
+        coordinates.add(1, Y);        
     }
-    
+    public void setOrientation(String orient) {
+        current_orient = current_orient.giveOrientation(orient);
+
+    }
+
     public void updateForward(){
 
         if (this.current_orient == Orientation.N){
-            Y++;
+            Y = Y + 1;
+            coordinates.set(1, Y);
         }
         else if (this.current_orient == Orientation.E){
-            X++;
+            X = X + 1;
+            coordinates.set(0, X);
         }
         else if (this.current_orient == Orientation.S){
-            Y--; 
-        }
+            Y = Y - 1;
+            coordinates.set(1, Y);        }
         else if (this.current_orient == Orientation.W){
-            X--;
-        }
+            X = X - 1;
+            coordinates.set(0, X);        }
     }
 
-    // is this the actual movement?
     public void updateRight(){
 
         if (this.current_orient == Orientation.N){
-            X++;
+            X = X + 1;
+            coordinates.set(0, X);            
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.E){
-            Y--;
+            Y = Y - 1;
+            coordinates.set(1, Y);
             current_orient = Orientation.S;
         }
         else if (this.current_orient == Orientation.S){
-            X--; 
+            X = X - 1;
+            coordinates.set(0, X);
             current_orient = Orientation.W;
         }
         else if (this.current_orient == Orientation.W){
-            X++;
+            X = X + 1;
+            coordinates.set(0, X);
             current_orient = Orientation.N;
         }
     }
@@ -63,19 +75,23 @@ public class Position {
     public void updateLeft(){
 
         if (this.current_orient == Orientation.N){
-            X--;
+            X = X - 1;
+            coordinates.set(0, X);
             current_orient = Orientation.W;
         }
         else if (this.current_orient == Orientation.E){
-            Y++;
+            Y = Y + 1;
+            coordinates.set(1, Y);
             current_orient = Orientation.N;
         }
         else if (this.current_orient == Orientation.S){
-            X++; 
+            X = X + 1;
+            coordinates.set(0, X);
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.W){
-            X--;
+            X = X - 1;
+            coordinates.set(0, X);
             current_orient = Orientation.S;
         }
 

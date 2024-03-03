@@ -1,5 +1,7 @@
 package ca.mcmaster.se2aa4.island.team104;
 
+import java.util.LinkedList;
+
 import javax.swing.Action;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +17,8 @@ public class ScanIsland {
     Actions curr_action;
     Actions last_turn;
 
+
+    //LinkedList<Task> tasks = new LinkedList<Task>();
     int count = 0;
     Actions[] U_right = {Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD};
     Actions[] U_left = {Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.ECHO_FORWARD};
@@ -62,7 +66,19 @@ public class ScanIsland {
         count++;
     }
 
-    JSONObject getNextMove() {
+    Actions getNextMove() {
+        State state = stats.getState();
+
+        if (state == State.INIT_SCAN) {
+            initializeScanning();
+            stats.setState(State.SCAN_ISLAND);
+            return curr_action;
+        }
+
+        if (state == State.SCAN_ISLAND) {
+            return Actions.STOP;
+        }
+
         return null;
     }
 }
