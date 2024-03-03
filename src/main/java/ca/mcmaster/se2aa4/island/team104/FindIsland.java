@@ -2,8 +2,6 @@ package ca.mcmaster.se2aa4.island.team104;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
-import scala.collection.parallel.ParIterableLike;
 
 import java.util.Objects;
 
@@ -79,12 +77,10 @@ public class FindIsland {
 
 
 
-    JSONObject getNextMove() {
+    Actions getNextMove() {
 
-        Controller controller = new Controller(stats);
-
-        logger.info("this is current action: " + current_action);
-        logger.info("this is what was found: "+ stats.getFound());
+//        logger.info("this is current action: " + current_action);
+//        logger.info("this is what was found: "+ stats.getFound());
 
         if (!transition_state) {
             //initialization
@@ -93,7 +89,8 @@ public class FindIsland {
                 stats.setState(State.GO_TO_ISLAND);
                 current_action = finalMove();
                 temp_range = stats.getRange();
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
         }
         if (stats.getState() == State.GO_TO_ISLAND) {
@@ -101,31 +98,36 @@ public class FindIsland {
                 temp_range -= 1;
                 logger.info("new distance to island: " + temp_range);
                 current_action = Actions.FLY;
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
             else {
                 stats.setState(State.COAST_THE_COAST);
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
         }
         else if (stats.getState() == State.FIND_ISLAND) {
             if (current_action == Actions.STANDBY) {
                 current_action = Actions.ECHO_FORWARD;
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
 
             //first echo forward then left
             else if (current_action == Actions.ECHO_FORWARD) {
                 forward_range = stats.range;
                 current_action = Actions.ECHO_LEFT;
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
 
             //echo left then echo right
             else if (current_action == Actions.ECHO_LEFT) {
                 left_range = stats.range;
                 current_action = Actions.ECHO_RIGHT;
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
             //echo right then determine which is the best way to go
             else if (current_action == Actions.ECHO_RIGHT) {
@@ -137,20 +139,24 @@ public class FindIsland {
                 } else {
                     current_action = Actions.FLY;
                 }
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             }
             //no matter the direction echo forward
             else if (current_action == Actions.FLY || current_action == Actions.HEADING_LEFT || current_action == Actions.HEADING_RIGHT) {
                 current_action = Actions.ECHO_FORWARD;
-                return controller.convertActionToJSON(current_action);
+                return current_action;
+//                return controller.convertActionToJSON(current_action);
             } else {
                 logger.info("Something went wrong.");
-                return controller.convertActionToJSON(Actions.STOP);
+                return Actions.STOP;
+//                return controller.convertActionToJSON(Actions.STOP);
             }
 
         }
 
         logger.info("In wrong State");
-        return controller.convertActionToJSON(Actions.STOP);
+        return Actions.STOP;
+//        return controller.convertActionToJSON(Actions.STOP);
     }
 }

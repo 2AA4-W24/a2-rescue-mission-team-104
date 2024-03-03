@@ -15,24 +15,6 @@ enum Orientation {
 
     Orientation giveOrientation(String orient) {
 
-//        switch (orient) {
-//            case "E" -> {
-//                return  E;
-//            }
-//            case "N" -> {
-//                return N;
-//            }
-//            case "S" -> {
-//                return S;
-//            }
-//            case "W" -> {
-//                return W;
-//            }
-//            default -> {
-//                return null;
-//            }
-//        }
-
         if (Objects.equals(orient, "E")) {
             return E;
         }
