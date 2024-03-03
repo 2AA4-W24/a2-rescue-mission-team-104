@@ -52,11 +52,12 @@ public class DecisionMaker {
 
 
             }
-            if (stats.getState() == State.FIND_ISLAND) {
+            if (stats.getState() == State.FIND_ISLAND || stats.getState() == State.GO_TO_ISLAND) {
                 return find_island.getNextMove();
             }
             else if (stats.getState() == State.COAST_THE_COAST) {
-                return coast_the_coast.getNextMove();
+                //this is temporary so that the program doesn't return null pointer.
+                return parser.createAndPut("action", "stop");
             }
             else if (stats.getState() == State.FIND_SITE) {
                 return find_site.getNextMove();

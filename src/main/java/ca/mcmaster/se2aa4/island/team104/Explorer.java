@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import eu.ace_design.island.bot.IExplorerRaid;
+import org.apache.xpath.operations.Bool;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.json.JSONTokener;
@@ -42,6 +43,7 @@ public class Explorer implements IExplorerRaid {
         JSONObject decision = new JSONObject();
 
         JSONObject next_action = dm.nextAction();
+        logger.info("action going to perform: " + next_action);
 
         return next_action.toString();
     }

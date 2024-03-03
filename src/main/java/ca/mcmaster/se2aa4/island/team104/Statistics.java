@@ -77,6 +77,7 @@ public class Statistics {
             JSONObject extras = info.getJSONObject("extras");
             if (extras.has("range")) {
                 range = parser.getIntValue(extras, "range");
+                logger.info("This is new range: " + range);
             }
         }
     }
