@@ -3,18 +3,12 @@ import java.util.ArrayList;
 
 public class Position {
 
-    // Keeping everything relative to where it started. 
-
     ArrayList<Integer> coordinates = new ArrayList<Integer>();
 
-    //Orientation direction  = Orientation.N;
-    //Position position = new Position(direction);
-
-    //Initializing coordinate system upon beginning. 
     private Integer X = 0; 
     private Integer Y = 0;
 
-    // Keeping track of orientation 
+   
     private Orientation current_orient = Orientation.N;
 
     public Position(){
@@ -42,7 +36,6 @@ public class Position {
         }
     }
 
-    // is this the actual movement?
     public void updateRight(){
 
         if (this.current_orient == Orientation.N){
