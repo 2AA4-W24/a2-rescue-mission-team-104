@@ -17,9 +17,10 @@ public class ScanIsland {
     Actions curr_action;
     Actions last_turn;
 
+    Tiles water;
+
 
     //LinkedList<Task> tasks = new LinkedList<Task>();
-    int count = 0;
     Actions[] U_right = {Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD};
     Actions[] U_left = {Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.ECHO_FORWARD};
     
@@ -46,6 +47,10 @@ public class ScanIsland {
             curr_action = Actions.SCAN;
         }
     }
+
+    //Boolean correctStats() {
+    //     if (stats.found == water)
+    //}
     
     void UTurn() {
         if (last_turn == Actions.HEADING_LEFT) {
@@ -65,10 +70,10 @@ public class ScanIsland {
         curr_action = CCWCircle[count];
         count++;
     }
+    int count = 0;
 
     Actions getNextMove() {
         State state = stats.getState();
-
         if (state == State.INIT_SCAN) {
             initializeScanning();
             stats.setState(State.SCAN_ISLAND);
@@ -76,6 +81,11 @@ public class ScanIsland {
         }
 
         if (state == State.SCAN_ISLAND) {
+            logger.info(stats.isWater());
+            if (!stats.isWater()){
+                scanning();
+                return curr_action;
+            }
             return Actions.STOP;
         }
 

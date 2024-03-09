@@ -23,10 +23,11 @@ public class Statistics {
     State state = State.INIT;
 
     //results of echo
+    String found;
     Integer range;
 
-    //results of echo/scan
-    String found;
+    //results
+    Boolean water = false;
 
     Boolean creek_found = false;
 
@@ -93,6 +94,7 @@ public class Statistics {
         }
     }
 
+
     //initialize stats with explorer start
     public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
@@ -110,12 +112,36 @@ public class Statistics {
         updateBudget(info);
         updateHeading(info);
         updateFound(info);
+        updateScan(info);
         updateRange(info);
 
         updateCreeks(info);
         updateSites(info);
     }
 
+    void updateScan(JSONObject info) {
+        
+        if (info.has("extras")) {
+            JSONObject extraInfo = info.getJSONObject("extras");
+
+            if (extraInfo.has("biomes")) {
+                //create JSONArray to loop through
+                JSONArray biomes_json = new JSONArray();
+                biomes_json = extraInfo.getJSONArray("biomes");
+
+                for (int i = 0; i < biomes_json.length(); i++) {
+                    findWater(biomes_json.get(i).toString());
+                }
+                
+            }
+        }
+    }
+    void findWater(String biome) {
+        if (biome.equals("OCEAN") || biome.equals("LAKE")) {
+            logger.info("***WATER TILE FOUND: " + biome);
+            water = true;
+        }
+    }
 
     //takes in !!response!! JSONObject to parse and adds creek id to creek list
     void updateCreeks(JSONObject info) {
@@ -188,6 +214,10 @@ public class Statistics {
 
     String getFound() {
         return found;
+    }
+
+    Boolean isWater() {
+        return water;
     }
 
     Boolean getCreekBool() { return creek_found; }

@@ -29,7 +29,6 @@ public class FindIsland {
 
     FindIsland(Statistics statistics) {
         stats = statistics;
-
     }
 
 
