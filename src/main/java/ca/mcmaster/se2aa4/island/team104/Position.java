@@ -37,6 +37,9 @@ public class Position {
         else if (this.current_orient == Orientation.W){
             X--;
         }
+        else {
+            System.out.println("Drone is Lost"); 
+        }
     }
 
     // is this the actual movement?
@@ -58,6 +61,10 @@ public class Position {
             X++;
             current_orient = Orientation.N;
         }
+        // Implementing error handling
+        else {
+            System.out.println("Drone is Lost"); 
+        }
     }
 
     public void updateLeft(){
@@ -77,6 +84,9 @@ public class Position {
         else if (this.current_orient == Orientation.W){
             X--;
             current_orient = Orientation.S;
+        }
+        else {
+            System.out.println("Drone is lost"); 
         }
 
     }
