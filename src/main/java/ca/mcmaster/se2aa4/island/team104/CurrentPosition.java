@@ -1,112 +1,85 @@
 package ca.mcmaster.se2aa4.island.team104;
-import org.apache.xpath.operations.Or;
-
 import java.util.ArrayList;
 
-import org.apache.xpath.operations.Or;
-
-public class Position {
-
-    private final Logger logger = LogManager.getLogger();
+public class CurrentPosition {
 
     ArrayList<Integer> coordinates = new ArrayList<Integer>();
 
     private Integer X = 0; 
     private Integer Y = 0;
 
+   
+    private Orientation current_orient = Orientation.N;
 
-    ArrayList<Integer> getPosition() {
-        return this.coordinates;
+    public CurrentPosition(){
+
+        coordinates.add(X);
+        coordinates.add(Y);
     }
-
-    // Keeping track of orientation 
-    Orientation current_orient = Orientation.N;
-
-
-
-    public Position(){
-        coordinates.add(0, X);
-        coordinates.add(1, Y);        
-    }
-    public void setOrientation(String orient) {
-        current_orient = current_orient.giveOrientation(orient);
-
-
-    }
-
+    
     public void updateForward(){
 
         if (this.current_orient == Orientation.N){
-            Y = Y + 1;
-            coordinates.set(1, Y);
+            Y++;
         }
         else if (this.current_orient == Orientation.E){
-            X = X + 1;
-            coordinates.set(0, X);
+            X++;
         }
         else if (this.current_orient == Orientation.S){
-            Y = Y - 1;
-            coordinates.set(1, Y);        }
+            Y--; 
+        }
         else if (this.current_orient == Orientation.W){
-            X = X - 1;
-            coordinates.set(0, X);        }
-
+            X--;
+        }
+        else {
+            System.out.println("Drone is Lost"); 
+        }
     }
 
     public void updateRight(){
 
         if (this.current_orient == Orientation.N){
-            X = X + 1;
-
-            coordinates.set(0, X);            
-
+            X++;
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.E){
-            Y = Y - 1;
-            coordinates.set(1, Y);
+            Y--;
             current_orient = Orientation.S;
         }
         else if (this.current_orient == Orientation.S){
-            X = X - 1;
-            coordinates.set(0, X);
+            X--; 
             current_orient = Orientation.W;
         }
         else if (this.current_orient == Orientation.W){
-            X = X + 1;
-            coordinates.set(0, X);
+            X++;
             current_orient = Orientation.N;
         }
         // Implementing error handling
         else {
-            logger.error("Drone is Lost"); 
+            System.out.println("Drone is Lost"); 
         }
     }
 
     public void updateLeft(){
 
         if (this.current_orient == Orientation.N){
-            X = X - 1;
-            coordinates.set(0, X);
+            X--;
             current_orient = Orientation.W;
         }
         else if (this.current_orient == Orientation.E){
-            Y = Y + 1;
-            coordinates.set(1, Y);
+            Y++;
             current_orient = Orientation.N;
         }
         else if (this.current_orient == Orientation.S){
-            X = X + 1;
-            coordinates.set(0, X);
+            X++; 
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.W){
-            X = X - 1;
-            coordinates.set(0, X);
+            X--;
             current_orient = Orientation.S;
         }
         else {
-            logger.error("Drone is lost"); 
+            System.out.println("Drone is lost"); 
         }
 
     }

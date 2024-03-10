@@ -4,8 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 public class DecisionMaker {
     private final Logger logger = LogManager.getLogger();
 
@@ -19,6 +17,7 @@ public class DecisionMaker {
     //now make it so that when you see ground you get the current action of find_island and turn in that direction
     JSONObject nextAction() {
         Controller controller = new Controller(stats);
+
 
         //the 1000 is a placeholder
         if (stats.getBudget() > 1000) {
@@ -34,10 +33,12 @@ public class DecisionMaker {
                 Orientation current_head = stats.getHeading();
                 String current_head_str = current_head.giveStringOrientation(current_head);
                 map.setInitHeading(current_head); //set init heading
+
+              
                 JSONObject ret_action = parser.mergeJSONObjects(actions, parameters, "parameters", "direction", current_head_str);
                 logger.info(ret_action);
 
-                //update
+                //update state
                 State current_state = stats.getState();
                 stats.setState(current_state.incrementState(current_state));
 
@@ -46,10 +47,12 @@ public class DecisionMaker {
 
             }
             if (stats.getState() == State.FIND_ISLAND || stats.getState() == State.GO_TO_ISLAND) {
+
                 Actions current_act = find_island.getNextMove();
                 map.updatePosition(current_act);
                 logger.info("*new coordinates: " + map.position.coordinates);
                 return controller.convertActionToJSON(current_act);
+
             }
             else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN) {
                 Actions current_act = scan_island.getNextMove();
