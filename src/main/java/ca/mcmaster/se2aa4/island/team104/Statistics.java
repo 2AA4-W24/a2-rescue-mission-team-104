@@ -134,23 +134,29 @@ public class Statistics {
                 //create JSONArray to loop through
                 JSONArray biomes_json = new JSONArray();
                 biomes_json = extraInfo.getJSONArray("biomes");
-                
-                determineWater(biomes_json);
+                ArrayList<String> biomes = new ArrayList<String>();
+
+                for (int i = 0; i < biomes_json.length(); i++) {
+                    biomes.add(String.valueOf(biomes_json.get(i)));
+                }
+                determineWater(biomes);
             }
         }       
     }
-    private void determineWater(JSONArray biome) {
+    private void determineWater(ArrayList<String> biomes) {
         //if (biome.equals("OCEAN") || biome.equals("LAKE")) {
         //    //logger.info("***WATER TILE FOUND: " + biome);
         //    water = true;
         //}
-        logger.info("SCAN: " + biome.get(0));
-        if (biome.get(0).equals("OCEAN") || biome.get(0).equals("LAKE")) {
-            logger.info("WATER TILE FOUND");
+        ArrayList<String> waterBiome = new ArrayList<String>();
+        waterBiome.add("OCEAN");
+        if (waterBiome.equals(biomes)) {
+            logger.info("WATER TILE");
             this.water = true;
-        }else{
+        } else {
             this.water = false;
         }
+
     }
 
     //takes in !!response!! JSONObject to parse and adds creek id to creek list

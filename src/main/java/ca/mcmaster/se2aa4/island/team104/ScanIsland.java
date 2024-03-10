@@ -91,10 +91,9 @@ public class ScanIsland {
     Actions getNextMove() {
 
         logger.info("LAST ACTION: " + curr_action);
-        logger.info("LAST SCAN: " + stats.isWater());
 
-        if (counting > 150) {
-            logger.info("100 actions?");
+        if (counting > 200) {
+            logger.info("200 actions?");
             return Actions.STOP;
         }
         counting++;
