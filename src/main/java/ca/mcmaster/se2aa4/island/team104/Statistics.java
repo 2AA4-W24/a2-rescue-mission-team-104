@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONPointerException;
+
+import java.util.ArrayList;
+
 import org.apache.commons.io.IOUtils;
 
 public class Statistics {
@@ -117,6 +120,9 @@ public class Statistics {
 
         updateCreeks(info);
         updateSites(info);
+        if (creek_found) {
+            logger.info("CREEK FOUND: " + creek);
+        }
     }
 
     void updateScan(JSONObject info) {
@@ -128,18 +134,22 @@ public class Statistics {
                 //create JSONArray to loop through
                 JSONArray biomes_json = new JSONArray();
                 biomes_json = extraInfo.getJSONArray("biomes");
-
-                for (int i = 0; i < biomes_json.length(); i++) {
-                    findWater(biomes_json.get(i).toString());
-                }
                 
+                determineWater(biomes_json);
             }
-        }
+        }       
     }
-    void findWater(String biome) {
-        if (biome.equals("OCEAN") || biome.equals("LAKE")) {
-            logger.info("***WATER TILE FOUND: " + biome);
-            water = true;
+    private void determineWater(JSONArray biome) {
+        //if (biome.equals("OCEAN") || biome.equals("LAKE")) {
+        //    //logger.info("***WATER TILE FOUND: " + biome);
+        //    water = true;
+        //}
+        logger.info("SCAN: " + biome.get(0));
+        if (biome.get(0).equals("OCEAN") || biome.get(0).equals("LAKE")) {
+            logger.info("WATER TILE FOUND");
+            this.water = true;
+        }else{
+            this.water = false;
         }
     }
 
@@ -211,6 +221,9 @@ public class Statistics {
     Integer getRange() {
         return range;
     }
+    void resetRange() {
+        this.range = 0;
+    }
 
     String getFound() {
         return found;
@@ -218,6 +231,9 @@ public class Statistics {
 
     Boolean isWater() {
         return water;
+    }
+    void resetWater() {
+        this.water = false;
     }
 
     Boolean getCreekBool() { return creek_found; }

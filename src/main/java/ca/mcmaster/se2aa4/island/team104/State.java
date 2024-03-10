@@ -7,6 +7,7 @@ public enum State {
     GO_TO_ISLAND,
     INIT_SCAN,
     SCAN_ISLAND,
+    UTURN,
     STOP;
 
     private State ret_state;

@@ -14,15 +14,17 @@ public class ScanIsland {
 
     Statistics stats;
     Orientation init_heading;
-    Actions curr_action;
+    Actions curr_action = Actions.FLY;
     Actions last_turn;
 
     Tiles water;
 
+    Boolean secondPass = false;
+
 
     //LinkedList<Task> tasks = new LinkedList<Task>();
-    Actions[] U_right = {Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD};
-    Actions[] U_left = {Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.ECHO_FORWARD};
+    Actions[] U_right = {Actions.HEADING_RIGHT, Actions.HEADING_RIGHT};
+    Actions[] U_left = {Actions.HEADING_LEFT, Actions.HEADING_LEFT};
     
     Actions[] CWCircle = {Actions.HEADING_LEFT, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT};
     Actions[] CCWCircle = {Actions.HEADING_RIGHT, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT};
@@ -51,14 +53,25 @@ public class ScanIsland {
     //Boolean correctStats() {
     //     if (stats.found == water)
     //}
-    
-    void UTurn() {
-        if (last_turn == Actions.HEADING_LEFT) {
-            curr_action = U_right[count];
-        } else {
-            curr_action = U_left[count];
+
+    int count = 0;
+    private Actions UTurn() {
+        if (count <= 1) {
+            logger.info("help " + last_turn);
+            if (last_turn == Actions.HEADING_LEFT) {
+                logger.info("TURNING RIGHT");
+                curr_action = U_right[count];
+                return U_right[count++];
+            } else {
+                logger.info("TURNING LEFT");
+                curr_action = U_left[count];
+                return U_left[count++];
+            }
         }
-        count++;
+        count = 0;
+        last_turn = curr_action;
+        curr_action = Actions.ECHO_FORWARD;
+        return curr_action;
     }
 
     void CWCircleBack() {
@@ -70,25 +83,67 @@ public class ScanIsland {
         curr_action = CCWCircle[count];
         count++;
     }
-    int count = 0;
+
+
+    int counter = 0;
+    int counting = 0;
 
     Actions getNextMove() {
+
+        logger.info("LAST ACTION: " + curr_action);
+        logger.info("LAST SCAN: " + stats.isWater());
+
+        if (counting > 150) {
+            logger.info("100 actions?");
+            return Actions.STOP;
+        }
+        counting++;
+
         State state = stats.getState();
         if (state == State.INIT_SCAN) {
             initializeScanning();
             stats.setState(State.SCAN_ISLAND);
+            stats.resetRange();
             return curr_action;
         }
 
         if (state == State.SCAN_ISLAND) {
-            logger.info(stats.isWater());
+            
+            if (counter <= stats.getRange()){
+                stats.resetWater();
+                logger.info("FLYING BACK TO ISLAND RANGE:" + stats.getRange());
+                counter++;
+                curr_action = Actions.FLY;
+                return curr_action;
+            }
             if (!stats.isWater()){
                 scanning();
                 return curr_action;
             }
-            return Actions.STOP;
+            stats.setState(State.UTURN);
+            counter = 0;
+            curr_action = Actions.SCAN;
+            return curr_action;
         }
 
-        return null;
+        else if (state == State.UTURN) {
+            if (curr_action == Actions.ECHO_FORWARD) {
+                if (stats.getFound().equalsIgnoreCase("GROUND")){
+                    stats.setState(State.SCAN_ISLAND);
+                    curr_action = Actions.SCAN;
+                    return curr_action;
+                }
+                else {
+                    logger.info("FORWARD NO GROUND :(");
+                    return Actions.STOP;
+                }
+            }
+            UTurn();
+            logger.info("!!uturning");
+            return curr_action;
+        }
+        
+        return Actions.STOP;
+
     }
 }
