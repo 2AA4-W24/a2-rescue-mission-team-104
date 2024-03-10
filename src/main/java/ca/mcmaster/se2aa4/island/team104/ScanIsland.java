@@ -81,7 +81,6 @@ public class ScanIsland {
         count++;
     }
 
-
     int counter = 0;
     int counting = 0;
 
