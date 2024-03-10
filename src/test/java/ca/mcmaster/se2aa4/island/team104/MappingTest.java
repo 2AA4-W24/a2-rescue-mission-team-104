@@ -3,6 +3,7 @@ package ca.mcmaster.se2aa4.island.team104;
 import eu.ace_design.island.game.Tile;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,5 +35,16 @@ public class MappingTest {
 //        Map<Tiles, Position> testMap = new HashMap<>();
 ////        testMap.put(Tiles.GROUND)
 //    }
+
+    @Test
+    public void updatePositionTest() {
+        Mapping m1 = new Mapping();
+        m1.setInitHeading(Orientation.E);
+        m1.updatePosition(Actions.FLY);
+        ArrayList<Integer> pos = new ArrayList<>();
+        pos.add(0, 1);
+        pos.add(1, 0);
+        assertEquals(pos, m1.position.coordinates);
+    }
 
 }

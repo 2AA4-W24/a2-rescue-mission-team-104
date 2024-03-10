@@ -39,23 +39,24 @@ public enum State {
     public State decrementState(State state) {
 
         switch (state) {
-            case GO_TO_ISLAND -> state = FIND_ISLAND;
-            case COAST_THE_COAST -> state = GO_TO_ISLAND;
-            case FIND_SITE -> state = COAST_THE_COAST;
-            case STOP -> state = FIND_SITE;
+            case GO_TO_ISLAND -> this.ret_state = FIND_ISLAND;
+            case COAST_THE_COAST -> this.ret_state = GO_TO_ISLAND;
+            case FIND_SITE -> this.ret_state = COAST_THE_COAST;
+            case STOP -> this.ret_state = FIND_SITE;
         }
 
-        return state;
+        return ret_state;
     }
 
 
-    public State stopExploration(State state) {
-        return state = STOP;
+
+    public State stopExploration() {
+        return this.ret_state = STOP;
 
     }
 
-    public State startExploration(State state) {
-        return state = INIT;
+    public State startExploration() {
+        return this.ret_state = INIT;
     }
 
 
