@@ -35,14 +35,15 @@ public class ScanIsland {
     }
 
 // turn left on to the island to begin first zig
-    void initializeScanning() {
+    private void initializeScanning() {
         init_heading = stats.getHeading();
-        curr_action = Actions.HEADING_LEFT;
-        last_turn = Actions.HEADING_LEFT;
+        //curr_action = Actions.HEADING_LEFT;
+        last_turn = Actions.HEADING_RIGHT;
+        curr_action = Actions.SCAN;
     }
 
 //alternate between flying and scanning each tile
-    void scanning() {
+    private void scanning() {
         if (curr_action == Actions.SCAN) {
             curr_action = Actions.FLY;
         } else {
@@ -50,14 +51,10 @@ public class ScanIsland {
         }
     }
 
-    //Boolean correctStats() {
-    //     if (stats.found == water)
-    //}
-
     int count = 0;
     private Actions UTurn() {
         if (count <= 1) {
-            logger.info("help " + last_turn);
+            logger.info("LAST TURN " + last_turn);
             if (last_turn == Actions.HEADING_LEFT) {
                 logger.info("TURNING RIGHT");
                 curr_action = U_right[count];
@@ -91,8 +88,8 @@ public class ScanIsland {
     Actions getNextMove() {
 
         logger.info("LAST ACTION: " + curr_action);
-
-        if (counting > 200) {
+        logger.info("ACTION COUNT" + counting);
+        if (counting > 600) {
             logger.info("200 actions?");
             return Actions.STOP;
         }
