@@ -7,8 +7,15 @@ import java.util.Objects;
 public class Mapping {
 
     Map<Position, Tiles> pois = new HashMap<>();
+
     Position position = new Position();
     Orientation heading = Orientation.N;
+
+    //test getter
+    String getPos() {
+        return String.valueOf(position.getPosition());
+    }
+
 
 
     void setInitHeading(Orientation orient) {
@@ -43,6 +50,21 @@ public class Mapping {
         }
         //put the poi in the map
         pois.put(position, tile_type);
+    }
+
+    void updatePosition(Actions action) {
+
+        if (action == Actions.FLY) {
+            position.updateForward();
+        }
+        else if (action == Actions.HEADING_LEFT) {
+            position.updateForward();
+            position.updateLeft();
+        }
+        else if (action == Actions.HEADING_RIGHT) {
+            position.updateForward();
+            position.updateRight();
+        }
 
     }
 

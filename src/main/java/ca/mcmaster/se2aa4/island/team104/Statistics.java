@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONPointerException;
+
+import java.util.ArrayList;
+
 import org.apache.commons.io.IOUtils;
 
 public class Statistics {
@@ -23,10 +26,11 @@ public class Statistics {
     State state = State.INIT;
 
     //results of echo
+    String found;
     Integer range;
 
-    //results of echo/scan
-    String found;
+    //results
+    Boolean water = false;
 
     Boolean creek_found = false;
 
@@ -93,6 +97,7 @@ public class Statistics {
         }
     }
 
+
     //initialize stats with explorer start
     public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
@@ -110,12 +115,49 @@ public class Statistics {
         updateBudget(info);
         updateHeading(info);
         updateFound(info);
+        updateScan(info);
         updateRange(info);
 
         updateCreeks(info);
         updateSites(info);
+        if (creek_found) {
+            logger.info("CREEK FOUND: " + creek);
+        }
     }
 
+    void updateScan(JSONObject info) {
+        
+        if (info.has("extras")) {
+            JSONObject extraInfo = info.getJSONObject("extras");
+
+            if (extraInfo.has("biomes")) {
+                //create JSONArray to loop through
+                JSONArray biomes_json = new JSONArray();
+                biomes_json = extraInfo.getJSONArray("biomes");
+                ArrayList<String> biomes = new ArrayList<String>();
+
+                for (int i = 0; i < biomes_json.length(); i++) {
+                    biomes.add(String.valueOf(biomes_json.get(i)));
+                }
+                determineWater(biomes);
+            }
+        }       
+    }
+    private void determineWater(ArrayList<String> biomes) {
+        //if (biome.equals("OCEAN") || biome.equals("LAKE")) {
+        //    //logger.info("***WATER TILE FOUND: " + biome);
+        //    water = true;
+        //}
+        ArrayList<String> waterBiome = new ArrayList<String>();
+        waterBiome.add("OCEAN");
+        if (waterBiome.equals(biomes)) {
+            logger.info("WATER TILE");
+            this.water = true;
+        } else {
+            this.water = false;
+        }
+
+    }
 
     //takes in !!response!! JSONObject to parse and adds creek id to creek list
     void updateCreeks(JSONObject info) {
@@ -185,9 +227,19 @@ public class Statistics {
     Integer getRange() {
         return range;
     }
+    void resetRange() {
+        this.range = 0;
+    }
 
     String getFound() {
         return found;
+    }
+
+    Boolean isWater() {
+        return water;
+    }
+    void resetWater() {
+        this.water = false;
     }
 
     Boolean getCreekBool() { return creek_found; }

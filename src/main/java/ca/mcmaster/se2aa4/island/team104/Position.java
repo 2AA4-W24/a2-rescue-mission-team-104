@@ -3,10 +3,7 @@ import org.apache.xpath.operations.Or;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
-import scala.collection.parallel.ParIterableLike;
+import org.apache.xpath.operations.Or;
 
 public class Position {
 
@@ -17,22 +14,26 @@ public class Position {
     private Integer X = 0; 
     private Integer Y = 0;
 
-   
-    private Orientation current_orient = Orientation.N;
+
+    ArrayList<Integer> getPosition() {
+        return this.coordinates;
+    }
+
+    // Keeping track of orientation 
+    Orientation current_orient = Orientation.N;
+
 
 
     public Position(){
-//        X = 0;
-//        Y = 0;
         coordinates.add(0, X);
-        coordinates.add(1, Y);
-//        current_orient = current_orient.giveOrientation(heading);
+        coordinates.add(1, Y);        
     }
-
     public void setOrientation(String orient) {
         current_orient = current_orient.giveOrientation(orient);
+
+
     }
-    
+
     public void updateForward(){
 
         if (this.current_orient == Orientation.N){
@@ -45,22 +46,20 @@ public class Position {
         }
         else if (this.current_orient == Orientation.S){
             Y = Y - 1;
-            coordinates.set(1, Y);
-        }
+            coordinates.set(1, Y);        }
         else if (this.current_orient == Orientation.W){
             X = X - 1;
-            coordinates.set(0, X);
-        }
-        else {
-            logger.error("Drone is Lost"); 
-        }
+            coordinates.set(0, X);        }
+
     }
 
     public void updateRight(){
 
         if (this.current_orient == Orientation.N){
             X = X + 1;
-            coordinates.set(0, X);
+
+            coordinates.set(0, X);            
+
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.E){

@@ -55,40 +55,6 @@ enum Orientation {
 
         }
     }
-
-    Orientation turnRight(Orientation current_orient) {
-
-        switch (current_orient) {
-            case N -> current_orient = E;
-            case E -> current_orient = S;
-            case S -> current_orient = W;
-            case W -> current_orient = N;
-        }
-        return current_orient;
-    }
-
-    Orientation turnRight2() {
-
-        switch (this) {
-            case N -> this.heading = E;
-            case E -> this.heading = S;
-            case S -> this.heading = W;
-            case W -> this.heading = N;
-        }
-        return this.heading;
-    }
-
-    Orientation turnLeft2() {
-
-        switch (this) {
-            case N -> this.heading = W;
-            case E -> this.heading = N;
-            case S -> this.heading = E;
-            case W -> this.heading = S;
-        }
-        return this.heading;
-    }
-
     String giveStringOrientation2() {
 
         switch (this) {
@@ -111,6 +77,29 @@ enum Orientation {
         }
     }
 
+
+    Orientation turnRight(Orientation current_orient) {
+
+        switch (current_orient) {
+            case N -> current_orient = E;
+            case E -> current_orient = S;
+            case S -> current_orient = W;
+            case W -> current_orient = N;
+        }
+        return current_orient;
+    }
+
+    Orientation turnRight2() {
+
+        switch (this) {
+            case N -> this.heading = E;
+            case E -> this.heading = S;
+            case S -> this.heading = W;
+            case W -> this.heading = N;
+        }
+        return this.heading;
+    }
+    
     Orientation turnLeft(Orientation current_orient) {
 
         switch (current_orient) {
@@ -121,4 +110,16 @@ enum Orientation {
         }
         return current_orient;
     }
+
+    Orientation turnLeft2() {
+
+        switch (this) {
+            case N -> this.heading = W;
+            case E -> this.heading = N;
+            case S -> this.heading = E;
+            case W -> this.heading = S;
+        }
+        return this.heading;
+    }
+
 }

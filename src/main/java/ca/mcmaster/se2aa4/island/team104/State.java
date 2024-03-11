@@ -5,8 +5,9 @@ public enum State {
     INIT,
     FIND_ISLAND,
     GO_TO_ISLAND,
-    COAST_THE_COAST,
-    FIND_SITE,
+    INIT_SCAN,
+    SCAN_ISLAND,
+    UTURN,
     STOP;
 
     private State ret_state;
@@ -16,9 +17,9 @@ public enum State {
         switch (state) {
             case INIT -> state = FIND_ISLAND;
             case FIND_ISLAND -> state = GO_TO_ISLAND;
-            case GO_TO_ISLAND -> state = COAST_THE_COAST;
-            case COAST_THE_COAST -> state = FIND_SITE;
-            case FIND_SITE -> state = STOP;
+            case GO_TO_ISLAND -> state = INIT_SCAN;
+            case INIT_SCAN -> state = SCAN_ISLAND;
+            case SCAN_ISLAND -> state = STOP;
         }
         return state;
     }
@@ -28,9 +29,8 @@ public enum State {
         switch (this) {
             case INIT -> this.ret_state = FIND_ISLAND;
             case FIND_ISLAND -> this.ret_state = GO_TO_ISLAND;
-            case GO_TO_ISLAND -> this.ret_state = COAST_THE_COAST;
-            case COAST_THE_COAST -> this.ret_state = FIND_SITE;
-            case FIND_SITE -> this.ret_state = STOP;
+            case GO_TO_ISLAND -> this.ret_state = SCAN_ISLAND;
+            case SCAN_ISLAND -> this.ret_state = STOP;
         }
         return ret_state;
 
@@ -40,9 +40,8 @@ public enum State {
 
         switch (state) {
             case GO_TO_ISLAND -> this.ret_state = FIND_ISLAND;
-            case COAST_THE_COAST -> this.ret_state = GO_TO_ISLAND;
-            case FIND_SITE -> this.ret_state = COAST_THE_COAST;
-            case STOP -> this.ret_state = FIND_SITE;
+            case SCAN_ISLAND -> this.ret_state = GO_TO_ISLAND;
+            case STOP -> this.ret_state = SCAN_ISLAND;
         }
 
         return ret_state;
