@@ -51,7 +51,7 @@ public class DecisionMaker {
                 logger.info("*new coordinates: " + map.position.coordinates);
                 return controller.convertActionToJSON(current_act);
             }
-            else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN) {
+            else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN || stats.getState() == State.CIRCLE_BACK) {
                 Actions current_act = scan_island.getNextMove();
                 map.updatePosition(current_act);
                 logger.info("*new coordinates: " + map.position.coordinates);

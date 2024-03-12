@@ -14,7 +14,7 @@ public class ScanIsland {
 
     Statistics stats;
     Orientation init_heading;
-    Actions curr_action = Actions.FLY;
+    Actions curr_action = Actions.SCAN;
     Actions last_turn;
 
     Tiles water;
@@ -71,38 +71,51 @@ public class ScanIsland {
         return curr_action;
     }
 
-    void CWCircleBack() {
-        curr_action = CWCircle[count];
-        count++;
+    boolean CWCircleBack() {
+        logger.info("************cw count: " + count);
+        if (count < CWCircle.length) {
+            curr_action = CWCircle[count];
+            count++;
+            return true;
+        }
+        count = 0;
+        
+        return false;
     }
 
-    void CCWCircle() {
-        curr_action = CCWCircle[count];
-        count++;
+    boolean CCWCircle() {
+        logger.info("************ccw count: " + count);
+        if (count < CCWCircle.length) {
+            curr_action = CCWCircle[count];
+            count++;
+            return true;
+        }
+        count = 0;
+        return false;
     }
 
     int counter = 0;
     int counting = 0;
 
     Actions getNextMove() {
-
+        
         logger.info("LAST ACTION: " + curr_action);
-        logger.info("ACTION COUNT" + counting);
-        if (counting > 600) {
+        //logger.info("ACTION COUNT" + counting);
+        /*if (counting > 600) {
             logger.info("200 actions?");
             return Actions.STOP;
         }
-        counting++;
+        counting++;*/
 
-        State state = stats.getState();
-        if (state == State.INIT_SCAN) {
+        
+        if (stats.getState() == State.INIT_SCAN) {
             initializeScanning();
             stats.setState(State.SCAN_ISLAND);
             stats.resetRange();
             return curr_action;
         }
 
-        if (state == State.SCAN_ISLAND) {
+        if (stats.getState() == State.SCAN_ISLAND) {
             
             if (counter <= stats.getRange()){
                 stats.resetWater();
@@ -116,28 +129,63 @@ public class ScanIsland {
                 return curr_action;
             }
             stats.setState(State.UTURN);
+            logger.info("STATE SWITCHED: U-TURNING");
             counter = 0;
-            curr_action = Actions.SCAN;
-            return curr_action;
         }
 
-        else if (state == State.UTURN) {
+        if (stats.getState() == State.UTURN) {
             if (curr_action == Actions.ECHO_FORWARD) {
                 if (stats.getFound().equalsIgnoreCase("GROUND")){
                     stats.setState(State.SCAN_ISLAND);
                     curr_action = Actions.SCAN;
-                    return curr_action;
+                    return curr_action; //fix after making into indiv functions
                 }
                 else {
                     logger.info("FORWARD NO GROUND :(");
-                    return Actions.STOP;
+                    if (secondPass == false) {
+                        this.secondPass = true;
+                        stats.setState(State.CIRCLE_BACK);
+                        logger.info("STATE SWITCHED: CIRCLING BACK");
+                        return Actions.SCAN;
+                    }
+                    else {
+                        return Actions.STOP;
+                    }
                 }
             }
             UTurn();
             logger.info("!!uturning");
             return curr_action;
         }
-        
+        if (stats.getState() == State.CIRCLE_BACK) {
+            if (last_turn == Actions.HEADING_LEFT) {
+                if (CCWCircle()) {
+                    logger.info("turning ccw");
+
+                    return curr_action;
+                }
+                else {
+                    stats.setState(State.SCAN_ISLAND);
+                    logger.info("STATE SWITCHED: SCANNING");
+                    return Actions.SCAN;
+                }
+            }
+            else {
+                if (CCWCircle()) {
+                    logger.info("turning cw");
+
+                    return curr_action;
+                }
+                else {
+                    stats.setState(State.SCAN_ISLAND);
+                    logger.info("STATE SWITCHED: SCANNING");
+                    return Actions.SCAN;
+                }
+            }
+        }
+
+
+        logger.info("something happened :()");
         return Actions.STOP;
 
     }

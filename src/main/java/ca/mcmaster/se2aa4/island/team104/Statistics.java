@@ -123,6 +123,9 @@ public class Statistics {
         if (creek_found) {
             logger.info("CREEK FOUND: " + creek);
         }
+        if (site_found) {
+            logger.info("SITE FOUND: " + site);
+        }
     }
 
     void updateScan(JSONObject info) {

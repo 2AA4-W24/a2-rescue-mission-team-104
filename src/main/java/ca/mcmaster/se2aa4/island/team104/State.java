@@ -8,6 +8,7 @@ public enum State {
     INIT_SCAN,
     SCAN_ISLAND,
     UTURN,
+    CIRCLE_BACK,
     STOP;
 
     private State ret_state;
