@@ -9,6 +9,7 @@ public class Mapping {
 
     Map<Position, Tiles> pois = new HashMap<>();
 
+
     Position position = new Position();
     Orientation heading = Orientation.N;
 
@@ -18,6 +19,7 @@ public class Mapping {
     }
 
 
+
     void setInitHeading(Orientation orient) {
         heading = orient;
         position.setOrientation(heading.giveStringOrientation2());
@@ -25,7 +27,7 @@ public class Mapping {
 
     void updateTile(Statistics stats) {
 
-        Tiles tile_type;
+        Tiles tile_type = null;
 
         //for creek
         if (stats.getCreekBool()) {

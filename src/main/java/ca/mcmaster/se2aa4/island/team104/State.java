@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104;
 
-public enum State {
+public enum State { //adding a comment
 
     INIT,
     FIND_ISLAND,
