@@ -1,4 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xpath.operations.Or;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class Position {
 
     ArrayList<Integer> coordinates = new ArrayList<Integer>();
 
-    private Integer X = 0; 
+    private Integer X = 0;
     private Integer Y = 0;
 
 
@@ -19,14 +21,14 @@ public class Position {
         return this.coordinates;
     }
 
-    // Keeping track of orientation 
+    // Keeping track of orientation
     Orientation current_orient = Orientation.N;
 
 
 
     public Position(){
         coordinates.add(0, X);
-        coordinates.add(1, Y);        
+        coordinates.add(1, Y);
     }
     public void setOrientation(String orient) {
         current_orient = current_orient.giveOrientation(orient);
@@ -58,7 +60,7 @@ public class Position {
         if (this.current_orient == Orientation.N){
             X = X + 1;
 
-            coordinates.set(0, X);            
+            coordinates.set(0, X);
 
             current_orient = Orientation.E;
         }
@@ -79,7 +81,7 @@ public class Position {
         }
         // Implementing error handling
         else {
-            logger.error("Drone is Lost"); 
+            logger.error("Drone is Lost");
         }
     }
 
@@ -106,9 +108,9 @@ public class Position {
             current_orient = Orientation.S;
         }
         else {
-            logger.error("Drone is lost"); 
+            logger.error("Drone is lost");
         }
 
     }
- 
+
 }

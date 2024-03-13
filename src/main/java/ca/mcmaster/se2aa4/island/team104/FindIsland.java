@@ -98,7 +98,7 @@ public class FindIsland {
                 logger.info("new distance to island: " + temp_range);
                 current_action = Actions.FLY;
 
-                return current_action;            
+                return current_action;
 
             }
 

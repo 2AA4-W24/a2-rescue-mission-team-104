@@ -34,7 +34,7 @@ public class DecisionMaker {
                 String current_head_str = current_head.giveStringOrientation(current_head);
                 map.setInitHeading(current_head); //set init heading
 
-              
+
                 JSONObject ret_action = parser.mergeJSONObjects(actions, parameters, "parameters", "direction", current_head_str);
                 logger.info(ret_action);
 
