@@ -1,21 +1,26 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.exploration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
+import ca.mcmaster.se2aa4.island.team104.JSONParser;
+import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.map.Mapping;
+import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+
 public class DecisionMaker {
     private final Logger logger = LogManager.getLogger();
 
-    Statistics stats = new Statistics();
-    Mapping map = new Mapping();
-    FindIsland find_island = new FindIsland(stats);
-    ScanIsland scan_island = new ScanIsland(stats);
+    public Statistics stats = new Statistics();
+    public Mapping map = new Mapping();
+    public FindIsland find_island = new FindIsland(stats);
+    public ScanIsland scan_island = new ScanIsland(stats);
 
     JSONParser parser = new JSONParser();
 
     //now make it so that when you see ground you get the current action of find_island and turn in that direction
-    JSONObject nextAction() {
+    public JSONObject nextAction() {
         Controller controller = new Controller(stats);
 
 
@@ -31,7 +36,7 @@ public class DecisionMaker {
                 JSONObject actions = parser.createAndPut("action", "echo");
 
                 Orientation current_head = stats.getHeading();
-                String current_head_str = current_head.giveStringOrientation(current_head);
+                String current_head_str = current_head.giveStringOrientation2();
                 map.setInitHeading(current_head); //set init heading
 
 

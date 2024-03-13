@@ -8,6 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONPointerException;
 
+import ca.mcmaster.se2aa4.island.team104.exploration.State;
+import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+
 import java.util.ArrayList;
 
 import org.apache.commons.io.IOUtils;
@@ -17,40 +20,40 @@ public class Statistics {
     private final Logger logger = LogManager.getLogger();
 
     //energy of drone
-    Integer budget = 0;
+    public Integer budget = 0;
 
     //current heading of drone
-    Orientation heading = Orientation.N; //setting as default
+    public Orientation heading = Orientation.N; //setting as default
 
     //current state - turn into enum?
-    State state = State.INIT;
+    public State state = State.INIT;
 
     //results of echo
-    String found;
-    Integer range;
+    public String found;
+    public Integer range;
 
     //results
-    Boolean water = false;
+    public Boolean water = false;
 
-    Boolean creek_found = false;
+    public Boolean creek_found = false;
 
-    Boolean site_found = false;
+    public Boolean site_found = false;
 
-    String creek = "";
+    public String creek = "";
 
-    String site = "";
+    public String site = "";
 
-    JSONParser parser = new JSONParser();
+    public JSONParser parser = new JSONParser();
 
     //takes in initial JSONObject to parse and get initial budget
-    private void setBudget(JSONObject initInfo) {
+    public void setBudget(JSONObject initInfo) {
 
         budget = parser.getIntValue(initInfo, "budget");
         logger.info("This is budget: " + budget);
     }
 
     //takes in cost to deduct from budget
-    private void updateBudget(JSONObject info) {
+    public void updateBudget(JSONObject info) {
         Integer cost = parser.getIntValue(info, "cost");
         //don't have enough money
         if (budget < cost) {
@@ -62,7 +65,7 @@ public class Statistics {
         }
     }
 
-    private void updateHeading(JSONObject info) {
+    public void updateHeading(JSONObject info) {
 
         if (info.has("heading")) {
 
@@ -75,7 +78,7 @@ public class Statistics {
     }
 
     //takes in !!response!! JSONObject to get range parameter
-    void updateRange(JSONObject info) {
+    public void updateRange(JSONObject info) {
 
         if (info.has("extras")) {
             JSONObject extras = info.getJSONObject("extras");
@@ -87,7 +90,7 @@ public class Statistics {
     }
 
     //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
-    void updateFound(JSONObject info) {
+    public void updateFound(JSONObject info) {
 
         if (info.has("extras")) {
             JSONObject extras = info.getJSONObject("extras");
@@ -128,7 +131,7 @@ public class Statistics {
         }
     }
 
-    void updateScan(JSONObject info) {
+    public void updateScan(JSONObject info) {
         
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
@@ -146,7 +149,7 @@ public class Statistics {
             }
         }       
     }
-    private void determineWater(ArrayList<String> biomes) {
+    public void determineWater(ArrayList<String> biomes) {
         //if (biome.equals("OCEAN") || biome.equals("LAKE")) {
         //    //logger.info("***WATER TILE FOUND: " + biome);
         //    water = true;
@@ -163,7 +166,7 @@ public class Statistics {
     }
 
     //takes in !!response!! JSONObject to parse and adds creek id to creek list
-    void updateCreeks(JSONObject info) {
+    public void updateCreeks(JSONObject info) {
 
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
@@ -189,7 +192,7 @@ public class Statistics {
         }
     }
 
-    void updateSites(JSONObject info) {
+    public void updateSites(JSONObject info) {
 
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
@@ -215,45 +218,46 @@ public class Statistics {
         }
     }
 
-    Integer getBudget() {
+    public Integer getBudget() {
         return budget;
     }
 
-    Orientation getHeading() {
+    public Orientation getHeading() {
         return heading;
     }
 
-    State getState() {
+    public State getState() {
         return state;
     }
 
-    Integer getRange() {
+    public Integer getRange() {
         return range;
     }
-    void resetRange() {
+
+    public void resetRange() {
         this.range = 0;
     }
 
-    String getFound() {
+    public String getFound() {
         return found;
     }
 
-    Boolean isWater() {
+    public Boolean isWater() {
         return water;
     }
-    void resetWater() {
+    public void resetWater() {
         this.water = false;
     }
 
-    Boolean getCreekBool() { return creek_found; }
+    public Boolean getCreekBool() { return creek_found; }
 
-    Boolean getSiteBool() { return site_found; }
+    public Boolean getSiteBool() { return site_found; }
 
-    void setState(State new_state) {
+    public void setState(State new_state) {
         state = new_state;
     }
 
-    void setHeading(Orientation new_orient) {
+    public void setHeading(Orientation new_orient) {
         heading = new_orient;
     }
 

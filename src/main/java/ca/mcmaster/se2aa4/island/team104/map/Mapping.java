@@ -1,5 +1,9 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.map;
 import org.json.JSONObject;
+
+import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.exploration.Actions;
+import ca.mcmaster.se2aa4.island.team104.exploration.State;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,22 +14,22 @@ public class Mapping {
     Map<Position, Tiles> pois = new HashMap<>();
 
 
-    Position position = new Position();
-    Orientation heading = Orientation.N;
+    public Position position = new Position();
+    public Orientation heading = Orientation.N;
 
     //test getter
-    String getPos() {
+    public String getPos() {
         return String.valueOf(position.getPosition());
     }
 
 
 
-    void setInitHeading(Orientation orient) {
+    public void setInitHeading(Orientation orient) {
         heading = orient;
         position.setOrientation(heading.giveStringOrientation2());
     }
 
-    void updateTile(Statistics stats) {
+    public void updateTile(Statistics stats) {
 
         Tiles tile_type = null;
 
@@ -59,7 +63,7 @@ public class Mapping {
         pois.put(position, tile_type);
     }
 
-    void updatePosition(Actions action) {
+    public void updatePosition(Actions action) {
 
         if (action == Actions.FLY) {
             position.updateForward();

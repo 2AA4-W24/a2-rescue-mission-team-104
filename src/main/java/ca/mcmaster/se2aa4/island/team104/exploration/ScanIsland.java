@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.exploration;
 
 import java.util.LinkedList;
 
@@ -7,6 +7,10 @@ import javax.swing.Action;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+
+import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+import ca.mcmaster.se2aa4.island.team104.map.Tiles;
 
 // zig zag to find creeks and site :)
 public class ScanIsland {

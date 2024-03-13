@@ -1,6 +1,10 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.exploration;
 
 import org.json.JSONObject;
+
+import ca.mcmaster.se2aa4.island.team104.JSONParser;
+import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.map.Orientation;
 
 public class Controller {
 

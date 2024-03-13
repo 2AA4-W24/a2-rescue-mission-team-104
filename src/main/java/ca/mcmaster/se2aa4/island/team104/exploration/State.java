@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.exploration;
 
 public enum State { //adding a comment
 
@@ -13,7 +13,7 @@ public enum State { //adding a comment
 
     private State ret_state;
 
-    State incrementState(State state) {
+    public State incrementState(State state) {
 
         switch (state) {
             case INIT -> state = FIND_ISLAND;
@@ -25,7 +25,7 @@ public enum State { //adding a comment
         return state;
     }
 
-    State incrementState2() {
+    public State incrementState2() {
 
         switch (this) {
             case INIT -> this.ret_state = FIND_ISLAND;

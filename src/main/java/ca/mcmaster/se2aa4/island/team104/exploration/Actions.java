@@ -1,6 +1,6 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.exploration;
 
-enum Actions {
+public enum Actions {
 
     STANDBY,
     FLY, //Fly forward

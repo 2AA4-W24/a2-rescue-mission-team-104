@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,14 +6,14 @@ import org.apache.xpath.operations.Or;
 
 import java.util.Objects;
 
-enum Orientation {
+public enum Orientation {
 
     N, E, S, W;
     private Orientation heading;
 
     private final Logger logger = LogManager.getLogger();
 
-    Orientation giveOrientation(String orient) {
+    public Orientation giveOrientation(String orient) {
 
 //        switch (orient) {
 //            case "E" -> {
@@ -52,7 +52,7 @@ enum Orientation {
 
     }
 
-    String giveStringOrientation(Orientation orient) {
+   public  String giveStringOrientation(Orientation orient) {
 
         switch (orient) {
             case N -> {
@@ -73,7 +73,7 @@ enum Orientation {
 
         }
     }
-    String giveStringOrientation2() {
+    public String giveStringOrientation2() {
 
         switch (this) {
             case N -> {
@@ -107,7 +107,7 @@ enum Orientation {
         return current_orient;
     }
 
-    Orientation turnRight2() {
+    public Orientation turnRight2() {
 
         switch (this) {
             case N -> this.heading = E;
@@ -129,7 +129,7 @@ enum Orientation {
         return current_orient;
     }
 
-    Orientation turnLeft2() {
+    public Orientation turnLeft2() {
 
         switch (this) {
             case N -> this.heading = W;

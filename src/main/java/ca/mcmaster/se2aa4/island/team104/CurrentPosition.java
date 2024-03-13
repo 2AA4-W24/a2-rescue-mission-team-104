@@ -1,6 +1,8 @@
 package ca.mcmaster.se2aa4.island.team104;
 import java.util.ArrayList;
 
+import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+
 public class CurrentPosition {
 
     ArrayList<Integer> coordinates = new ArrayList<Integer>();
