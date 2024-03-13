@@ -6,6 +6,8 @@ import org.apache.xpath.operations.Or;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StatisticsTest {

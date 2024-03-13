@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.json.JSONTokener;
 
-
+import ca.mcmaster.se2aa4.island.team104.exploration.DecisionMaker;
 
 import java.util.Objects;
 
@@ -35,7 +35,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("setting budget and heading");
         dm.stats.initializeStats(s); //set budget, heading, and state
         dm.map.updateTile(dm.stats); //set home base
-        dm.stats.state.incrementState(dm.stats.state); //increment initial state to find island
+       // dm.stats.state.incrementState(dm.stats.state); //increment initial state to find island
     }
 
     @Override

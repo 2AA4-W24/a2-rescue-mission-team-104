@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team104;
+package ca.mcmaster.se2aa4.island.team104.map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.xpath.operations.Or;
@@ -11,7 +11,7 @@ public class Position {
 
     private final Logger logger = LogManager.getLogger();
 
-    ArrayList<Integer> coordinates = new ArrayList<Integer>();
+    public ArrayList<Integer> coordinates = new ArrayList<Integer>();
 
     private Integer X = 0;
     private Integer Y = 0;
