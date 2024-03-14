@@ -8,7 +8,7 @@ public enum State { //adding a comment
     INIT_SCAN,
     SCAN_ISLAND,
     UTURN,
-    CIRCLE_BACK,
+    EVAL_ECHO,
     STOP;
 
     private State ret_state;

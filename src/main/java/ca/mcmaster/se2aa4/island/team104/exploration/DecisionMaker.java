@@ -25,9 +25,9 @@ public class DecisionMaker {
 
 
         //the 1000 is a placeholder
-        if (stats.getBudget() > 1000) {
+        if (stats.getBudget() > 100) {
             logger.info("this is the state: " + stats.state);
-            logger.info("*current coordinates: " + map.getPos());
+            logger.info("BUDGET LEFT: " + stats.getBudget());
 
             if (stats.getState() == State.INIT) {
                 logger.info("This is action after init: "+ find_island.current_action);
@@ -59,10 +59,10 @@ public class DecisionMaker {
                 return controller.convertActionToJSON(current_act);
 
             }
-            else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN || stats.getState() == State.CIRCLE_BACK) {
+            else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN || stats.getState() == State.EVAL_ECHO) {
                 Actions current_act = scan_island.getNextMove();
                 map.updatePosition(current_act);
-                logger.info("*new coordinates: " + map.position.coordinates);
+                //logger.info("*new coordinates: " + map.position.coordinates);
                 return controller.convertActionToJSON(current_act);
 
             }
@@ -71,8 +71,8 @@ public class DecisionMaker {
             }
         }
 
-
-        return null;
+        logger.info("BUDGET BELOW 100");
+        return controller.convertActionToJSON(Actions.STOP);
     }
 
 

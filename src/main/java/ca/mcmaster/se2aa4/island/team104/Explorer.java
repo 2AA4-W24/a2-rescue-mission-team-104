@@ -40,7 +40,7 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
-        logger.info("*****Budget: " + dm.stats.getBudget());
+        //logger.info("*****Budget: " + dm.stats.getBudget());
 
         JSONObject decision = new JSONObject();
 
@@ -55,11 +55,11 @@ public class Explorer implements IExplorerRaid {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
         logger.info("** Response received:\n"+response.toString(2));
         Integer cost = response.getInt("cost");
-        logger.info("The cost of the action was {}", cost);
+        //logger.info("The cost of the action was {}", cost);
         String status = response.getString("status");
         logger.info("The status of the drone is {}", status);
         JSONObject extraInfo = response.getJSONObject("extras");
-        logger.info("Additional information received: {}", extraInfo);
+        //logger.info("Additional information received: {}", extraInfo);
 
         ////
         dm.stats.updateStats(s); //update stats
