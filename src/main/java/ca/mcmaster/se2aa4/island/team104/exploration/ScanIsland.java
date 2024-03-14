@@ -26,8 +26,10 @@ public class ScanIsland {
     private Boolean last_turn_Left = false;
 
     // Actions sequence for performing u-turns
-    private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
-    private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
+    //private Actions[] U_right = {Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
+
+    private Actions[] U_right = {Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
+    private Actions[] U_left = {Actions.FLY, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
     
 
     ScanIsland(Statistics statistics) {
