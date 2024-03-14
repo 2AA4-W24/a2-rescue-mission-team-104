@@ -25,7 +25,7 @@ public class DecisionMaker {
 
 
         //the 1000 is a placeholder
-        if (stats.getBudget() > 1000) {
+        if (stats.getBudget() > 100) {
             logger.info("this is the state: " + stats.state);
             logger.info("BUDGET LEFT: " + stats.getBudget());
 
@@ -71,8 +71,8 @@ public class DecisionMaker {
             }
         }
 
-
-        return null;
+        logger.info("BUDGET BELOW 100");
+        return controller.convertActionToJSON(Actions.STOP);
     }
 
 
