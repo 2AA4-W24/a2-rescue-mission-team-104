@@ -106,7 +106,7 @@ public class FindIsland {
 
 //next state!!
             else {
-
+                logger.info("______________________ISLAND REACHED");
                 stats.setState(State.INIT_SCAN);
                 return current_action;            }
 

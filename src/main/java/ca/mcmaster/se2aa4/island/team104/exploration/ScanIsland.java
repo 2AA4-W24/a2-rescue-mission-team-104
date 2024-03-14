@@ -16,23 +16,19 @@ import ca.mcmaster.se2aa4.island.team104.map.Tiles;
 public class ScanIsland {
     private final Logger logger = LogManager.getLogger();
 
-    Statistics stats;
-    Orientation init_heading;
-    Actions curr_action = Actions.SCAN;
-    Actions last_turn;
+    private Statistics stats;
+    private Orientation init_heading;
+    private Actions curr_action = Actions.FLY;
+    private Actions last_turn;
 
-    Tiles water;
+    private Boolean fly_to_ground = false;
+    private Boolean U_turned = false;
+    private Boolean last_turn_Left = false;
 
-    Boolean secondPass = false;
-
-
-    //LinkedList<Task> tasks = new LinkedList<Task>();
-    Actions[] U_right = {Actions.HEADING_RIGHT, Actions.HEADING_RIGHT};
-    Actions[] U_left = {Actions.HEADING_LEFT, Actions.HEADING_LEFT};
+    // Actions sequence for performing u-turns (length = 6)
+    private Actions[] U_right = {Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
+    private Actions[] U_left = {Actions.FLY, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
     
-    Actions[] CWCircle = {Actions.HEADING_LEFT, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT};
-    Actions[] CCWCircle = {Actions.HEADING_RIGHT, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT};
-
 
     ScanIsland(Statistics statistics) {
         this.stats = statistics;
@@ -40,157 +36,141 @@ public class ScanIsland {
 
 // turn left on to the island to begin first zig
     private void initializeScanning() {
-        init_heading = stats.getHeading();
-        //curr_action = Actions.HEADING_LEFT;
-        last_turn = Actions.HEADING_RIGHT;
+        this.init_heading = stats.getHeading();
+        last_turn_Left = false;
         curr_action = Actions.SCAN;
     }
 
-//alternate between flying and scanning each tile
-    private void scanning() {
+
+//alternate between flying and scanning each tile until a water tile is scanned
+    private Actions scanning() {
         if (curr_action == Actions.SCAN) {
             curr_action = Actions.FLY;
+            // change action to echo forward if drone is on water tile
+            if (stats.isWater()) { 
+                curr_action = Actions.ECHO_FORWARD;
+                stats.setState(State.EVAL_ECHO);
+                logger.info("Switching states: "+stats.getState());
+            }
+            return curr_action;
         } else {
             curr_action = Actions.SCAN;
+            return curr_action;
         }
     }
 
-    int count = 0;
+    private int fly_counter = 0;
+    private Actions flyToGround() {
+        if (fly_counter <= stats.getRange()) {
+            curr_action = Actions.FLY;
+            fly_counter++;
+        } else {
+            fly_to_ground = false;
+            fly_counter = 0;
+            curr_action = Actions.SCAN;
+            stats.setState(State.SCAN_ISLAND);
+            logger.info("Switching states: "+stats.getState());
+        }
+        return curr_action;
+    }
+    private Actions evaluateEcho() {
+        String forward = stats.getFound();
+        
+        // more ground ahead, fly to located ground
+        if (forward.equals("GROUND")){
+            stats.setState(State.SCAN_ISLAND);
+            logger.info("Switching states: "+stats.getState());
+            fly_to_ground = true;
+            U_turned = false;
+            return Actions.FLY;
+        }
+        else {
+            logger.info("!!!!!ECHO FOUND NO GROUND AHEAD");
+            if (U_turned) {
+                logger.info("Drone has Uturned into an empty line, stopping drone...");
+                return Actions.STOP;
+            }
+            U_turned = true;
+            stats.setState(State.UTURN);
+            logger.info("Switching states: "+stats.getState());
+            return Actions.FLY;
+        }
+    }
+
+    private int U_counter = 0;
     private Actions UTurn() {
-        if (count <= 1) {
-            logger.info("LAST TURN " + last_turn);
-            if (last_turn == Actions.HEADING_LEFT) {
+        if (U_counter <= 5) {
+            // alternate left and right turn sequence each U-TURN
+            if (last_turn_Left) {
                 logger.info("TURNING RIGHT");
-                curr_action = U_right[count];
-                return U_right[count++];
+                curr_action = U_right[U_counter];
+                U_counter++;
+                last_turn = Actions.HEADING_RIGHT;
+                return curr_action;
             } else {
                 logger.info("TURNING LEFT");
-                curr_action = U_left[count];
-                return U_left[count++];
+                curr_action = U_left[U_counter];
+                U_counter++;
+                last_turn = Actions.HEADING_LEFT;
+                return curr_action;
             }
         }
-        count = 0;
-        last_turn = curr_action;
+
+        saveLastTurn(last_turn);
+        U_counter = 0;
+
         curr_action = Actions.ECHO_FORWARD;
+        stats.setState(State.EVAL_ECHO);
+        logger.info("Switching states: "+stats.getState());
+
         return curr_action;
     }
 
-    boolean CWCircleBack() {
-        logger.info("************cw count: " + count);
-        if (count < CWCircle.length) {
-            curr_action = CWCircle[count];
-            count++;
-            return true;
+    private void saveLastTurn(Actions last_turn) {
+        if (last_turn == Actions.HEADING_LEFT) {
+            last_turn_Left = true;
+        } else {
+            last_turn_Left = false;
         }
-        count = 0;
-        
-        return false;
     }
 
-    boolean CCWCircle() {
-        logger.info("************ccw count: " + count);
-        if (count < CCWCircle.length) {
-            curr_action = CCWCircle[count];
-            count++;
-            return true;
-        }
-        count = 0;
-        return false;
-    }
+    private int counting = 0;
 
-    int counter = 0;
-    int counting = 0;
-
-    Actions getNextMove() {
+    // determine next action for scanning island
+    public Actions getNextMove() {
         
-        logger.info("LAST ACTION: " + curr_action);
-        //logger.info("ACTION COUNT" + counting);
-        /*if (counting > 600) {
-            logger.info("200 actions?");
+        logger.info("____________________LAST ACTION: " + curr_action);
+        /* 
+        if (counting > 100) {
+            logger.info("!!!!!!!!!!!!!!!!100 actions done");
             return Actions.STOP;
         }
-        counting++;*/
+        counting++;
+        */
 
-        
         if (stats.getState() == State.INIT_SCAN) {
             initializeScanning();
             stats.setState(State.SCAN_ISLAND);
             stats.resetRange();
             return curr_action;
         }
+        if (stats.getState() == State.EVAL_ECHO) {
+            evaluateEcho();
+        }
 
         if (stats.getState() == State.SCAN_ISLAND) {
-            
-            if (counter <= stats.getRange()){
-                stats.resetWater();
-                logger.info("FLYING BACK TO ISLAND RANGE:" + stats.getRange());
-                counter++;
-                curr_action = Actions.FLY;
-                return curr_action;
+            if (fly_to_ground) {
+                logger.info("flying to ground!");
+                return flyToGround();
             }
-            if (!stats.isWater()){
-                scanning();
-                return curr_action;
-            }
-            stats.setState(State.UTURN);
-            logger.info("STATE SWITCHED: U-TURNING");
-            counter = 0;
+            return scanning();
         }
 
         if (stats.getState() == State.UTURN) {
-            if (curr_action == Actions.ECHO_FORWARD) {
-                if (stats.getFound().equalsIgnoreCase("GROUND")){
-                    stats.setState(State.SCAN_ISLAND);
-                    curr_action = Actions.SCAN;
-                    return curr_action; //fix after making into indiv functions
-                }
-                else {
-                    logger.info("FORWARD NO GROUND :(");
-                    if (secondPass == false) {
-                        this.secondPass = true;
-                        stats.setState(State.CIRCLE_BACK);
-                        logger.info("STATE SWITCHED: CIRCLING BACK");
-                        return Actions.SCAN;
-                    }
-                    else {
-                        return Actions.STOP;
-                    }
-                }
-            }
-            UTurn();
-            logger.info("!!uturning");
-            return curr_action;
+            return UTurn();
         }
-        if (stats.getState() == State.CIRCLE_BACK) {
-            if (last_turn == Actions.HEADING_LEFT) {
-                if (CCWCircle()) {
-                    logger.info("turning ccw");
-
-                    return curr_action;
-                }
-                else {
-                    stats.setState(State.SCAN_ISLAND);
-                    logger.info("STATE SWITCHED: SCANNING");
-                    return Actions.SCAN;
-                }
-            }
-            else {
-                if (CCWCircle()) {
-                    logger.info("turning cw");
-
-                    return curr_action;
-                }
-                else {
-                    stats.setState(State.SCAN_ISLAND);
-                    logger.info("STATE SWITCHED: SCANNING");
-                    return Actions.SCAN;
-                }
-            }
-        }
-
 
         logger.info("something happened :()");
         return Actions.STOP;
-
     }
 }
