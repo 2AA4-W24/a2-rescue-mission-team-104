@@ -34,8 +34,6 @@ public class Explorer implements IExplorerRaid {
         ///////////////////////////////////////////// 2-25
         logger.info("setting budget and heading");
         dm.stats.initializeStats(s); //set budget, heading, and state
-        dm.map.updateTile(dm.stats); //set home base
-       // dm.stats.state.incrementState(dm.stats.state); //increment initial state to find island
     }
 
     @Override
@@ -63,12 +61,18 @@ public class Explorer implements IExplorerRaid {
 
         ////
         dm.stats.updateStats(s); //update stats
-        dm.map.updateTile(dm.stats); // then update map
     }
 
     @Override
     public String deliverFinalReport() {
-        return "no creek found";
+        String result = dm.map.retCreek();
+        logger.info("This is the creek/inlet to be returned: " + result);
+
+        if (Objects.equals(result, "NA")) {
+            return "no creek found";
+        }
+
+        return result;
     }
 
 }
