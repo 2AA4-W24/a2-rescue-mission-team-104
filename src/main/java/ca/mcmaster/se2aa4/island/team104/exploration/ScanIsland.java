@@ -26,8 +26,8 @@ public class ScanIsland {
     private Boolean last_turn_Left = false;
 
     // Actions sequence for performing u-turns
-    private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
-    private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
+    private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
+    private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
     
 
     ScanIsland(Statistics statistics) {
@@ -106,6 +106,13 @@ public class ScanIsland {
 
     private int uturn_idx = 0;
     private Actions UTurn() {
+        // stop drone if it will go out of range mid turn
+        if (uturn_idx == 5 && !stats.getFound().equals("GROUND")) {
+            if (stats.getRange() < 2){
+                logger.info("Drone is unable to U-turn");
+                return Actions.STOP;
+            }
+        }
 
         if (uturn_idx < U_left.length) {
             // alternate left and right U-turn sequence 
