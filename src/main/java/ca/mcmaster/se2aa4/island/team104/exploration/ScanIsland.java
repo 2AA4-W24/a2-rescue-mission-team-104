@@ -26,10 +26,8 @@ public class ScanIsland {
     private Boolean last_turn_Left = false;
 
     // Actions sequence for performing u-turns
-    //private Actions[] U_right = {Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
-
-    private Actions[] U_right = {Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
-    private Actions[] U_left = {Actions.FLY, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
+    private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
+    private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
     
 
     ScanIsland(Statistics statistics) {
@@ -89,30 +87,41 @@ public class ScanIsland {
             return curr_action;
         }
         else {
-            logger.info("!!!!!ECHO FOUND NO GROUND AHEAD");
+            int range = stats.getRange();
             if (U_turned) {
                 logger.info("Drone has Uturned into an empty line, stopping drone...");
                 return Actions.STOP;
+            } else if (range == 0) {
+                logger.info("Drone is unable to U-turn");
+                return Actions.STOP;
+            } else if (range == 1) {
+                logger.info("SMALL UTURN");
+                U_counter = 3;
+            } else if (range == 2) {
+                logger.info("MEDIUM-SMALL UTURN");
+                U_counter = 2;
+            } else if (range == 3) {
+                logger.info("MEDIUM UTURN");
+                U_counter = 1;
             }
             stats.setState(State.UTURN);
             logger.info("Switching states: "+stats.getState());
-            return Actions.FLY;
+            return UTurn();
         }
     }
 
     private int U_counter = 0;
     private Actions UTurn() {
+
         if (U_counter < U_left.length) {
-            // alternate left and right turn sequence each U-TURN
+            // alternate left and right U-turn sequence 
             if (last_turn_Left) {
-                logger.info("TURNING RIGHT");
                 curr_action = U_right[U_counter];
                 U_counter++;
                 last_turn = Actions.HEADING_RIGHT;
                 return curr_action;
             } 
             else {
-                logger.info("TURNING LEFT");
                 curr_action = U_left[U_counter];
                 U_counter++;
                 last_turn = Actions.HEADING_LEFT;

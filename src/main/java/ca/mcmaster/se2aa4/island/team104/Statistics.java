@@ -150,10 +150,6 @@ public class Statistics {
         }       
     }
     public void determineWater(ArrayList<String> biomes) {
-        //if (biome.equals("OCEAN") || biome.equals("LAKE")) {
-        //    //logger.info("***WATER TILE FOUND: " + biome);
-        //    water = true;
-        //}
         ArrayList<String> waterBiome = new ArrayList<String>();
         waterBiome.add("OCEAN");
         if (waterBiome.equals(biomes)) {
