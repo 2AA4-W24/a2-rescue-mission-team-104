@@ -1,11 +1,8 @@
 package ca.mcmaster.se2aa4.island.team104.map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xpath.operations.Or;
-
 import java.util.ArrayList;
 
-import org.apache.xpath.operations.Or;
 
 public class Position {
 
@@ -16,6 +13,12 @@ public class Position {
     private Integer X = 0;
     private Integer Y = 0;
 
+
+    //create new constructor that takes in x and y
+    public Position(Integer x, Integer y) {
+        X = x;
+        Y = y;
+    }
 
     ArrayList<Integer> getPosition() {
         return this.coordinates;
@@ -32,9 +35,9 @@ public class Position {
     }
     public void setOrientation(String orient) {
         current_orient = current_orient.giveOrientation(orient);
-
-
     }
+
+
 
     public void updateForward(){
 
@@ -112,5 +115,25 @@ public class Position {
         }
 
     }
+
+    public Double diffBtwnPoints(Integer x1, Integer x2, Integer y1, Integer y2) {
+        Double term1 = Math.pow((x2-x1), 2);
+        Double term2 = Math.pow((y2-y1), 2);
+        return Math.sqrt(term1+term2);
+    }
+
+    public Integer[] coordsToArr(Position position1) {
+        Integer[] coordinates_arr = new Integer[2];
+        coordinates_arr[0] = position1.getX();
+        coordinates_arr[1] = position1.getY();
+        return coordinates_arr;
+
+    }
+
+    public Integer getX() {return this.X;}
+    public Integer getY() {return this.Y;}
+
+
+
 
 }

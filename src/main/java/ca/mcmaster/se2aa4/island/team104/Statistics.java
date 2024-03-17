@@ -2,18 +2,12 @@ package ca.mcmaster.se2aa4.island.team104;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xpath.operations.Or;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONPointerException;
-
 import ca.mcmaster.se2aa4.island.team104.exploration.State;
 import ca.mcmaster.se2aa4.island.team104.map.Orientation;
-
 import java.util.ArrayList;
 
-import org.apache.commons.io.IOUtils;
 
 public class Statistics {
 

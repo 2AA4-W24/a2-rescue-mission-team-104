@@ -60,9 +60,15 @@ public class DecisionMaker {
 
             }
             else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN || stats.getState() == State.EVAL_ECHO) {
+
+                if (stats.creek_found || stats.site_found) {
+                    map.updateTile(stats);
+                }
                 Actions current_act = scan_island.getNextMove();
                 map.updatePosition(current_act);
                 //logger.info("*new coordinates: " + map.position.coordinates);
+
+                map.printPois();
                 return controller.convertActionToJSON(current_act);
 
             }
