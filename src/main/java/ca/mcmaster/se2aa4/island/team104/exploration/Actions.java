@@ -12,7 +12,7 @@ public enum Actions {
     HEADING_LEFT,
     STOP;
 
-    
+     
 
     public String getAction() {
         switch (this) {
