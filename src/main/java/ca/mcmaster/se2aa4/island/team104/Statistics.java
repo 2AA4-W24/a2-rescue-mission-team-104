@@ -37,6 +37,8 @@ public class Statistics {
 
     public String site = "";
 
+    public boolean facing_island;
+
     public JSONParser parser = new JSONParser();
 
     //takes in initial JSONObject to parse and get initial budget

@@ -1,16 +1,11 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
-import java.util.LinkedList;
-
-import javax.swing.Action;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.team104.Statistics;
 import ca.mcmaster.se2aa4.island.team104.map.Orientation;
-import ca.mcmaster.se2aa4.island.team104.map.Tiles;
 
 // zig zag to find creeks and site :)
 public class ScanIsland {
@@ -36,9 +31,16 @@ public class ScanIsland {
 
 // turn left on to the island to begin first zig
     private void initializeScanning() {
+        // if drone spawns facing island, it will turn into the first line
+        if (stats.facing_island == true) {
+            curr_action = Actions.HEADING_RIGHT;
+        } else {
+            curr_action = Actions.SCAN;
+        }
+        stats.setState(State.SCAN_ISLAND);
+        stats.resetRange();
         this.init_heading = stats.getHeading();
         last_turn_Left = false;
-        curr_action = Actions.SCAN;
     }
 
 
@@ -156,8 +158,6 @@ public class ScanIsland {
 
         if (stats.getState() == State.INIT_SCAN) {
             initializeScanning();
-            stats.setState(State.SCAN_ISLAND);
-            stats.resetRange();
             return curr_action;
         }
         if (stats.getState() == State.EVAL_ECHO) {
