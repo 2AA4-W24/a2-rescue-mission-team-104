@@ -10,21 +10,17 @@ import java.util.Objects;
 public class FindIsland {
 
     private final Logger logger = LogManager.getLogger();
-
     Actions current_action = Actions.ECHO_FORWARD;
-
+    private int init_facing = 0;
     private Integer forward_range;
-
     private Integer left_range;
-
     private Integer right_range;
-
     Statistics stats;
 
-    Boolean turned = false;
-    Boolean transition_state = false;
-
-    Integer temp_range = 0;
+    public Boolean turned = false;
+    public Boolean transition_state = false;
+    public Integer temp_range = 0;
+    public Boolean facing_island = false;
 
 
     FindIsland(Statistics statistics) {
@@ -80,12 +76,14 @@ public class FindIsland {
 
     Actions getNextMove() {
 
-
-        //        logger.info("this is current action: " + current_action);
-        //        logger.info("this is what was found: "+ stats.getFound());
         if (!transition_state) {
             //initialization
             if (Objects.equals(stats.getFound(), "GROUND")) {
+                //if the drone is initialized to face the island
+                if (init_facing == 1) {
+                    facing_island = true;
+                    init_facing++;
+                }
                 transition_state = true;
                 stats.setState(State.GO_TO_ISLAND);
                 current_action = finalMove();
@@ -114,7 +112,7 @@ public class FindIsland {
         else if (stats.getState() == State.FIND_ISLAND) {
             if (current_action == Actions.STANDBY) {
                 current_action = Actions.ECHO_FORWARD;
-
+                init_facing++;
                 return current_action;            }
 
 
