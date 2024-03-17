@@ -60,7 +60,7 @@ public class DecisionMaker {
 
             }
             else if (stats.getState() == State.INIT_SCAN || stats.getState() == State.SCAN_ISLAND || stats.getState() == State.UTURN || stats.getState() == State.EVAL_ECHO) {
-
+                stats.facing_island = find_island.facing_island;
                 if (stats.creek_found || stats.site_found) {
                     map.updateTile(stats);
                 }
