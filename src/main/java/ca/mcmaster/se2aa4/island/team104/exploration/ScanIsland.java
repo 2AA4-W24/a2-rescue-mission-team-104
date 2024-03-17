@@ -94,15 +94,9 @@ public class ScanIsland {
             } else if (range == 0) {
                 logger.info("Drone is unable to U-turn");
                 return Actions.STOP;
-            } else if (range == 1) {
+            } else if (range <= 3) {
                 logger.info("SMALL UTURN");
-                U_counter = 3;
-            } else if (range == 2) {
-                logger.info("MEDIUM-SMALL UTURN");
-                U_counter = 2;
-            } else if (range == 3) {
-                logger.info("MEDIUM UTURN");
-                U_counter = 1;
+                uturn_idx = 4 - range; //4 tiles forward in base UTURN
             }
             stats.setState(State.UTURN);
             logger.info("Switching states: "+stats.getState());
@@ -110,20 +104,20 @@ public class ScanIsland {
         }
     }
 
-    private int U_counter = 0;
+    private int uturn_idx = 0;
     private Actions UTurn() {
 
-        if (U_counter < U_left.length) {
+        if (uturn_idx < U_left.length) {
             // alternate left and right U-turn sequence 
             if (last_turn_Left) {
-                curr_action = U_right[U_counter];
-                U_counter++;
+                curr_action = U_right[uturn_idx];
+                uturn_idx++;
                 last_turn = Actions.HEADING_RIGHT;
                 return curr_action;
             } 
             else {
-                curr_action = U_left[U_counter];
-                U_counter++;
+                curr_action = U_left[uturn_idx];
+                uturn_idx++;
                 last_turn = Actions.HEADING_LEFT;
                 return curr_action;
             }
@@ -131,7 +125,7 @@ public class ScanIsland {
 
         saveLastTurn(last_turn);
         U_turned = true;
-        U_counter = 0;
+        uturn_idx = 0;
 
         curr_action = Actions.ECHO_FORWARD;
         stats.setState(State.EVAL_ECHO);
