@@ -2,19 +2,17 @@ package ca.mcmaster.se2aa4.island.team104;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xpath.operations.Or;
-import org.json.JSONObject;
 import org.junit.Test;
 
 import ca.mcmaster.se2aa4.island.team104.map.Orientation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StatisticsTest {
+public class DroneTest {
 
     JSONParser parser = new JSONParser();
     private final Logger logger = LogManager.getLogger();
-    Statistics stats = new Statistics();
+    Drone stats = new Drone();
 
     @Test
     public void initStats() {

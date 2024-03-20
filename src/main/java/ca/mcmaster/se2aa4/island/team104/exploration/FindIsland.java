@@ -1,9 +1,10 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
+import ca.mcmaster.se2aa4.island.team104.map.Mapping;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.Drone;
 
 import java.util.Objects;
 
@@ -15,16 +16,21 @@ public class FindIsland {
     private Integer forward_range;
     private Integer left_range;
     private Integer right_range;
-    Statistics stats;
+    private Drone drone = new Drone();
+    private Mapping map = new Mapping();
 
-    public Boolean turned = false;
-    public Boolean transition_state = false;
-    public Integer temp_range = 0;
+
+    private Boolean turned = false;
+    private Boolean transition_state = false;
+    private Integer temp_range = 0;
     public Boolean facing_island = false;
 
 
-    FindIsland(Statistics statistics) {
-        stats = statistics;
+
+
+    FindIsland(Drone in_drone, Mapping in_map) {
+        this.drone = in_drone;
+        this.map = in_map;
     }
 
 
@@ -78,21 +84,21 @@ public class FindIsland {
 
         if (!transition_state) {
             //initialization
-            if (Objects.equals(stats.getFound(), "GROUND")) {
+            if (Objects.equals(drone.getFound(), "GROUND")) {
                 //if the drone is initialized to face the island
                 if (init_facing == 1) {
                     facing_island = true;
                     init_facing++;
                 }
                 transition_state = true;
-                stats.setState(State.GO_TO_ISLAND);
+                map.setState(State.GO_TO_ISLAND);
                 current_action = finalMove();
-                temp_range = stats.getRange();
+                temp_range = drone.getRange();
                 return current_action;
 
             }
         }
-        if (stats.getState() == State.GO_TO_ISLAND) {
+        if (map.getState() == State.GO_TO_ISLAND) {
             if (temp_range > 0) {
                 temp_range -= 1;
                 logger.info("new distance to island: " + temp_range);
@@ -105,11 +111,11 @@ public class FindIsland {
 //next state!!
             else {
                 logger.info("______________________ISLAND REACHED");
-                stats.setState(State.INIT_SCAN);
+                map.setState(State.INIT_SCAN);
                 return current_action;            }
 
         }
-        else if (stats.getState() == State.FIND_ISLAND) {
+        else if (map.getState() == State.FIND_ISLAND) {
             if (current_action == Actions.STANDBY) {
                 current_action = Actions.ECHO_FORWARD;
                 init_facing++;
@@ -118,20 +124,20 @@ public class FindIsland {
 
             //first echo forward then left
             else if (current_action == Actions.ECHO_FORWARD) {
-                forward_range = stats.range;
+                forward_range = drone.range;
                 current_action = Actions.ECHO_LEFT;
                 return current_action;            }
 
 
             //echo left then echo right
             else if (current_action == Actions.ECHO_LEFT) {
-                left_range = stats.range;
+                left_range = drone.range;
                 current_action = Actions.ECHO_RIGHT;
                 return current_action;            }
 
             //echo right then determine which is the best way to go
             else if (current_action == Actions.ECHO_RIGHT) {
-                right_range = stats.range;
+                right_range = drone.range;
                 if (turned) {
                     current_action = intersection();
                 } else {

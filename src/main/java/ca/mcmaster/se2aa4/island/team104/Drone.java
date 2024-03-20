@@ -9,7 +9,7 @@ import ca.mcmaster.se2aa4.island.team104.map.Orientation;
 import java.util.ArrayList;
 
 
-public class Statistics {
+public class Drone {
 
     private final Logger logger = LogManager.getLogger();
 
@@ -20,7 +20,7 @@ public class Statistics {
     public Orientation heading = Orientation.N; //setting as default
 
     //current state - turn into enum?
-    public State state = State.INIT;
+//    public State state = State.INIT;
 
     //results of echo
     public String found;
@@ -103,7 +103,7 @@ public class Statistics {
 
         setBudget(initial);
         updateHeading(initial);
-        logger.info("initialization complete. budget: " + budget + " heading: " + heading + " state: " + state);
+//        logger.info("initialization complete. budget: " + budget + " heading: " + heading + " state: " + state);
 
     }
 
@@ -218,9 +218,9 @@ public class Statistics {
         return heading;
     }
 
-    public State getState() {
-        return state;
-    }
+//    public State getState() {
+//        return state;
+//    }
 
     public Integer getRange() {
         return range;
@@ -245,9 +245,9 @@ public class Statistics {
 
     public Boolean getSiteBool() { return site_found; }
 
-    public void setState(State new_state) {
-        state = new_state;
-    }
+//    public void setState(State new_state) {
+//        state = new_state;
+//    }
 
     public void setHeading(Orientation new_orient) {
         heading = new_orient;

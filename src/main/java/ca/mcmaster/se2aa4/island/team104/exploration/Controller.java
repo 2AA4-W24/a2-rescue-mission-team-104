@@ -3,17 +3,17 @@ package ca.mcmaster.se2aa4.island.team104.exploration;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.team104.JSONParser;
-import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.Drone;
 import ca.mcmaster.se2aa4.island.team104.map.Orientation;
 
 public class Controller {
 
-    private Statistics stats;
+    private Drone stats;
 
     JSONParser parser = new JSONParser();
 
-    Controller(Statistics statistics) {
-        stats = statistics;
+    Controller(Drone drone) {
+        stats = drone;
     }
 
     JSONObject convertActionToJSON(Actions action) {
