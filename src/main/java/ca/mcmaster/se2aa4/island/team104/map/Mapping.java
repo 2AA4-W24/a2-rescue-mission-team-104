@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104.map;
 
-import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.Drone;
 import ca.mcmaster.se2aa4.island.team104.exploration.Actions;
 import ca.mcmaster.se2aa4.island.team104.exploration.State;
 import org.apache.logging.log4j.LogManager;
@@ -9,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.lang.Math;
 
 public class Mapping {
 
@@ -23,19 +21,27 @@ public class Mapping {
     public Position position = new Position();
     public Orientation heading = Orientation.N;
 
+    public State state = State.INIT;
+
     //test getter
     public String getPos() {
         return String.valueOf(position.getPosition());
     }
 
+    public State getState() {
+        return state;
+    }
 
+        public void setState(State new_state) {
+        state = new_state;
+    }
 
     public void setInitHeading(Orientation orient) {
         heading = orient;
         position.setOrientation(heading.giveStringOrientation2());
     }
 
-    public void updateTile(Statistics stats) {
+    public void updateTile(Drone stats) {
 
         Tiles tile_type = null;
         Integer[] coord2 = new Integer[2];

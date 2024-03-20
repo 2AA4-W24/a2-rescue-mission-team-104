@@ -1,17 +1,17 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
+import ca.mcmaster.se2aa4.island.team104.map.Mapping;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 
-import ca.mcmaster.se2aa4.island.team104.Statistics;
+import ca.mcmaster.se2aa4.island.team104.Drone;
 import ca.mcmaster.se2aa4.island.team104.map.Orientation;
 
 // zig zag to find creeks and site :)
 public class ScanIsland {
     private final Logger logger = LogManager.getLogger();
 
-    private Statistics stats;
+    private Drone drone;
     private Orientation init_heading;
     private Actions curr_action = Actions.FLY;
     private Actions last_turn;
@@ -23,23 +23,25 @@ public class ScanIsland {
     // Actions sequence for performing u-turns
     private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
     private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
-    
 
-    ScanIsland(Statistics statistics) {
-        this.stats = statistics;
+    private Mapping map = new Mapping();
+
+    ScanIsland(Drone in_drone, Mapping mapping) {
+        this.drone = in_drone;
+        this.map = mapping;
     }
 
 // turn left on to the island to begin first zig
     private void initializeScanning() {
         // if drone spawns facing island, it will turn into the first line
-        if (stats.facing_island == true) {
+        if (drone.facing_island) {
             curr_action = Actions.HEADING_RIGHT;
         } else {
             curr_action = Actions.SCAN;
         }
-        stats.setState(State.SCAN_ISLAND);
-        stats.resetRange();
-        this.init_heading = stats.getHeading();
+        map.setState(State.SCAN_ISLAND);
+        drone.resetRange();
+        this.init_heading = drone.getHeading();
         last_turn_Left = false;
     }
 
@@ -49,10 +51,10 @@ public class ScanIsland {
         if (curr_action == Actions.SCAN) {
             curr_action = Actions.FLY;
             // change action to echo forward if drone is on water tile
-            if (stats.isWater()) { 
+            if (drone.isWater()) {
                 curr_action = Actions.ECHO_FORWARD;
-                stats.setState(State.EVAL_ECHO);
-                logger.info("Switching states: "+stats.getState());
+                map.setState(State.EVAL_ECHO);
+                logger.info("Switching states: "+ map.getState());
             }
             return curr_action;
         } else {
@@ -63,33 +65,33 @@ public class ScanIsland {
 
     private int fly_counter = 0;
     private Actions flyToGround() {
-        if (fly_counter <= stats.getRange()) {
+        if (fly_counter <= drone.getRange()) {
             curr_action = Actions.FLY;
             fly_counter++;
         } else {
             fly_to_ground = false;
             fly_counter = 0;
             curr_action = Actions.SCAN;
-            stats.setState(State.SCAN_ISLAND);
-            logger.info("Switching states: "+stats.getState());
+            map.setState(State.SCAN_ISLAND);
+            logger.info("Switching states: "+ map.getState());
         }
         return curr_action;
     }
 
     private Actions evaluateEcho() {
-        String forward = stats.getFound();
+        String forward = drone.getFound();
         
         // more ground ahead, fly to located ground
         if (forward.equals("GROUND")){
-            stats.setState(State.SCAN_ISLAND);
-            logger.info("Switching states: "+stats.getState());
+            map.setState(State.SCAN_ISLAND);
+            logger.info("Switching states: "+ map.getState());
             fly_to_ground = true;
             U_turned = false;
             curr_action = Actions.FLY;
             return curr_action;
         }
         else {
-            int range = stats.getRange();
+            int range = drone.getRange();
             if (U_turned) {
                 logger.info("Drone has Uturned into an empty line, stopping drone...");
                 return Actions.STOP;
@@ -100,8 +102,8 @@ public class ScanIsland {
                 logger.info("SMALL UTURN");
                 uturn_idx = 4 - range; //4 tiles forward in base UTURN
             }
-            stats.setState(State.UTURN);
-            logger.info("Switching states: "+stats.getState());
+            map.setState(State.UTURN);
+            logger.info("Switching states: "+ map.getState());
             return UTurn();
         }
     }
@@ -109,8 +111,8 @@ public class ScanIsland {
     private int uturn_idx = 0;
     private Actions UTurn() {
         // stop drone if it will go out of range mid turn
-        if (uturn_idx == 5 && !stats.getFound().equals("GROUND")) {
-            if (stats.getRange() < 2){
+        if (uturn_idx == 5 && !drone.getFound().equals("GROUND")) {
+            if (drone.getRange() < 2){
                 logger.info("Drone is unable to U-turn");
                 return Actions.STOP;
             }
@@ -137,8 +139,8 @@ public class ScanIsland {
         uturn_idx = 0;
 
         curr_action = Actions.ECHO_FORWARD;
-        stats.setState(State.EVAL_ECHO);
-        logger.info("Switching states: "+stats.getState());
+        map.setState(State.EVAL_ECHO);
+        logger.info("Switching states: "+ map.getState());
 
         return curr_action;
     }
@@ -156,15 +158,15 @@ public class ScanIsland {
         
         logger.info("____________________LAST ACTION: " + curr_action);
 
-        if (stats.getState() == State.INIT_SCAN) {
+        if (map.getState() == State.INIT_SCAN) {
             initializeScanning();
             return curr_action;
         }
-        if (stats.getState() == State.EVAL_ECHO) {
+        if (map.getState() == State.EVAL_ECHO) {
             return evaluateEcho();
         }
 
-        if (stats.getState() == State.SCAN_ISLAND) {
+        if (map.getState() == State.SCAN_ISLAND) {
             if (fly_to_ground) {
                 logger.info("flying to ground!");
                 return flyToGround();
@@ -172,7 +174,7 @@ public class ScanIsland {
             return scanning();
         }
 
-        if (stats.getState() == State.UTURN) {
+        if (map.getState() == State.UTURN) {
             return UTurn();
         }
 

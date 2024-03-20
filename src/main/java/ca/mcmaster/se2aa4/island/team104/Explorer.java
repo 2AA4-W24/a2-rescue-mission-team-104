@@ -33,7 +33,7 @@ public class Explorer implements IExplorerRaid {
 
         ///////////////////////////////////////////// 2-25
         logger.info("setting budget and heading");
-        dm.stats.initializeStats(s); //set budget, heading, and state
+        dm.drone.initializeStats(s); //set budget, heading, and state
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Explorer implements IExplorerRaid {
         //logger.info("Additional information received: {}", extraInfo);
 
         ////
-        dm.stats.updateStats(s); //update stats
+        dm.drone.updateStats(s); //update stats
     }
 
     @Override
