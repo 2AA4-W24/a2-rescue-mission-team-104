@@ -1,7 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104;
 
 import java.io.StringReader;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
@@ -16,8 +15,7 @@ public class JSONParser {
     }
   
     public JSONObject loadString(String s){
-        try {            
-//            logger.info("JSON String loaded");
+        try {
             return new JSONObject(new JSONTokener(new StringReader(s)));
         } catch (JSONException e) {
             logger.error("Error in loaded string");
@@ -26,7 +24,6 @@ public class JSONParser {
     }
     public void put(JSONObject json, String key, String value) {
         json.put(key, value);
-//        logger.info("Placed " + key + ": " + value);
 
     }
     public String getValue(JSONObject json, String key) {
