@@ -1,6 +1,8 @@
 package ca.mcmaster.se2aa4.island.team104.map;
 
-import ca.mcmaster.se2aa4.island.team104.Drone;
+import ca.mcmaster.se2aa4.island.team104.drone.Drone;
+import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
+import ca.mcmaster.se2aa4.island.team104.drone.Position;
 import ca.mcmaster.se2aa4.island.team104.exploration.Actions;
 import ca.mcmaster.se2aa4.island.team104.exploration.State;
 import org.apache.logging.log4j.LogManager;

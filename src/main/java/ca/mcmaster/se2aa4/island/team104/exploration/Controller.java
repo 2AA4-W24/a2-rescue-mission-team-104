@@ -3,8 +3,8 @@ package ca.mcmaster.se2aa4.island.team104.exploration;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.team104.JSONParser;
-import ca.mcmaster.se2aa4.island.team104.Drone;
-import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+import ca.mcmaster.se2aa4.island.team104.drone.Drone;
+import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
 public class Controller {
 
