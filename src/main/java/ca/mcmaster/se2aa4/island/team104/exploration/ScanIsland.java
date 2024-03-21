@@ -12,10 +12,13 @@ public class ScanIsland {
     private final Logger logger = LogManager.getLogger();
 
     private Drone drone;
-    private Orientation init_heading;
+    private Mapping map = new Mapping();
+
+    // Hold last action and turn heading
     private Actions curr_action = Actions.FLY;
     private Actions last_turn;
 
+    // Flags to store previous states
     private Boolean fly_to_ground = false;
     private Boolean U_turned = false;
     private Boolean last_turn_Left = false;
@@ -24,15 +27,17 @@ public class ScanIsland {
     private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
     private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
 
-    private Mapping map = new Mapping();
-
     ScanIsland(Drone in_drone, Mapping mapping) {
         this.drone = in_drone;
         this.map = mapping;
     }
 
-// turn left on to the island to begin first zig
-    private void initializeScanning() {
+    /*
+    Input: N/A
+    Output: N/A
+    Make the first move after finding island, depending on where the drone spawned from
+    */
+    private Actions initializeScanning() {
         // if drone spawns facing island, it will turn into the first line
         if (drone.facing_island) {
             curr_action = Actions.HEADING_RIGHT;
@@ -40,9 +45,8 @@ public class ScanIsland {
             curr_action = Actions.SCAN;
         }
         map.setState(State.SCAN_ISLAND);
-        drone.resetRange();
-        this.init_heading = drone.getHeading();
         last_turn_Left = false;
+        return curr_action;
     }
 
 
@@ -156,11 +160,8 @@ public class ScanIsland {
     // determine next action for scanning island
     public Actions getNextMove() {
         
-        logger.info("____________________LAST ACTION: " + curr_action);
-
         if (map.getState() == State.INIT_SCAN) {
-            initializeScanning();
-            return curr_action;
+            return initializeScanning();
         }
         if (map.getState() == State.EVAL_ECHO) {
             return evaluateEcho();
