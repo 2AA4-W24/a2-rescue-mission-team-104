@@ -11,70 +11,76 @@ import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 public class ScanIsland {
     private final Logger logger = LogManager.getLogger();
     private Drone drone;
-    private Orientation init_heading;
-    private Actions curr_action = Actions.FLY;
+    private Mapping map;
+
+    // Hold last action and turn heading
+    private Actions last_action = Actions.FLY;
     private Actions last_turn;
 
-    private Boolean fly_to_ground = false;
-    private Boolean U_turned = false;
-    private Boolean last_turn_Left = false;
+    // Flags to store previous states
+    private Boolean flying_to_ground = false;
+    private Boolean u_turned = false;
+    private Boolean u_turned_left = false;
 
     // Actions sequence for performing u-turns
-    private Actions[] U_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
-    private Actions[] U_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
-
-    private Mapping map = new Mapping();
+    private Actions[] uturn_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
+    private Actions[] uturn_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
 
     ScanIsland(Drone in_drone, Mapping mapping) {
         this.drone = in_drone;
         this.map = mapping;
     }
 
-// turn left on to the island to begin first zig
-    private void initializeScanning() {
+    /*
+    Input: N/A
+    Output: N/A
+    Make the first move after finding island, depending on where the drone spawned from
+    */
+    private Actions initializeScanIsland() {
         // if drone spawns facing island, it will turn into the first line
-        if (drone.facing_island) {
-            curr_action = Actions.HEADING_RIGHT;
+        logger.info("drone facing island: " + drone.facing_island());
+        if (drone.facing_island()) {
+            logger.info("DRONE TURNING INTO ISLAND TO INITIALIZE");
+            last_action = Actions.HEADING_RIGHT;
         } else {
-            curr_action = Actions.SCAN;
+            last_action = Actions.SCAN;
         }
         map.setState(State.SCAN_ISLAND);
-        drone.resetRange();
-        this.init_heading = drone.getHeading();
-        last_turn_Left = false;
+        u_turned_left = false;
+        return last_action;
     }
 
 
 //alternate between flying and scanning each tile until a water tile is scanned
     private Actions scanning() {
-        if (curr_action == Actions.SCAN) {
-            curr_action = Actions.FLY;
+        if (last_action == Actions.SCAN) {
+            last_action = Actions.FLY;
             // change action to echo forward if drone is on water tile
             if (drone.isWater()) {
-                curr_action = Actions.ECHO_FORWARD;
+                last_action = Actions.ECHO_FORWARD;
                 map.setState(State.EVAL_ECHO);
                 logger.info("Switching states: "+ map.getState());
             }
-            return curr_action;
+            return last_action;
         } else {
-            curr_action = Actions.SCAN;
-            return curr_action;
+            last_action = Actions.SCAN;
+            return last_action;
         }
     }
 
     private int fly_counter = 0;
     private Actions flyToGround() {
         if (fly_counter <= drone.getRange()) {
-            curr_action = Actions.FLY;
+            last_action = Actions.FLY;
             fly_counter++;
         } else {
-            fly_to_ground = false;
+            flying_to_ground = false;
             fly_counter = 0;
-            curr_action = Actions.SCAN;
+            last_action = Actions.SCAN;
             map.setState(State.SCAN_ISLAND);
             logger.info("Switching states: "+ map.getState());
         }
-        return curr_action;
+        return last_action;
     }
 
     private Actions evaluateEcho() {
@@ -84,14 +90,14 @@ public class ScanIsland {
         if (forward.equals("GROUND")){
             map.setState(State.SCAN_ISLAND);
             logger.info("Switching states: "+ map.getState());
-            fly_to_ground = true;
-            U_turned = false;
-            curr_action = Actions.FLY;
-            return curr_action;
+            flying_to_ground = true;
+            u_turned = false;
+            last_action = Actions.FLY;
+            return last_action;
         }
         else {
             int range = drone.getRange();
-            if (U_turned) {
+            if (u_turned) {
                 logger.info("Drone has Uturned into an empty line, stopping drone...");
                 return Actions.STOP;
             } else if (range == 0) {
@@ -116,68 +122,60 @@ public class ScanIsland {
                 return Actions.STOP;
             }
         }
-
-        if (uturn_idx < U_left.length) {
+        if (uturn_idx < uturn_left.length) {
             // alternate left and right U-turn sequence 
-            if (last_turn_Left) {
-                curr_action = U_right[uturn_idx];
+            if (u_turned_left) {
+                last_action = uturn_right[uturn_idx];
                 uturn_idx++;
                 last_turn = Actions.HEADING_RIGHT;
-                return curr_action;
+                return last_action;
             } 
             else {
-                curr_action = U_left[uturn_idx];
+                last_action = uturn_left[uturn_idx];
                 uturn_idx++;
                 last_turn = Actions.HEADING_LEFT;
-                return curr_action;
+                return last_action;
             }
         }
-
         saveLastTurn(last_turn);
-        U_turned = true;
+        u_turned = true;
         uturn_idx = 0;
 
-        curr_action = Actions.ECHO_FORWARD;
+        last_action = Actions.ECHO_FORWARD;
         map.setState(State.EVAL_ECHO);
         logger.info("Switching states: "+ map.getState());
 
-        return curr_action;
+        return last_action;
     }
 
     private void saveLastTurn(Actions last_turn) {
         if (last_turn == Actions.HEADING_LEFT) {
-            last_turn_Left = true;
+            u_turned_left = true;
         } else {
-            last_turn_Left = false;
+            u_turned_left = false;
         }
     }
 
     // determine next action for scanning island
     public Actions getNextMove() {
         
-        logger.info("____________________LAST ACTION: " + curr_action);
-
         if (map.getState() == State.INIT_SCAN) {
-            initializeScanning();
-            return curr_action;
+            return initializeScanIsland();
         }
         if (map.getState() == State.EVAL_ECHO) {
             return evaluateEcho();
         }
-
         if (map.getState() == State.SCAN_ISLAND) {
-            if (fly_to_ground) {
-                logger.info("flying to ground!");
+            if (flying_to_ground) {
                 return flyToGround();
             }
             return scanning();
         }
-
         if (map.getState() == State.UTURN) {
             return UTurn();
         }
 
-        logger.info("something happened :()");
+        logger.info("Drone is not in a valid state for ScanIsland");
         return Actions.STOP;
     }
 }

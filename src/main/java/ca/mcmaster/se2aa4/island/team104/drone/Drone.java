@@ -37,7 +37,7 @@ public class Drone {
 
     public String site = "";
 
-    public boolean facing_island;
+    private Boolean facing_island = false;
 
     public JSONParser parser = new JSONParser();
 
@@ -239,6 +239,13 @@ public class Drone {
     }
     public void resetWater() {
         this.water = false;
+    }
+
+    public void setFacingIsland(Boolean facing_island) {
+        this.facing_island = facing_island;
+    }
+    public Boolean facing_island() {
+        return facing_island;
     }
 
     public Boolean getCreekBool() { return creek_found; }
