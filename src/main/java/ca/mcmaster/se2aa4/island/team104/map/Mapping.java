@@ -7,22 +7,19 @@ import ca.mcmaster.se2aa4.island.team104.exploration.Actions;
 import ca.mcmaster.se2aa4.island.team104.exploration.State;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Mapping {
 
-    public Map<Integer[], Tiles> pois = new HashMap<>();
-    public Map<Integer[], String> creeks = new HashMap<Integer[], String>();
+    private Map<Integer[], Tiles> pois = new HashMap<>();
+    private Map<Integer[], String> creeks = new HashMap<Integer[], String>();
     private final Logger logger = LogManager.getLogger();
-    public String site_id = "";
-    public Integer[] site_loc;
-
+    private String site_id = "";
+    private Integer[] site_loc;
     public Position position = new Position();
     public Orientation heading = Orientation.N;
-
     public State state = State.INIT;
 
     //test getter
@@ -34,13 +31,13 @@ public class Mapping {
         return state;
     }
 
-        public void setState(State new_state) {
+    public void setState(State new_state) {
         state = new_state;
     }
 
     public void setInitHeading(Orientation orient) {
         heading = orient;
-        position.setOrientation(heading.giveStringOrientation2());
+        position.setOrientation(heading.giveStringOrientation());
     }
 
     public void updateTile(Drone stats) {
@@ -76,14 +73,6 @@ public class Mapping {
             String coord_str = Arrays.toString(coord);
             points.append(coord_str).append(": ").append(pois.get(coord)).append(", ");
             logger.info("pois2: " + points + ", ");
-        }
-    }
-
-    public void printCreeks() {
-        StringBuilder points = new StringBuilder();
-        for (Integer[] coord : creeks.keySet()) {
-            String coord_str = Arrays.toString(coord);
-            points.append(coord_str).append(": ").append(creeks.get(coord)).append(", ");
         }
     }
 
@@ -146,17 +135,4 @@ public class Mapping {
         }
 
     }
-
-    public void getPois() {
-        StringBuilder creek_sites = new StringBuilder();
-
-        for (Map.Entry<Integer[], String> pair : creeks.entrySet()) {
-            creek_sites.append(pair.getValue()).append(" ");
-        }
-        logger.info("*****PRINTING CREEKS: ");
-        logger.info(creek_sites);
-    }
-
-
-
 }

@@ -23,7 +23,7 @@ public class OrientationTest {
     public void turningUsingThis() {
 
         Orientation orient1 = Orientation.E;
-        assertEquals(Orientation.S, orient1.turnRight2());
+        assertEquals(Orientation.S, orient1.turnRight());
         assertEquals(Orientation.E, orient1);
 
     }
@@ -31,7 +31,7 @@ public class OrientationTest {
     @Test
     public void giveOrientStringUsingThis() {
         Orientation orient1 = Orientation.E;
-        assertEquals("E", orient1.giveStringOrientation2());
+        assertEquals("E", orient1.giveStringOrientation());
         assertEquals(Orientation.E, orient1);
     }
 

@@ -11,8 +11,6 @@ public enum State { //adding a comment
     EVAL_ECHO,
     STOP;
 
-    private State ret_state;
-
     public State incrementState(State state) {
 
         switch (state) {

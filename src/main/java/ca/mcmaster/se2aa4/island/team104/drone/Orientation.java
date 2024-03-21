@@ -14,24 +14,6 @@ public enum Orientation {
 
     public Orientation giveOrientation(String orient) {
 
-//        switch (orient) {
-//            case "E" -> {
-//                return  E;
-//            }
-//            case "N" -> {
-//                return N;
-//            }
-//            case "S" -> {
-//                return S;
-//            }
-//            case "W" -> {
-//                return W;
-//            }
-//            default -> {
-//                return null;
-//            }
-//        }
-
         if (Objects.equals(orient, "E")) {
             return E;
         }
@@ -51,28 +33,7 @@ public enum Orientation {
 
     }
 
-   public  String giveStringOrientation(Orientation orient) {
-
-        switch (orient) {
-            case N -> {
-                return "N";
-            }
-            case E -> {
-                return "E";
-            }
-            case S -> {
-                return "S";
-            }
-            case W -> {
-                return "W";
-            }
-            default -> {
-                return null;
-            }
-
-        }
-    }
-    public String giveStringOrientation2() {
+    public String giveStringOrientation() {
 
         switch (this) {
             case N -> {
@@ -94,19 +55,7 @@ public enum Orientation {
         }
     }
 
-
-    Orientation turnRight(Orientation current_orient) {
-
-        switch (current_orient) {
-            case N -> current_orient = E;
-            case E -> current_orient = S;
-            case S -> current_orient = W;
-            case W -> current_orient = N;
-        }
-        return current_orient;
-    }
-
-    public Orientation turnRight2() {
+    public Orientation turnRight() {
 
         switch (this) {
             case N -> this.heading = E;
@@ -116,19 +65,8 @@ public enum Orientation {
         }
         return this.heading;
     }
-    
-    Orientation turnLeft(Orientation current_orient) {
 
-        switch (current_orient) {
-            case N -> current_orient = W;
-            case E -> current_orient = N;
-            case S -> current_orient = E;
-            case W -> current_orient = S;
-        }
-        return current_orient;
-    }
-
-    public Orientation turnLeft2() {
+    public Orientation turnLeft() {
 
         switch (this) {
             case N -> this.heading = W;

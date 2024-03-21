@@ -3,7 +3,6 @@ package ca.mcmaster.se2aa4.island.team104.exploration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-
 import ca.mcmaster.se2aa4.island.team104.JSONParser;
 import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import ca.mcmaster.se2aa4.island.team104.map.Mapping;
@@ -11,13 +10,11 @@ import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
 public class DecisionMaker {
     private final Logger logger = LogManager.getLogger();
-
     public Drone drone = new Drone();
     public Mapping map = new Mapping();
-    public FindIsland find_island = new FindIsland(drone, map);
-    public ScanIsland scan_island = new ScanIsland(drone, map);
-
-    JSONParser parser = new JSONParser();
+    private FindIsland find_island = new FindIsland(drone, map);
+    private ScanIsland scan_island = new ScanIsland(drone, map);
+    private final JSONParser parser = new JSONParser();
 
     //now make it so that when you see ground you get the current action of find_island and turn in that direction
     public JSONObject nextAction() {
@@ -36,7 +33,7 @@ public class DecisionMaker {
                 JSONObject actions = parser.createAndPut("action", "echo");
 
                 Orientation current_head = drone.getHeading();
-                String current_head_str = current_head.giveStringOrientation2();
+                String current_head_str = current_head.giveStringOrientation();
                 map.setInitHeading(current_head); //set init heading
 
 
@@ -66,7 +63,6 @@ public class DecisionMaker {
                 }
                 Actions current_act = scan_island.getNextMove();
                 map.updatePosition(current_act);
-                //logger.info("*new coordinates: " + map.position.coordinates);
 
                 map.printPois();
                 return controller.convertActionToJSON(current_act);
@@ -80,6 +76,5 @@ public class DecisionMaker {
         logger.info("BUDGET BELOW 100");
         return controller.convertActionToJSON(Actions.STOP);
     }
-
 
 }
