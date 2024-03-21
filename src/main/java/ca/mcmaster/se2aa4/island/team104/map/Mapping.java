@@ -46,7 +46,7 @@ public class Mapping {
     Input: Drone Object
     Marks the important positions on map.
      */
-    public void updateTile(Drone stats) {
+    public void updateTile(Drone drone) {
 
         Tiles tile_type = null;
         Integer[] coord2 = new Integer[2];
@@ -55,20 +55,20 @@ public class Mapping {
         coord2[1] = position.getY();
 
         //for creek
-        if (stats.getCreekBool()) {
+        if (drone.getCreekBool()) {
             tile_type = Tiles.CREEK;
-            creeks.put(coord2, stats.creek);
+            creeks.put(coord2, drone.creek);
             pois.put(coord2, tile_type);
-            stats.creek_found = false;
+            drone.creek_found = false;
         }
 
         //check if a site was found, if so, set it as site location, and put it in pois list
-        if (stats.getSiteBool()) {
+        if (drone.getSiteBool()) {
             tile_type = Tiles.SITE;
             site_loc = position.coordsToArr(position);
-            site_id = stats.site;
+            site_id = drone.site;
             pois.put(coord2, tile_type);
-            stats.site_found = false; //make it false now that it is marked
+            drone.site_found = false; //make it false now that it is marked
         }
 
     }

@@ -25,8 +25,8 @@ public class FindIsland {
 
 
 
-
-    FindIsland(Drone in_drone, Mapping in_map) {
+    //This is the constructor
+    public FindIsland(Drone in_drone, Mapping in_map) {
         this.drone = in_drone;
         this.map = in_map;
     }
