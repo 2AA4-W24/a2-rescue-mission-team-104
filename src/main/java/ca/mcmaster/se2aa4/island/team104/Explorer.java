@@ -38,9 +38,6 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
-        //logger.info("*****Budget: " + dm.stats.getBudget());
-
-        JSONObject decision = new JSONObject();
 
         JSONObject next_action = dm.nextAction();
         logger.info("*****Action going to perform: " + next_action);
@@ -67,11 +64,9 @@ public class Explorer implements IExplorerRaid {
     public String deliverFinalReport() {
         String result = dm.map.retCreek();
         logger.info("This is the creek/inlet to be returned: " + result);
-
         if (Objects.equals(result, "NA")) {
             return "no creek found";
         }
-
         return result;
     }
 

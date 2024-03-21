@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team104.map;
+package ca.mcmaster.se2aa4.island.team104.drone;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class Position {
         Y = y;
     }
 
-    ArrayList<Integer> getPosition() {
+    public ArrayList<Integer> getPosition() {
         return this.coordinates;
     }
 

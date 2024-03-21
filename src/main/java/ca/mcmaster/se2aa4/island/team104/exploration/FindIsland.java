@@ -3,9 +3,7 @@ package ca.mcmaster.se2aa4.island.team104.exploration;
 import ca.mcmaster.se2aa4.island.team104.map.Mapping;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import ca.mcmaster.se2aa4.island.team104.Drone;
-
+import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import java.util.Objects;
 
 public class FindIsland {

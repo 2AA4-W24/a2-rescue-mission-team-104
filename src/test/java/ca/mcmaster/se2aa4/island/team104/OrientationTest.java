@@ -2,7 +2,7 @@ package ca.mcmaster.se2aa4.island.team104;
 
 import org.junit.Test;
 
-import ca.mcmaster.se2aa4.island.team104.map.Orientation;
+import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +23,7 @@ public class OrientationTest {
     public void turningUsingThis() {
 
         Orientation orient1 = Orientation.E;
-        assertEquals(Orientation.S, orient1.turnRight2());
+        assertEquals(Orientation.S, orient1.turnRight());
         assertEquals(Orientation.E, orient1);
 
     }
@@ -31,7 +31,7 @@ public class OrientationTest {
     @Test
     public void giveOrientStringUsingThis() {
         Orientation orient1 = Orientation.E;
-        assertEquals("E", orient1.giveStringOrientation2());
+        assertEquals("E", orient1.giveStringOrientation());
         assertEquals(Orientation.E, orient1);
     }
 
