@@ -37,24 +37,24 @@ public class FindIsland {
     Output: Action Object
     This function returns an action based on the distance between the three directions of the drone.
      */
-    private Actions intersection() {
-        logger.info("this is f_range: " + forward_range + " this is right range: " + right_range + " this is left range: " + left_range);
+    private Actions intersection(Integer fr, Integer lr, Integer rr) {
+        logger.info("this is f_range: " + fr + " this is right range: " + rr + " this is left range: " + lr);
 
         //forward range has the greatest value
-        if (forward_range > right_range && forward_range > left_range) {
+        if (fr > rr && fr > lr) {
             return Actions.FLY;
         }
         //left range has the greatest value
-        else if (left_range > right_range && left_range > forward_range) {
+        else if (lr > rr && lr > fr) {
             return Actions.HEADING_LEFT;
         }
 
         //right range has the greatest value
-        else if (right_range > left_range && right_range > forward_range) {
+        else if (rr > lr && rr > fr) {
             return Actions.HEADING_RIGHT;
         }
 
-        else if (forward_range.equals(left_range) || forward_range.equals(right_range)) {
+        else if (fr.equals(lr) || fr.equals(rr)) {
             return  Actions.FLY;
         }
 
@@ -145,7 +145,7 @@ public class FindIsland {
             else if (current_action == Actions.ECHO_RIGHT) {
                 right_range = drone.range;
                 if (turned) {
-                    current_action = intersection();
+                    current_action = intersection(forward_range,left_range, right_range);
                 } else {
                     current_action = Actions.FLY;
                 }
