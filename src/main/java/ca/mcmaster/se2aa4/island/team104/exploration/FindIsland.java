@@ -26,7 +26,7 @@ public class FindIsland {
 
 
 
-    FindIsland(Drone in_drone, Mapping in_map) {
+    public FindIsland(Drone in_drone, Mapping in_map) {
         this.drone = in_drone;
         this.map = in_map;
     }

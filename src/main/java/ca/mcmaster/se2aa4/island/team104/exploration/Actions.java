@@ -3,7 +3,7 @@ package ca.mcmaster.se2aa4.island.team104.exploration;
 public enum Actions {
 
     STANDBY,
-    FLY, //Fly forward
+    FLY,
     ECHO_FORWARD,
     ECHO_RIGHT,
     ECHO_LEFT,
