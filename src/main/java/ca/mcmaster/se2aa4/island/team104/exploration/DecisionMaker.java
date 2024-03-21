@@ -57,7 +57,6 @@ public class DecisionMaker {
 
             }
             else if (map.getState() == State.INIT_SCAN || map.getState() == State.SCAN_ISLAND || map.getState() == State.UTURN || map.getState() == State.EVAL_ECHO) {
-                drone.facing_island = find_island.facing_island;
                 if (drone.creek_found || drone.site_found) {
                     map.updateTile(drone);
                 }

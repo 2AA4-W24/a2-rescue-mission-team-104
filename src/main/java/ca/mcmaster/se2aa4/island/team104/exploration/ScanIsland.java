@@ -39,7 +39,9 @@ public class ScanIsland {
     */
     private Actions initializeScanIsland() {
         // if drone spawns facing island, it will turn into the first line
-        if (drone.facing_island) {
+        logger.info("drone facing island: " + drone.facing_island());
+        if (drone.facing_island()) {
+            logger.info("DRONE TURNING INTO ISLAND TO INITIALIZE");
             last_action = Actions.HEADING_RIGHT;
         } else {
             last_action = Actions.SCAN;

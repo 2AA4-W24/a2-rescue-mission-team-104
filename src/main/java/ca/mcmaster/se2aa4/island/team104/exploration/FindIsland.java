@@ -21,8 +21,6 @@ public class FindIsland {
     private Boolean turned = false;
     private Boolean transition_state = false;
     private Integer temp_range = 0;
-    public Boolean facing_island = false;
-
 
 
 
@@ -99,7 +97,7 @@ public class FindIsland {
             if (Objects.equals(drone.getFound(), "GROUND")) {
                 //if the drone is initialized to face the island
                 if (init_facing == 1) {
-                    facing_island = true;
+                    drone.setFacingIsland(true);
                     init_facing++;
                 }
                 transition_state = true;
