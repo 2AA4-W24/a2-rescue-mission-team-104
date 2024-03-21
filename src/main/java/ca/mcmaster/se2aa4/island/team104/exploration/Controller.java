@@ -8,21 +8,26 @@ import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
 public class Controller {
 
-    private Drone stats;
+    private Drone drone;
 
     private JSONParser parser = new JSONParser();
 
-    Controller(Drone drone) {
-        stats = drone;
+    Controller(Drone in_drone) {
+        drone = in_drone;
     }
 
+    /*
+    Input: Action Object
+    Output: JSONObject
+    This function takes in an Action and returns it in a JSONObject.
+     */
     JSONObject convertActionToJSON(Actions action) {
 
         //get action as string
         String action_str = action.getAction();
 
         //get current heading as string
-        Orientation head = stats.getHeading();
+        Orientation head = drone.getHeading();
         String head_str = head.giveStringOrientation();
         JSONObject parameters = parser.createJSON();
 
@@ -48,12 +53,12 @@ public class Controller {
             case HEADING_LEFT -> {
                 head = head.turnLeft();
                 parser.mergeJSONObjectsVoid(actions, parameters, "parameters", "direction",head.giveStringOrientation());
-                stats.setHeading(head); //update heading
+                drone.setHeading(head); //update heading
             }
             case HEADING_RIGHT -> {
                 head = head.turnRight();
                 parser.mergeJSONObjectsVoid(actions, parameters, "parameters", "direction",head.giveStringOrientation());
-                stats.setHeading(head); //update heading
+                drone.setHeading(head); //update heading
             }
             case STANDBY -> {
                 return null;

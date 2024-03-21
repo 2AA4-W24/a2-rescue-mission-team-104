@@ -32,6 +32,11 @@ public class FindIsland {
     }
 
 
+    /*
+    Input: N/A
+    Output: Action Object
+    This function returns an action based on the distance between the three directions of the drone.
+     */
     private Actions intersection() {
         logger.info("this is f_range: " + forward_range + " this is right range: " + right_range + " this is left range: " + left_range);
 
@@ -59,6 +64,11 @@ public class FindIsland {
         }
     }
 
+    /*
+    Input: N/A
+    Output: Action Object
+    Returns the final action of the FindIsland state.
+     */
     private Actions finalMove() {
         //if the previous action echoed left and found ground turn left
         if (current_action == Actions.ECHO_LEFT) {
@@ -78,8 +88,12 @@ public class FindIsland {
 
 
 
-    Actions getNextMove() {
-
+    /*
+    Input: N/A
+    Output: Action Object
+    Returns the next action of the FindIsland state.
+     */
+    public Actions getNextMove() {
         if (!transition_state) {
             //initialization
             if (Objects.equals(drone.getFound(), "GROUND")) {
@@ -103,15 +117,11 @@ public class FindIsland {
                 current_action = Actions.FLY;
 
                 return current_action;
-
             }
-
-//next state!!
             else {
                 logger.info("______________________ISLAND REACHED");
                 map.setState(State.INIT_SCAN);
                 return current_action;            }
-
         }
         else if (map.getState() == State.FIND_ISLAND) {
             if (current_action == Actions.STANDBY) {
@@ -119,13 +129,11 @@ public class FindIsland {
                 init_facing++;
                 return current_action;            }
 
-
             //first echo forward then left
             else if (current_action == Actions.ECHO_FORWARD) {
                 forward_range = drone.range;
                 current_action = Actions.ECHO_LEFT;
                 return current_action;            }
-
 
             //echo left then echo right
             else if (current_action == Actions.ECHO_LEFT) {
@@ -141,19 +149,15 @@ public class FindIsland {
                 } else {
                     current_action = Actions.FLY;
                 }
+                return current_action; }
 
-                return current_action;            }
             //no matter the direction echo forward
             else if (current_action == Actions.FLY || current_action == Actions.HEADING_LEFT || current_action == Actions.HEADING_RIGHT) {
                 current_action = Actions.ECHO_FORWARD;
                 return current_action;            } else {
                 logger.info("Something went wrong.");
                 return current_action;            }
-
-
         }
-
         logger.info("In wrong State");
         return current_action;    }
-
 }

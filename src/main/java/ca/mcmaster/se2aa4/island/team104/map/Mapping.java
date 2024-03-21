@@ -22,24 +22,30 @@ public class Mapping {
     public Orientation heading = Orientation.N;
     public State state = State.INIT;
 
-    //test getter
-    public String getPos() {
-        return String.valueOf(position.getPosition());
-    }
 
+    //Returns state of drone
     public State getState() {
         return state;
     }
 
+    //sets state of drone
     public void setState(State new_state) {
         state = new_state;
     }
 
+    /*
+    Input: Orientation Object
+    Set initial heading of drone.
+     */
     public void setInitHeading(Orientation orient) {
         heading = orient;
         position.setOrientation(heading.giveStringOrientation());
     }
 
+    /*
+    Input: Drone Object
+    Marks the important positions on map.
+     */
     public void updateTile(Drone stats) {
 
         Tiles tile_type = null;
@@ -67,6 +73,7 @@ public class Mapping {
 
     }
 
+    //Prints the important positions
     public void printPois() {
         StringBuilder points = new StringBuilder();
         for (Integer[] coord : pois.keySet()) {
@@ -76,6 +83,10 @@ public class Mapping {
         }
     }
 
+    /*
+    Ouput: String
+    Returns creek/inlet/NA, where NA denotes that nothing was found.
+     */
     public String retCreek() {
 
         //if there are no sites and creeks return NA
@@ -93,7 +104,6 @@ public class Mapping {
             }
 
         }
-
         //determine shortest distance between creeks and site
         int i = 0;
         String shortest_dist_creek = "";
@@ -120,8 +130,11 @@ public class Mapping {
         return shortest_dist_creek;
     }
 
+    /*
+    Input: Actions Object
+    updates position of drone on map.
+     */
     public void updatePosition(Actions action) {
-
         if (action == Actions.FLY) {
             position.updateForward();
         }
@@ -133,6 +146,5 @@ public class Mapping {
             position.updateForward();
             position.updateRight();
         }
-
     }
 }
