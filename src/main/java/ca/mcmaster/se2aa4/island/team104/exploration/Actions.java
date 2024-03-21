@@ -11,9 +11,11 @@ public enum Actions {
     HEADING_RIGHT,
     HEADING_LEFT,
     STOP;
-
-     
-
+    
+    /*
+    Output: String
+    This functions returns the action object as a string.
+     */
     public String getAction() {
         switch (this) {
             case FLY:
@@ -35,5 +37,4 @@ public enum Actions {
                 return null;
         }
     }
-    
 }
