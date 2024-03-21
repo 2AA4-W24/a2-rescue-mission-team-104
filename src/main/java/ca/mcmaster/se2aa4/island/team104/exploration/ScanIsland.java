@@ -10,7 +10,6 @@ import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 // zig zag to find creeks and site :)
 public class ScanIsland {
     private final Logger logger = LogManager.getLogger();
-
     private Drone drone;
     private Orientation init_heading;
     private Actions curr_action = Actions.FLY;
