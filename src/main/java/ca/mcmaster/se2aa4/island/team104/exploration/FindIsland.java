@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import java.util.Objects;
 
-public class FindIsland {
+public class FindIsland implements StateInterface {
 
     private final Logger logger = LogManager.getLogger();
     Actions current_action = Actions.ECHO_FORWARD;

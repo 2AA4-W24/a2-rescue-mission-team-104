@@ -8,7 +8,7 @@ import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
 // zig zag to find creeks and site :)
-public class ScanIsland {
+public class ScanIsland implements StateInterface {
     private final Logger logger = LogManager.getLogger();
     private Drone drone;
     private Mapping map;
