@@ -83,4 +83,16 @@ public class DecisionMaker {
         logger.info(STOP_BUDGET);
     }
 
+    public void initDrone(String s) {
+        drone.initializeStats(s);
+    }
+
+    public void updateDrone(String s) {
+        drone.updateStats(s);
+    }
+
+    public String getCreek() {
+        return map.retCreek();
+    }
+
 }

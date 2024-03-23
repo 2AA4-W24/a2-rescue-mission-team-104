@@ -18,28 +18,23 @@ import java.util.Objects;
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
-
-    DecisionMaker dm = new DecisionMaker();
-
-    JSONParser parser = new JSONParser();
+    private DecisionMaker dm = new DecisionMaker();
+    private JSONParser parser = new JSONParser();
 
     @Override
     public void initialize(String s) {
         logger.info("\n************ Initializing the Exploration Command Center ************");
-        
         JSONObject initial = parser.loadString(s);
         logger.info("************ Initialization info: {}\n", initial);
         logger.info("\n************ Initialize End\n");
-
-        ///////////////////////////////////////////// 2-25
         logger.info("setting budget and heading");
-        dm.drone.initializeStats(s); //set budget, heading, and state
+
+        dm.initDrone(s);
         dm.setStopBudget();
     }
 
     @Override
     public String takeDecision() {
-
         JSONObject next_action = dm.nextAction();
         logger.info("*****Action going to perform: " + next_action);
 
@@ -57,13 +52,12 @@ public class Explorer implements IExplorerRaid {
         JSONObject extraInfo = response.getJSONObject("extras");
         //logger.info("Additional information received: {}", extraInfo);
 
-        ////
-        dm.drone.updateStats(s); //update stats
+        dm.updateDrone(s); //update stats
     }
 
     @Override
     public String deliverFinalReport() {
-        String result = dm.map.retCreek();
+        String result = dm.getCreek();
         logger.info("This is the creek/inlet to be returned: " + result);
         if (Objects.equals(result, "NA")) {
             return "no creek found";
