@@ -96,8 +96,8 @@ public class FindIsland implements StateInterface {
             //initialization
             if (Objects.equals(drone.getFound(), "GROUND")) {
                 //if the drone is initialized to face the island
-                if (init_facing == 1) {
-                    drone.setFacingIsland(true);
+                if (init_facing == 0) {
+                    drone.setFacingIsland();
                     init_facing++;
                 }
                 transition_state = true;
