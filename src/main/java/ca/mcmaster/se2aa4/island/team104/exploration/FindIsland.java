@@ -74,12 +74,10 @@ public class FindIsland implements StateInterface {
         }
         //if the previous action echoed right and found ground turn right
         else if (current_action == Actions.ECHO_RIGHT) {
-
             return Actions.HEADING_RIGHT;
         }
-        else {
-            logger.info("Something went wrong with final move.");
-            return Actions.STOP;
+        else { //fly straight to island
+            return Actions.FLY;
         }
 
     }
@@ -97,8 +95,11 @@ public class FindIsland implements StateInterface {
             if (Objects.equals(drone.getFound(), "GROUND")) {
                 //if the drone is initialized to face the island
                 if (init_facing == 0) {
-                    drone.setFacingIsland();
-                    init_facing++;
+                    if (current_action.equals(Actions.ECHO_FORWARD)) {
+                        drone.setFacingIsland();
+                        logger.info("counter = " + init_facing + " flag: " + drone.facing_island());
+                        init_facing++;
+                    }
                 }
                 transition_state = true;
                 map.setState(State.GO_TO_ISLAND);

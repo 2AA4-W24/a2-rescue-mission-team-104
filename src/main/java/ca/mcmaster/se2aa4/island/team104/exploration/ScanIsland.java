@@ -26,9 +26,31 @@ public class ScanIsland implements StateInterface {
     private Actions[] uturn_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
     private Actions[] uturn_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
 
-    ScanIsland(Drone in_drone, Mapping mapping) {
-        this.drone = in_drone;
+    public ScanIsland(Drone drone_in, Mapping mapping) {
+        this.drone = drone_in;
         this.map = mapping;
+    }
+    // determine next action for scanning island
+    public Actions getNextMove() {
+        
+        if (map.getState() == State.INIT_SCAN) {
+            return initializeScanIsland();
+        }
+        if (map.getState() == State.EVAL_ECHO) {
+            return evaluateEcho();
+        }
+        if (map.getState() == State.SCAN_ISLAND) {
+            if (flying_to_ground) {
+                return flyToGround();
+            }
+            return scanning();
+        }
+        if (map.getState() == State.UTURN) {
+            return UTurn();
+        }
+
+        logger.info("Drone is not in a valid state for ScanIsland");
+        return Actions.STOP;
     }
 
     /*
@@ -97,20 +119,24 @@ public class ScanIsland implements StateInterface {
         }
         else {
             int range = drone.getRange();
-            if (u_turned) {
-                logger.info("Drone has Uturned into an empty line, stopping drone...");
-                return Actions.STOP;
-            } else if (range == 0) {
-                logger.info("Drone is unable to U-turn");
-                return Actions.STOP;
-            } else if (range <= 3) {
-                logger.info("SMALL UTURN");
-                uturn_idx = 4 - range; //4 tiles forward in base UTURN
-            }
-            map.setState(State.UTURN);
-            logger.info("Switching states: "+ map.getState());
-            return UTurn();
+            return determineUturn(range);
         }
+    }
+
+    private Actions determineUturn(int range) {
+        if (u_turned) {
+            logger.info("Drone has Uturned into an empty line, stopping drone...");
+            return Actions.STOP;
+        } else if (range == 0) {
+            logger.info("Drone is unable to U-turn");
+            return Actions.STOP;
+        } else if (range <= 3) {
+            logger.info("SMALL UTURN");
+            uturn_idx = 4 - range; //4 tiles forward in base UTURN
+        }
+        map.setState(State.UTURN);
+        logger.info("Switching states: "+ map.getState());
+        return UTurn();
     }
 
     private int uturn_idx = 0;
@@ -156,26 +182,4 @@ public class ScanIsland implements StateInterface {
         }
     }
 
-    // determine next action for scanning island
-    public Actions getNextMove() {
-        
-        if (map.getState() == State.INIT_SCAN) {
-            return initializeScanIsland();
-        }
-        if (map.getState() == State.EVAL_ECHO) {
-            return evaluateEcho();
-        }
-        if (map.getState() == State.SCAN_ISLAND) {
-            if (flying_to_ground) {
-                return flyToGround();
-            }
-            return scanning();
-        }
-        if (map.getState() == State.UTURN) {
-            return UTurn();
-        }
-
-        logger.info("Drone is not in a valid state for ScanIsland");
-        return Actions.STOP;
-    }
 }
