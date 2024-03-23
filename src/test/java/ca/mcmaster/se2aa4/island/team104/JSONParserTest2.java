@@ -1,20 +1,18 @@
 package ca.mcmaster.se2aa4.island.team104;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-
-public class JSONParserTest {
-
+public class JSONParserTest2 {
     JSONParser parser = new JSONParser();
-    private JSONObject json_obj;
+    JSONObject json_obj = parser.createJSON();
+
 
     @BeforeEach
     public void initJSONObject() {
-        json_obj = parser.createJSON();
     }
 
     @Test
@@ -25,6 +23,4 @@ public class JSONParserTest {
         int cost = parser.getIntValue(json_obj, "cost");
         assertEquals(20, cost);
     }
-
-
 }

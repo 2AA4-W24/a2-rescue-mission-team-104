@@ -34,6 +34,7 @@ public class Explorer implements IExplorerRaid {
         ///////////////////////////////////////////// 2-25
         logger.info("setting budget and heading");
         dm.drone.initializeStats(s); //set budget, heading, and state
+        dm.setStopBudget();
     }
 
     @Override
