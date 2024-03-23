@@ -35,6 +35,7 @@ public class Mapping {
 
     /*
     Input: Orientation Object
+    Output: N/A
     Set initial heading of drone.
      */
     public void setInitHeading(Orientation orient) {
@@ -44,6 +45,7 @@ public class Mapping {
 
     /*
     Input: Drone Object
+    Output: N/A
     Marks the important positions on map.
      */
     public void updateTile(Drone drone) {
@@ -84,7 +86,8 @@ public class Mapping {
     }
 
     /*
-    Ouput: String
+    Input:N/A
+    Output: String
     Returns creek/inlet/NA, where NA denotes that nothing was found.
      */
     public String retCreek() {
@@ -132,6 +135,7 @@ public class Mapping {
 
     /*
     Input: Actions Object
+    Output: N/A
     updates position of drone on map.
      */
     public void updatePosition(Actions action) {

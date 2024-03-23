@@ -17,7 +17,7 @@ public class DecisionMaker {
     private final JSONParser parser = new JSONParser();
     private int STOP_BUDGET;
 
-    //now make it so that when you see ground you get the current action of find_island and turn in that direction
+    
     public JSONObject nextAction() {
         Controller controller = new Controller(drone);
 
@@ -78,14 +78,29 @@ public class DecisionMaker {
         logger.info(STOP_BUDGET);
     }
 
+    /*
+    Input: String
+    Output: N/A
+    Initializes drone information.
+     */
     public void initDrone(String s) {
         drone.initializeStats(s);
     }
 
+    /*
+    Input: String
+    Output: N/A
+    Updates drone information.
+     */
     public void updateDrone(String s) {
         drone.updateStats(s);
     }
 
+    /*
+    Input: N/A
+    Output: String
+    Returns sites found.
+     */
     public String getCreek() {
         return map.retCreek();
     }

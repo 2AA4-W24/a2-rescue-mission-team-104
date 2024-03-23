@@ -38,7 +38,7 @@ public enum Orientation {
 
     /*
     Input: N/A
-    Ouput: String
+    Output: String
     Returns the String object of the current orientation object.
      */
     public String giveStringOrientation() {
@@ -67,7 +67,6 @@ public enum Orientation {
     Returns the updated orientation after turning right.
      */
     public Orientation turnRight() {
-
         switch (this) {
             case N -> this.heading = E;
             case E -> this.heading = S;
@@ -83,7 +82,6 @@ public enum Orientation {
     Returns the updated orientation after turning left.
      */
     public Orientation turnLeft() {
-
         switch (this) {
             case N -> this.heading = W;
             case E -> this.heading = N;
