@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ControllerTest {
 
     private final Logger logger = LogManager.getLogger();
+
     @Test
     public void testActionToJSONHeading() {
         Drone drone = new Drone();

@@ -9,6 +9,8 @@ import ca.mcmaster.se2aa4.island.team104.exploration.State;
 import ca.mcmaster.se2aa4.island.team104.map.Mapping;
 import ca.mcmaster.se2aa4.island.team104.map.Tiles;
 import eu.ace_design.island.game.Tile;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -19,20 +21,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MappingTest {
 
+    Mapping mapping = new Mapping();
+
     @Test
     public void testState() {
-    Mapping mapping = new Mapping();
     mapping.setState(State.INIT);
     assertEquals(State.INIT, mapping.getState());
     }
 
+    @Before
+    public void updatePositionInit(){
+        mapping.setInitHeading(Orientation.E);
+        mapping.updatePosition(Actions.FLY);
+    }
+
     @Test
     public void testUpdatePosition() {
-        Mapping mapping = new Mapping();
-        mapping.setInitHeading(Orientation.E);
-
-        mapping.updatePosition(Actions.FLY);
-
         ArrayList<Integer> coord_test = new ArrayList<>();
         coord_test.add(1);
         coord_test.add(0);
@@ -41,9 +45,9 @@ public class MappingTest {
         assertEquals(coord_test.getLast(), mapping.position.getY());
     }
 
+
     @Test
     public void testRetCreek() {
-        Mapping mapping = new Mapping();
         String na = "NA";
         assertEquals(na, mapping.retCreek());
     }
