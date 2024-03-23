@@ -15,6 +15,7 @@ public class DecisionMaker {
     private FindIsland find_island = new FindIsland(drone, map);
     private ScanIsland scan_island = new ScanIsland(drone, map);
     private final JSONParser parser = new JSONParser();
+    private int STOP_BUDGET;
 
     //now make it so that when you see ground you get the current action of find_island and turn in that direction
     public JSONObject nextAction() {
@@ -22,7 +23,7 @@ public class DecisionMaker {
 
 
         //the 1000 is a placeholder
-        if (drone.getBudget() > 100) {
+        if (drone.getBudget() > STOP_BUDGET) {
             logger.info("this is the state: " + map.getState());
             logger.info("BUDGET LEFT: " + drone.getBudget());
 
@@ -74,6 +75,12 @@ public class DecisionMaker {
 
         logger.info("BUDGET BELOW 100");
         return controller.convertActionToJSON(Actions.STOP);
+    }
+
+    public void setStopBudget() {
+        int init_budget = drone.getBudget();
+        STOP_BUDGET = (int) (init_budget*0.02);
+        logger.info(STOP_BUDGET);
     }
 
 }
