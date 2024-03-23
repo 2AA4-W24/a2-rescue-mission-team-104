@@ -22,6 +22,10 @@ public class ScanIsland implements StateInterface {
     private Boolean u_turned = false;
     private Boolean u_turned_left = false;
 
+    // Counters to save previous moves
+    private int fly_counter = 0;
+    private int uturn_idx = 0;
+
     // Actions sequence for performing u-turns
     private Actions[] uturn_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
     private Actions[] uturn_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
@@ -90,7 +94,6 @@ public class ScanIsland implements StateInterface {
         }
     }
 
-    private int fly_counter = 0;
     private Actions flyToGround() {
         if (fly_counter <= drone.getRange()) {
             last_action = Actions.FLY;
@@ -139,7 +142,6 @@ public class ScanIsland implements StateInterface {
         return UTurn();
     }
 
-    private int uturn_idx = 0;
     private Actions UTurn() {
         // stop drone if it will go out of range mid turn
         if (uturn_idx == 5 && !drone.getFound().equals("GROUND")) {
@@ -147,31 +149,38 @@ public class ScanIsland implements StateInterface {
                 logger.info("Drone is unable to U-turn");
                 return Actions.STOP;
             }
-        }
+        } 
+        // find next move in U-turn
         if (uturn_idx < uturn_left.length) {
-            // alternate left and right U-turn sequence 
-            if (u_turned_left) {
-                last_action = uturn_right[uturn_idx];
-                uturn_idx++;
-                last_turn = Actions.HEADING_RIGHT;
-                return last_action;
-            } 
-            else {
-                last_action = uturn_left[uturn_idx];
-                uturn_idx++;
-                last_turn = Actions.HEADING_LEFT;
-                return last_action;
-            }
+            return nextUturnMove();
         }
+
+        // save state accomplishments
         saveLastTurn(last_turn);
         u_turned = true;
         uturn_idx = 0;
-
         last_action = Actions.ECHO_FORWARD;
+        
         map.setState(State.EVAL_ECHO);
         logger.info("Switching states: "+ map.getState());
 
         return last_action;
+    }
+
+    private Actions nextUturnMove() {
+        // alternate left and right U-turn sequence 
+        if (u_turned_left) {
+            last_action = uturn_right[uturn_idx];
+            uturn_idx++;
+            last_turn = Actions.HEADING_RIGHT;
+            return last_action;
+        } 
+        else {
+            last_action = uturn_left[uturn_idx];
+            uturn_idx++;
+            last_turn = Actions.HEADING_LEFT;
+            return last_action;
+        }
     }
 
     private void saveLastTurn(Actions last_turn) {
