@@ -218,10 +218,6 @@ public class Drone {
         return heading;
     }
 
-//    public State getState() {
-//        return state;
-//    }
-
     public Integer getRange() {
         return range;
     }
@@ -241,8 +237,8 @@ public class Drone {
         this.water = false;
     }
 
-    public void setFacingIsland(Boolean facing_island) {
-        this.facing_island = facing_island;
+    public void setFacingIsland() {
+        this.facing_island = true;
     }
     public Boolean facing_island() {
         return facing_island;
@@ -251,10 +247,6 @@ public class Drone {
     public Boolean getCreekBool() { return creek_found; }
 
     public Boolean getSiteBool() { return site_found; }
-
-//    public void setState(State new_state) {
-//        state = new_state;
-//    }
 
     public void setHeading(Orientation new_orient) {
         heading = new_orient;
