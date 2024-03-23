@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
-public enum State { //adding a comment
+public enum State {
 
     INIT,
     FIND_ISLAND,
@@ -11,6 +11,11 @@ public enum State { //adding a comment
     EVAL_ECHO,
     STOP;
 
+    /*
+    Input: State
+    Output: State
+    Returns the updated state after incrementing states.
+     */
     public State incrementState(State state) {
 
         switch (state) {
@@ -22,6 +27,4 @@ public enum State { //adding a comment
         }
         return state;
     }
-
-
 }
