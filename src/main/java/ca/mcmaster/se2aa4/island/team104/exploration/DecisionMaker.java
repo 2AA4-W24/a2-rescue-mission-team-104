@@ -21,8 +21,6 @@ public class DecisionMaker {
     public JSONObject nextAction() {
         Controller controller = new Controller(drone);
 
-
-        //the 1000 is a placeholder
         if (drone.getBudget() > STOP_BUDGET) {
             logger.info("this is the state: " + map.getState());
             logger.info("BUDGET LEFT: " + drone.getBudget());
@@ -35,19 +33,16 @@ public class DecisionMaker {
 
                 Orientation current_head = drone.getHeading();
                 String current_head_str = current_head.giveStringOrientation();
-                map.setInitHeading(current_head); //set init heading
-
+                map.setInitHeading(current_head);
 
                 JSONObject ret_action = parser.mergeJSONObjects(actions, parameters, "parameters", "direction", current_head_str);
                 logger.info(ret_action);
 
-                //update state
                 State current_state = map.getState();
                 map.setState(current_state.incrementState(current_state));
 
                 logger.info("new state: " + map.getState());
                 return ret_action;
-
             }
             if (map.getState() == State.FIND_ISLAND || map.getState() == State.GO_TO_ISLAND) {
 

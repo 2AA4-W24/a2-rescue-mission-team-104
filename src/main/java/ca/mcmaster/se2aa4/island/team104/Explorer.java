@@ -3,18 +3,12 @@ package ca.mcmaster.se2aa4.island.team104;
 import java.io.StringReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import eu.ace_design.island.bot.IExplorerRaid;
-import org.apache.xpath.operations.Bool;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.json.JSONTokener;
-
 import ca.mcmaster.se2aa4.island.team104.exploration.DecisionMaker;
-
 import java.util.Objects;
 
-// mvn exec:java -q -Dexec.args="./maps/map03.json"
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
