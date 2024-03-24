@@ -28,7 +28,7 @@ public class FindIslandTest {
     public void initGTI() {
         act = Actions.ECHO_FORWARD;
         map.setState(State.GO_TO_ISLAND);
-        drone.range = 1;
+        drone.setRange(1);
     }
 
     @Test
@@ -41,14 +41,14 @@ public class FindIslandTest {
     public void finishGTI() {
         act = Actions.STANDBY;
         map.setState(State.STOP);
-        drone.range = 0;
+        drone.setRange(0);
     }
 
     @Before
     public void initFI() {
         act = Actions.ECHO_LEFT;
         map.setState(State.FIND_ISLAND);
-        drone.range = 200;
+        drone.setRange(200);
     }
     @Test
     public void testGetNextMoveFI() {
@@ -60,7 +60,7 @@ public class FindIslandTest {
     public void finishFI() {
         act = Actions.STANDBY;
         map.setState(State.STOP);
-        drone.range = 0;
+        drone.setRange(0);
     }
 
 

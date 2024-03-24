@@ -39,14 +39,11 @@ public class Explorer implements IExplorerRaid {
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
         logger.info("** Response received:\n"+response.toString(2));
-        Integer cost = response.getInt("cost");
-        //logger.info("The cost of the action was {}", cost);
+
         String status = response.getString("status");
         logger.info("The status of the drone is {}", status);
-        JSONObject extraInfo = response.getJSONObject("extras");
-        //logger.info("Additional information received: {}", extraInfo);
 
-        dm.updateDrone(s); //update stats
+        dm.updateDrone(s); 
     }
 
     @Override

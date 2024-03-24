@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class Position {
 
     private final Logger logger = LogManager.getLogger();
-    public ArrayList<Integer> coordinates = new ArrayList<Integer>();
     private Integer X = 0;
     private Integer Y = 0;
+    public ArrayList<Integer> coordinates = new ArrayList<Integer>();
     public Orientation current_orient = Orientation.N;
 
     //constructor

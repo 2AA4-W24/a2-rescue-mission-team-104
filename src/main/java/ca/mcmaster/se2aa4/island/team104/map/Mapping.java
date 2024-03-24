@@ -18,9 +18,11 @@ public class Mapping {
     private final Logger logger = LogManager.getLogger();
     private String site_id = "";
     private Integer[] site_loc;
+
     public Position position = new Position();
-    public Orientation heading = Orientation.N;
-    public State state = State.INIT;
+    
+    private Orientation heading = Orientation.N;
+    private State state = State.INIT;
 
 
     //Returns state of drone
@@ -57,20 +59,20 @@ public class Mapping {
         coord2[1] = position.getY();
 
         //for creek
-        if (drone.getCreekBool()) {
+        if (drone.getCreekFound()) {
             tile_type = Tiles.CREEK;
             creeks.put(coord2, drone.creek);
             pois.put(coord2, tile_type);
-            drone.creek_found = false;
+            drone.setCreekFound(false);
         }
 
         //check if a site was found, if so, set it as site location, and put it in pois list
-        if (drone.getSiteBool()) {
+        if (drone.getSiteFound()) {
             tile_type = Tiles.SITE;
             site_loc = position.coordsToArr(position);
             site_id = drone.site;
             pois.put(coord2, tile_type);
-            drone.site_found = false; //make it false now that it is marked
+            drone.setSiteFound(false); //make it false now that it is marked
         }
 
     }
