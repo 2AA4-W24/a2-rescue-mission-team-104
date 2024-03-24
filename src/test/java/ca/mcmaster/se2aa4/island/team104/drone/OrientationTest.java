@@ -69,7 +69,6 @@ public class OrientationTest {
 
         Orientation orient4 = Orientation.S;
         assertEquals(Orientation.E, orient4.turnLeft());
-
     }
 
     @Test 
@@ -82,7 +81,6 @@ public class OrientationTest {
         Orientation newdir3 = newdir2.turnRight(); 
 
         assertEquals(Orientation.N, newdir3.turnRight()); 
-
     }
 
     @Test
