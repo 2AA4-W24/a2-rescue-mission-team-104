@@ -43,7 +43,6 @@ public class Drone {
 
     //takes in initial JSONObject to parse and get initial budget
     public void setBudget(JSONObject initInfo) {
-
         budget = parser.getIntValue(initInfo, "budget");
         logger.info("This is budget: " + budget);
     }

@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ScanIslandTest {
-private static Drone drone = new Drone();
+    private static Drone drone = new Drone();
     private Mapping map = new Mapping();
     private Actions action;
     private ScanIsland scan = new ScanIsland(drone, map);

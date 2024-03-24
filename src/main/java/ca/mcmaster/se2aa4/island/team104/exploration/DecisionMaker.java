@@ -68,10 +68,15 @@ public class DecisionMaker {
             }
         }
 
-        logger.info("BUDGET BELOW 100");
+        logger.info("BUDGET BELOW STOP BUDGET");
         return controller.convertActionToJSON(Actions.STOP);
     }
 
+    /*
+    Input: N/A
+    Output: N/A
+    Allocates 2% of the inital budget for stop action
+     */
     public void setStopBudget() {
         int init_budget = drone.getBudget();
         STOP_BUDGET = (int) (init_budget*0.02);
