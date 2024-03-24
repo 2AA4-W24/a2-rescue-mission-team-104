@@ -13,98 +13,33 @@ public class Drone {
 
     private final Logger logger = LogManager.getLogger();
 
-    //energy of drone
-    public Integer budget = 0;
+    private Integer budget = 0;
+    private Orientation heading = Orientation.N;
 
-    //current heading of drone
-    public Orientation heading = Orientation.N; //setting as default
+    // results of echo
+    private String found;
+    private Integer range;
 
-    //current state - turn into enum?
-//    public State state = State.INIT;
-
-    //results of echo
-    public String found;
-    public Integer range;
-
-    //results
-    public Boolean water = false;
-
-    public Boolean creek_found = false;
-
-    public Boolean site_found = false;
-
-    public String creek = "";
-
-    public String site = "";
-
+    // flags to save progress
+    private Boolean water = false;
+    private Boolean creek_found = false;
+    private Boolean site_found = false;
     private Boolean facing_island = false;
 
-    public JSONParser parser = new JSONParser();
+    // stores creeks and site address
+    public String creek = "";
+    public String site = "";
 
-    //takes in initial JSONObject to parse and get initial budget
-    public void setBudget(JSONObject initInfo) {
-        budget = parser.getIntValue(initInfo, "budget");
-        logger.info("This is budget: " + budget);
-    }
-
-    //takes in cost to deduct from budget
-    public void updateBudget(JSONObject info) {
-        Integer cost = parser.getIntValue(info, "cost");
-        //don't have enough money
-        if (budget < cost) {
-            logger.warn("You don't have enough battery");
-        }
-        //otherwise deduct
-        else {
-            budget -= cost;
-        }
-    }
-
-    public void updateHeading(JSONObject info) {
-
-        if (info.has("heading")) {
-
-            String current_head = parser.getValue(info, "heading");
-            logger.info("This is current_head:" + current_head);
-            //convert heading to Orientation type
-            heading = heading.giveOrientation(current_head);
-            logger.info("the heading: " + heading);
-        }
-    }
-
-    //takes in !!response!! JSONObject to get range parameter
-    public void updateRange(JSONObject info) {
-
-        if (info.has("extras")) {
-            JSONObject extras = info.getJSONObject("extras");
-            if (extras.has("range")) {
-                range = parser.getIntValue(extras, "range");
-                logger.info("This is new range: " + range);
-            }
-        }
-    }
-
-    //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
-    public void updateFound(JSONObject info) {
-
-        if (info.has("extras")) {
-            JSONObject extras = info.getJSONObject("extras");
-            if (extras.has("found")) {
-                found = parser.getValue(extras, "found");
-            }
-        }
-    }
-
-
-    //initialize stats with explorer start
+    private JSONParser parser = new JSONParser();
+    
+    // initialize stats with explorer start
     public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
-
         setBudget(initial);
         updateHeading(initial);
     }
 
-    //updates statistics with each response
+    // updates statistics with each response
     public void updateStats(String s) {
         JSONObject info = parser.loadString(s);
         logger.info(info);
@@ -124,8 +59,8 @@ public class Drone {
         }
     }
 
+    // determines if drone is on water after scan action
     public void updateScan(JSONObject info) {
-        
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
 
@@ -142,7 +77,8 @@ public class Drone {
             }
         }       
     }
-    public void determineWater(ArrayList<String> biomes) {
+       
+    private void determineWater(ArrayList<String> biomes) {
         ArrayList<String> waterBiome = new ArrayList<String>();
         waterBiome.add("OCEAN");
         if (waterBiome.equals(biomes)) {
@@ -154,9 +90,60 @@ public class Drone {
 
     }
 
-    //takes in !!response!! JSONObject to parse and adds creek id to creek list
-    public void updateCreeks(JSONObject info) {
+    /*
+    takes in initial JSONObject to parse and get initial budget
+     */
+    private void setBudget(JSONObject initInfo) {
+        budget = parser.getIntValue(initInfo, "budget");
+        logger.info("This is budget: " + budget);
+    }
 
+    private void updateBudget(JSONObject info) {
+        Integer cost = parser.getIntValue(info, "cost");
+        //don't have enough money
+        if (budget < cost) {
+            logger.warn("You don't have enough battery");
+        }
+        //otherwise deduct
+        else {
+            budget -= cost;
+        }
+    }
+
+    private void updateHeading(JSONObject info) {
+        if (info.has("heading")) {
+            String current_head = parser.getValue(info, "heading");
+            logger.info("This is current_head:" + current_head);
+            //convert heading to Orientation type
+            heading = heading.giveOrientation(current_head);
+            logger.info("the heading: " + heading);
+        }
+    }
+
+    // takes in response JSONObject to get range parameter
+    private void updateRange(JSONObject info) {
+        if (info.has("extras")) {
+            JSONObject extras = info.getJSONObject("extras");
+            if (extras.has("range")) {
+                range = parser.getIntValue(extras, "range");
+                logger.info("This is new range: " + range);
+            }
+        }
+    }
+
+    //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
+    private void updateFound(JSONObject info) {
+        if (info.has("extras")) {
+            JSONObject extras = info.getJSONObject("extras");
+            if (extras.has("found")) {
+                found = parser.getValue(extras, "found");
+            }
+        }
+    }
+
+
+    //takes in !!response!! JSONObject to parse and adds creek id to creek list
+    private void updateCreeks(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
 
@@ -181,8 +168,8 @@ public class Drone {
         }
     }
 
-    public void updateSites(JSONObject info) {
-
+    //takes in !!response!! JSONObject to parse and saves site id to site
+    private void updateSites(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
 
@@ -207,6 +194,10 @@ public class Drone {
         }
     }
 
+    /*
+     Getters and Setters
+     */
+    
     public Integer getBudget() {
         return budget;
     }
@@ -219,8 +210,8 @@ public class Drone {
         return range;
     }
 
-    public void resetRange() {
-        this.range = 0;
+    public void setRange(int value) {
+        this.range = value;
     }
 
     public String getFound() {
@@ -230,9 +221,6 @@ public class Drone {
     public Boolean isWater() {
         return water;
     }
-    public void resetWater() {
-        this.water = false;
-    }
 
     public void setFacingIsland() {
         this.facing_island = true;
@@ -240,10 +228,20 @@ public class Drone {
     public Boolean facing_island() {
         return facing_island;
     }
+    
+    public Boolean getCreekFound() {
+        return creek_found;
+    }
+    public void setCreekFound(Boolean bool) {
+        this.creek_found = bool;
+    }
 
-    public Boolean getCreekBool() { return creek_found; }
-
-    public Boolean getSiteBool() { return site_found; }
+    public Boolean getSiteFound() {
+        return site_found;
+    }
+    public void setSiteFound(Boolean bool) {
+        this.site_found = bool;
+    }
 
     public void setHeading(Orientation new_orient) {
         heading = new_orient;

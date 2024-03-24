@@ -1,15 +1,16 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
+import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import ca.mcmaster.se2aa4.island.team104.map.Mapping;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ca.mcmaster.se2aa4.island.team104.drone.Drone;
-import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
-// zig zag to find creeks and site :)
+// Determines next move with the goal of finding creeks and the emergency site
 public class ScanIsland implements StateInterface {
     private final Logger logger = LogManager.getLogger();
+
     private Drone drone;
     private Mapping map;
 
@@ -34,7 +35,13 @@ public class ScanIsland implements StateInterface {
         this.drone = drone_in;
         this.map = mapping;
     }
-    // determine next action for scanning island
+
+    /*
+     * Input: N/A
+     * Output: Actions
+     * Determine next Action depending on the drone, map, and map state
+     * Drone will 'zig-zag" through the island to scan for creeks and the emergency site'
+     */
     public Actions getNextMove() {
         
         if (map.getState() == State.INIT_SCAN) {
@@ -58,8 +65,6 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
-    Input: N/A
-    Output: N/A
     Make the first move after finding island, depending on where the drone spawned from
     */
     private Actions initializeScanIsland() {
@@ -76,12 +81,13 @@ public class ScanIsland implements StateInterface {
         return last_action;
     }
 
-
-//alternate between flying and scanning each tile until a water tile is scanned
+    /*
+    Alternate between scanning and flying until the drone is above water
+    */
     private Actions scanning() {
         if (last_action == Actions.SCAN) {
             last_action = Actions.FLY;
-            // change action to echo forward if drone is on water tile
+            // echo forward if drone is on water tile
             if (drone.isWater()) {
                 last_action = Actions.ECHO_FORWARD;
                 map.setState(State.EVAL_ECHO);
@@ -94,11 +100,15 @@ public class ScanIsland implements StateInterface {
         }
     }
 
+    /*
+    Fly directly to ground from determined range
+    */
     private Actions flyToGround() {
         if (fly_counter <= drone.getRange()) {
             last_action = Actions.FLY;
             fly_counter++;
         } else {
+            // switch state to SCAN_ISLAND when ground is reached
             flying_to_ground = false;
             fly_counter = 0;
             last_action = Actions.SCAN;
@@ -107,7 +117,10 @@ public class ScanIsland implements StateInterface {
         }
         return last_action;
     }
-
+    
+    /*
+    Echo results decide if drone should continue scanning the island or determine if a U-turn should be taken
+    */
     private Actions evaluateEcho() {
         String forward = drone.getFound();
         
@@ -126,6 +139,10 @@ public class ScanIsland implements StateInterface {
         }
     }
 
+    /*
+    Determines if drone should stop scanning or if it should begin the UTURN state. 
+    Determines the size of the UTURN if it is to occur
+    */
     private Actions determineUturn(int range) {
         if (u_turned) {
             logger.info("Drone has Uturned into an empty line, stopping drone...");
@@ -133,7 +150,7 @@ public class ScanIsland implements StateInterface {
         } else if (range == 0) {
             logger.info("Drone is unable to U-turn");
             return Actions.STOP;
-        } else if (range <= 3) {
+        } else if (range <= 3) { //shortens the flying portion of the U-turn sequence to accomodate lower ranges
             logger.info("SMALL UTURN");
             uturn_idx = 4 - range;
         }
@@ -166,6 +183,9 @@ public class ScanIsland implements StateInterface {
         return last_action;
     }
 
+    /*
+    Iterate through performing a CW or CCW U-turn with a counter to save the index
+    */
     private Actions nextUturnMove() {
         // alternate left and right U-turn sequence 
         if (u_turned_left) {
@@ -182,6 +202,9 @@ public class ScanIsland implements StateInterface {
         }
     }
 
+    /*
+    Set flag to rememeber last U-turn direction. This allows the drone to "zig-zag" through the island
+    */
     private void saveLastTurn(Actions last_turn) {
         if (last_turn == Actions.HEADING_LEFT) {
             u_turned_left = true;

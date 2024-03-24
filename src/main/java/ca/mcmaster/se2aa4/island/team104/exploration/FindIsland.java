@@ -9,7 +9,7 @@ import java.util.Objects;
 public class FindIsland implements StateInterface {
 
     private final Logger logger = LogManager.getLogger();
-    Actions current_action = Actions.ECHO_FORWARD;
+    private Actions current_action = Actions.ECHO_FORWARD;
     private int init_facing = 0;
     private Integer forward_range;
     private Integer left_range;
@@ -130,19 +130,19 @@ public class FindIsland implements StateInterface {
 
             //first echo forward then left
             else if (current_action == Actions.ECHO_FORWARD) {
-                forward_range = drone.range;
+                forward_range = drone.getRange();
                 current_action = Actions.ECHO_LEFT;
                 return current_action;            }
 
             //echo left then echo right
             else if (current_action == Actions.ECHO_LEFT) {
-                left_range = drone.range;
+                left_range = drone.getRange();
                 current_action = Actions.ECHO_RIGHT;
                 return current_action;            }
 
             //echo right then determine which is the best way to go
             else if (current_action == Actions.ECHO_RIGHT) {
-                right_range = drone.range;
+                right_range = drone.getRange();
                 if (turned) {
                     current_action = intersection(forward_range,left_range, right_range);
                 } else {

@@ -32,7 +32,7 @@ public class ScanIslandTest {
     }
     @AfterEach
     public void reset() {
-        drone.resetRange();
+        drone.setRange(0);
     }
 
     @Test
