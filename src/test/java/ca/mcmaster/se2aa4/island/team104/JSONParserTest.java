@@ -41,7 +41,7 @@ public class JSONParserTest {
     @Test 
     public void createAndPut() {
         json_obj = parser.createAndPut("action", "fly");
-        assertTrue(json_obj.has("status"));
+        assertTrue(json_obj.has("action"));
     }
 
 
