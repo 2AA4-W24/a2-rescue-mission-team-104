@@ -1,17 +1,19 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
 import org.json.JSONObject;
-
 import ca.mcmaster.se2aa4.island.team104.JSONParser;
 import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
 
 public class Controller {
-
     private Drone drone;
-
     private JSONParser parser = new JSONParser();
 
+    /*
+    Input: Drone
+    Output: N/A
+    Constructor for Controller to control a Drone.
+     */
     Controller(Drone in_drone) {
         drone = in_drone;
     }

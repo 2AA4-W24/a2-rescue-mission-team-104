@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import java.util.Objects;
 
-public class FindIsland implements StateInterface {
+public class FindIsland implements PhaseInterface {
 
     private final Logger logger = LogManager.getLogger();
     private Actions current_action = Actions.ECHO_FORWARD;
@@ -23,7 +23,11 @@ public class FindIsland implements StateInterface {
     private Integer temp_range = 0;
 
 
-    //This is the constructor
+    /*
+    Input: Drone, Mapping
+    Output:N/A
+    The constructor.
+     */
     public FindIsland(Drone in_drone, Mapping in_map) {
         this.drone = in_drone;
         this.map = in_map;
@@ -46,16 +50,13 @@ public class FindIsland implements StateInterface {
         else if (lr > rr && lr > fr) {
             return Actions.HEADING_LEFT;
         }
-
         //right range has the greatest value
         else if (rr > lr && rr > fr) {
             return Actions.HEADING_RIGHT;
         }
-
         else if (fr.equals(lr) || fr.equals(rr)) {
             return  Actions.FLY;
         }
-
         else {
             logger.info("Something went wrong with the computation.");
             return Actions.STOP;
@@ -81,8 +82,6 @@ public class FindIsland implements StateInterface {
         }
 
     }
-
-
 
     /*
     Input: N/A
@@ -112,13 +111,12 @@ public class FindIsland implements StateInterface {
         if (map.getState() == State.GO_TO_ISLAND) {
             if (temp_range > 0) {
                 temp_range -= 1;
-                logger.info("new distance to island: " + temp_range);
                 current_action = Actions.FLY;
 
                 return current_action;
             }
             else {
-                logger.info("______________________ISLAND REACHED");
+                logger.info("ISLAND REACHED");
                 map.setState(State.INIT_SCAN);
                 return current_action;            }
         }
@@ -127,13 +125,11 @@ public class FindIsland implements StateInterface {
                 current_action = Actions.ECHO_FORWARD;
                 init_facing++;
                 return current_action;            }
-
             //first echo forward then left
             else if (current_action == Actions.ECHO_FORWARD) {
                 forward_range = drone.getRange();
                 current_action = Actions.ECHO_LEFT;
                 return current_action;            }
-
             //echo left then echo right
             else if (current_action == Actions.ECHO_LEFT) {
                 left_range = drone.getRange();
@@ -149,7 +145,6 @@ public class FindIsland implements StateInterface {
                     current_action = Actions.FLY;
                 }
                 return current_action; }
-
             //no matter the direction echo forward
             else if (current_action == Actions.FLY || current_action == Actions.HEADING_LEFT || current_action == Actions.HEADING_RIGHT) {
                 current_action = Actions.ECHO_FORWARD;

@@ -3,8 +3,9 @@
 
 - Authors:
   - [Nour, Fawaz](fawazn@mcmaster.ca) 
-  - [Yilin, Jiang](jiany186@mcmaster.ca)
+  - [Yilin, Jiang](jiany186@mcmaster.ca) 
   - [Humna, Saeed](saeedh28@mcmaster.ca)
+- **_Please Read_**: Commits done by Yilin before March 17th were not connected to her GitHub account. They are under the name Yilin.
 
 ## Product Description
 

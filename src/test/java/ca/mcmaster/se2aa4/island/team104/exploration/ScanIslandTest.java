@@ -1,18 +1,11 @@
 package ca.mcmaster.se2aa4.island.team104.exploration;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-
 import ca.mcmaster.se2aa4.island.team104.JSONParser;
 import ca.mcmaster.se2aa4.island.team104.drone.Drone;
-import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
-import ca.mcmaster.se2aa4.island.team104.drone.Position;
 import ca.mcmaster.se2aa4.island.team104.map.Mapping;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import static org.junit.jupiter.api.Assertions.*;

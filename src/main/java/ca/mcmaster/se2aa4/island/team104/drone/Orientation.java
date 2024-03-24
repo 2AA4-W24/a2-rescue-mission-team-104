@@ -18,22 +18,21 @@ public enum Orientation {
      */
     public Orientation giveOrientation(String orient) {
 
-        if (Objects.equals(orient, "E")) {
-            return E;
+        try {
+
+            if (Objects.equals(orient, "E")) {
+                return E;
+            } else if (Objects.equals(orient, "N")) {
+                return N;
+            } else if (Objects.equals(orient, "S")) {
+                return S;
+            } else if (Objects.equals(orient, "W")) {
+                return W;
+            }
+        } catch (Exception e) {
+                logger.info("No valid direction was inputted.");
         }
-        else if (Objects.equals(orient, "N")) {
-            return N;
-        }
-        else if (Objects.equals(orient, "S")) {
-            return S;
-        }
-        else if (Objects.equals(orient, "W")) {
-            return W;
-        }
-        else {
-            logger.info("No valid direction was inputted.");
-            return null;
-        }
+        return heading;
     }
 
     /*
@@ -42,23 +41,27 @@ public enum Orientation {
     Returns the String object of the current orientation object.
      */
     public String giveStringOrientation() {
-        switch (this) {
-            case N -> {
-                return "N";
+
+        try {
+
+            switch (this) {
+                case N -> {
+                    return "N";
+                }
+                case E -> {
+                    return "E";
+                }
+                case S -> {
+                    return "S";
+                }
+                case W -> {
+                    return "W";
+                }
             }
-            case E -> {
-                return "E";
-            }
-            case S -> {
-                return "S";
-            }
-            case W -> {
-                return "W";
-            }
-            default -> {
-                return null;
-            }
+        } catch (Exception e) {
+            logger.info("Something went wrong.");
         }
+        return "STOP";
     }
 
     /*

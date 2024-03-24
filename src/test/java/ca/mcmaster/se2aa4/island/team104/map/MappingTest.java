@@ -1,21 +1,11 @@
 package ca.mcmaster.se2aa4.island.team104.map;
 
-import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
-import ca.mcmaster.se2aa4.island.team104.drone.Position;
 import ca.mcmaster.se2aa4.island.team104.exploration.Actions;
-import ca.mcmaster.se2aa4.island.team104.exploration.DecisionMaker;
 import ca.mcmaster.se2aa4.island.team104.exploration.State;
-import ca.mcmaster.se2aa4.island.team104.map.Mapping;
-import ca.mcmaster.se2aa4.island.team104.map.Tiles;
-import eu.ace_design.island.game.Tile;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

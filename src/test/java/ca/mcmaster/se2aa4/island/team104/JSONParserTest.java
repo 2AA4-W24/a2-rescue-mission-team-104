@@ -3,8 +3,6 @@ package ca.mcmaster.se2aa4.island.team104;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.apache.logging.log4j.core.util.Assert;
 import org.json.JSONObject;
 
 
