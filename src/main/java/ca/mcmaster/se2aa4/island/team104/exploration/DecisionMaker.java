@@ -26,62 +26,65 @@ public class DecisionMaker {
     public JSONObject nextAction() {
         Controller controller = new Controller(drone);
 
-        // ensure drone has enough battery to perform stop action
-        if (drone.getBudget() > STOP_BUDGET) {
-            logger.info("this is the state: " + map.getState());
-            logger.info("BUDGET LEFT: " + drone.getBudget());
+        try {
 
-            if (map.getState() == State.INIT) {
-                JSONObject parameters = parser.createJSON();
-                JSONObject actions = parser.createAndPut("action", "echo");
+            // ensure drone has enough battery to perform stop action
+            if (drone.getBudget() > STOP_BUDGET && drone.getBudget() > 100) {
+                logger.info("this is the state: " + map.getState());
+                logger.info("BUDGET LEFT: " + drone.getBudget());
 
-                Orientation current_head = drone.getHeading();
-                String current_head_str = current_head.giveStringOrientation();
-                map.setInitHeading(current_head);
+                if (map.getState() == State.INIT) {
+                    JSONObject parameters = parser.createJSON();
+                    JSONObject actions = parser.createAndPut("action", "echo");
 
-                JSONObject ret_action = parser.mergeJSONObjects(actions, parameters, "parameters", "direction", current_head_str);
-                logger.info(ret_action);
+                    Orientation current_head = drone.getHeading();
+                    String current_head_str = current_head.giveStringOrientation();
+                    map.setInitHeading(current_head);
 
-                State current_state = map.getState();
-                map.setState(current_state.incrementState(current_state));
+                    JSONObject ret_action = parser.mergeJSONObjects(actions, parameters, "parameters", "direction", current_head_str);
+                    logger.info(ret_action);
 
-                logger.info("new state: " + map.getState());
-                return ret_action;
-            }
-            // state requires next action to be determined through FindIsland
-            if (map.getState() == State.FIND_ISLAND || map.getState() == State.GO_TO_ISLAND) {
+                    State current_state = map.getState();
+                    map.setState(current_state.incrementState(current_state));
 
-                Actions current_act = find_island.getNextMove();
-                map.updatePosition(current_act);
-                logger.info("*new coordinates: " + map.position.coordinates);
-                return controller.convertActionToJSON(current_act);
-
-            }
-            // state requires next action to be determined through ScanIsland
-            else if (map.getState() == State.INIT_SCAN || map.getState() == State.SCAN_ISLAND || map.getState() == State.UTURN || map.getState() == State.EVAL_ECHO) {
-                if (drone.getCreekFound() || drone.getSiteFound()) {
-                    map.updateTile(drone);
+                    logger.info("new state: " + map.getState());
+                    return ret_action;
                 }
-                Actions current_act = scan_island.getNextMove();
-                map.updatePosition(current_act);
+                // state requires next action to be determined through FindIsland
+                if (map.getState() == State.FIND_ISLAND || map.getState() == State.GO_TO_ISLAND) {
 
-                map.printPois();
-                return controller.convertActionToJSON(current_act);
+                    Actions current_act = find_island.getNextMove();
+                    map.updatePosition(current_act);
+                    logger.info("*new coordinates: " + map.position.coordinates);
+                    return controller.convertActionToJSON(current_act);
 
+                }
+                // state requires next action to be determined through ScanIsland
+                else if (map.getState() == State.INIT_SCAN || map.getState() == State.SCAN_ISLAND || map.getState() == State.UTURN || map.getState() == State.EVAL_ECHO) {
+                    if (drone.getCreekFound() || drone.getSiteFound()) {
+                        map.updateTile(drone);
+                    }
+                    Actions current_act = scan_island.getNextMove();
+                    map.updatePosition(current_act);
+
+                    map.printPois();
+                    return controller.convertActionToJSON(current_act);
+
+                } else if (map.getState() == State.STOP) {
+                    return parser.createAndPut("action", "stop");
+                }
             }
-            else if (map.getState() == State.STOP) {
-                return parser.createAndPut("action", "stop");
-            }
+            // force drone to stop if battery has reached allocated stop budget value
+            logger.info("BUDGET BELOW STOP BUDGET");
+            return controller.convertActionToJSON(Actions.STOP);
+        }catch (Exception e) {
+            logger.info("Something went wrong");
+            return controller.convertActionToJSON(Actions.STOP);
         }
-        // force drone to stop if battery has reached allocated stop budget value
-        logger.info("BUDGET BELOW STOP BUDGET");
-        return controller.convertActionToJSON(Actions.STOP);
     }
 
     /*
-    Input: N/A
-    Output: N/A
-    Allocates 2% of the inital budget for stop action
+    Allocates 2% of the initial budget for stop action
      */
     public void setStopBudget() {
         int init_budget = drone.getBudget();

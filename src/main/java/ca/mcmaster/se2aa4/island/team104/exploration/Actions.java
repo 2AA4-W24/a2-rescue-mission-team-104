@@ -13,6 +13,7 @@ public enum Actions {
     STOP;
     
     /*
+    Input: N/A
     Output: String
     This functions returns the action object as a string.
      */

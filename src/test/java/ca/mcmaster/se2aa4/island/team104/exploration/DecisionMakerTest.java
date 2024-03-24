@@ -12,7 +12,6 @@ import ca.mcmaster.se2aa4.island.team104.map.Mapping;
 public class DecisionMakerTest {
     private Drone drone2 = new Drone();
     private Mapping map = new Mapping();
-  
     private DecisionMaker dm = new DecisionMaker();
 
     @BeforeAll

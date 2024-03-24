@@ -3,7 +3,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
-
 public class Position {
 
     private final Logger logger = LogManager.getLogger();
@@ -33,18 +32,18 @@ public class Position {
     public void updateForward(){
 
         if (this.current_orient == Orientation.N){
-            Y = Y + 1;
+            Y++;
             coordinates.set(1, Y);
         }
         else if (this.current_orient == Orientation.E){
-            X = X + 1;
+            X++;
             coordinates.set(0, X);
         }
         else if (this.current_orient == Orientation.S){
-            Y = Y - 1;
+            Y--;
             coordinates.set(1, Y);        }
         else if (this.current_orient == Orientation.W){
-            X = X - 1;
+            X--;
             coordinates.set(0, X);        }
 
     }
@@ -55,28 +54,27 @@ public class Position {
     public void updateRight(){
 
         if (this.current_orient == Orientation.N){
-            X = X + 1;
+            X++;
 
             coordinates.set(0, X);
 
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.E){
-            Y = Y - 1;
+            Y--;
             coordinates.set(1, Y);
             current_orient = Orientation.S;
         }
         else if (this.current_orient == Orientation.S){
-            X = X - 1;
+            X--;
             coordinates.set(0, X);
             current_orient = Orientation.W;
         }
         else if (this.current_orient == Orientation.W){
-            X = X + 1;
+            X++;
             coordinates.set(0, X);
             current_orient = Orientation.N;
         }
-        // Implementing error handling
         else {
             logger.error("Drone is Lost");
         }
@@ -88,29 +86,28 @@ public class Position {
     public void updateLeft(){
 
         if (this.current_orient == Orientation.N){
-            X = X - 1;
+            X--;
             coordinates.set(0, X);
             current_orient = Orientation.W;
         }
         else if (this.current_orient == Orientation.E){
-            Y = Y + 1;
+            Y++;
             coordinates.set(1, Y);
             current_orient = Orientation.N;
         }
         else if (this.current_orient == Orientation.S){
-            X = X + 1;
+            X++;
             coordinates.set(0, X);
             current_orient = Orientation.E;
         }
         else if (this.current_orient == Orientation.W){
-            X = X - 1;
+            X--;
             coordinates.set(0, X);
             current_orient = Orientation.S;
         }
         else {
             logger.error("Drone is lost");
         }
-
     }
 
     /*
@@ -134,7 +131,6 @@ public class Position {
         coordinates_arr[0] = position1.getX();
         coordinates_arr[1] = position1.getY();
         return coordinates_arr;
-
     }
 
     //returns X coordinate of position object
@@ -142,8 +138,4 @@ public class Position {
 
     //returns Y coordinate of position obejct
     public Integer getY() {return this.Y;}
-
-
-
-
 }

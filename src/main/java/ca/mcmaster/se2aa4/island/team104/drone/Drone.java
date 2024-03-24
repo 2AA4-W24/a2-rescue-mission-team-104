@@ -5,41 +5,40 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 
 public class Drone {
 
     private final Logger logger = LogManager.getLogger();
-
     private Integer budget = 0;
     private Orientation heading = Orientation.N;
-
-    // results of echo
     private String found;
     private Integer range;
-
-    // flags to save progress
     private Boolean water = false;
     private Boolean creek_found = false;
     private Boolean site_found = false;
     private Boolean facing_island = false;
-
-    // stores creeks and site address
     public String creek = "";
     public String site = "";
 
     private JSONParser parser = new JSONParser();
     
-    // initialize stats with explorer start
+    /*
+    Input: String
+    Output: N/A
+    Initializes the Drone's budget and heading.
+     */
     public void initializeStats(String s) {
         JSONObject initial = parser.loadString(s);
         setBudget(initial);
         updateHeading(initial);
     }
 
-    // updates statistics with each response
+    /*
+    Input: String
+    Output: N/A
+    Updates statistics with each response
+     */
     public void updateStats(String s) {
         JSONObject info = parser.loadString(s);
         logger.info(info);
@@ -59,7 +58,11 @@ public class Drone {
         }
     }
 
-    // determines if drone is on water after scan action
+    /*
+    Input: JSONObject
+    Output: N/A
+    Determines if drone is on water after scan action.
+     */
     public void updateScan(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
@@ -77,7 +80,12 @@ public class Drone {
             }
         }       
     }
-       
+
+    /*
+    Input: ArrayList<String>
+    Output: N/A
+    Determines if there is water after scan.
+     */
     private void determineWater(ArrayList<String> biomes) {
         ArrayList<String> waterBiome = new ArrayList<String>();
         waterBiome.add("OCEAN");
@@ -91,13 +99,20 @@ public class Drone {
     }
 
     /*
-    takes in initial JSONObject to parse and get initial budget
+    Input: JSONObject
+    Output: N/A
+    Takes in initial JSONObject to parse and get initial budget.
      */
     private void setBudget(JSONObject initInfo) {
         budget = parser.getIntValue(initInfo, "budget");
         logger.info("This is budget: " + budget);
     }
 
+    /*
+    Input: JSONObject
+    Output: N/A
+    Updates the Drone's budget
+     */
     private void updateBudget(JSONObject info) {
         Integer cost = parser.getIntValue(info, "cost");
         //don't have enough money
@@ -110,6 +125,11 @@ public class Drone {
         }
     }
 
+    /*
+    Input: JSONObject
+    Output: N/A
+    Updates the Drone's heading
+     */
     private void updateHeading(JSONObject info) {
         if (info.has("heading")) {
             String current_head = parser.getValue(info, "heading");
@@ -120,7 +140,11 @@ public class Drone {
         }
     }
 
-    // takes in response JSONObject to get range parameter
+    /*
+    Input: JSONObject
+    Output: N/A
+    Takes in response JSONObject to get range parameter.
+     */
     private void updateRange(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extras = info.getJSONObject("extras");
@@ -131,7 +155,11 @@ public class Drone {
         }
     }
 
-    //updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty
+    /*
+    Input: JSONObject
+    Output: N/A
+    Updates the "found" parameter and throws an exception if the given JSONObject or needed parameters are empty.
+     */
     private void updateFound(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extras = info.getJSONObject("extras");
@@ -142,7 +170,11 @@ public class Drone {
     }
 
 
-    //takes in !!response!! JSONObject to parse and adds creek id to creek list
+    /*
+    Input: JSONObject
+    Output: N/A
+    Takes in response JSONObject to parse and adds creek id to creek list.
+     */
     private void updateCreeks(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
@@ -168,7 +200,11 @@ public class Drone {
         }
     }
 
-    //takes in !!response!! JSONObject to parse and saves site id to site
+    /*
+    Input: JSONObject
+    Output: N/A
+    Takes in response JSONObject to parse and saves site id to site.
+     */
     private void updateSites(JSONObject info) {
         if (info.has("extras")) {
             JSONObject extraInfo = info.getJSONObject("extras");
@@ -197,7 +233,6 @@ public class Drone {
     /*
      Getters and Setters
      */
-    
     public Integer getBudget() {
         return budget;
     }

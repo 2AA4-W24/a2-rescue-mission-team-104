@@ -2,13 +2,12 @@ package ca.mcmaster.se2aa4.island.team104.exploration;
 
 import ca.mcmaster.se2aa4.island.team104.drone.Drone;
 import ca.mcmaster.se2aa4.island.team104.map.Mapping;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 // Determines next move with the goal of finding creeks and the emergency site
-public class ScanIsland implements StateInterface {
+public class ScanIsland implements PhaseInterface {
     private final Logger logger = LogManager.getLogger();
 
     private Drone drone;
@@ -31,6 +30,11 @@ public class ScanIsland implements StateInterface {
     private Actions[] uturn_right = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_RIGHT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_RIGHT, Actions.HEADING_RIGHT, Actions.HEADING_LEFT};
     private Actions[] uturn_left = {Actions.FLY, Actions.FLY, Actions.FLY, Actions.HEADING_LEFT, Actions.ECHO_FORWARD, Actions.FLY, Actions.HEADING_LEFT, Actions.HEADING_LEFT, Actions.HEADING_RIGHT};
 
+    /*
+    Input: Drone, Mapping
+    Output:N/A
+    The constructor.
+     */
     public ScanIsland(Drone drone_in, Mapping mapping) {
         this.drone = drone_in;
         this.map = mapping;
@@ -40,7 +44,7 @@ public class ScanIsland implements StateInterface {
      * Input: N/A
      * Output: Actions
      * Determine next Action depending on the drone, map, and map state
-     * Drone will 'zig-zag" through the island to scan for creeks and the emergency site'
+     * Drone will "zig-zag" through the island to scan for creeks and the emergency site'
      */
     public Actions getNextMove() {
         
@@ -65,6 +69,8 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
+    Input: N/A
+    Output: Actions
     Make the first move after finding island, depending on where the drone spawned from
     */
     private Actions initializeScanIsland() {
@@ -82,6 +88,8 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
+    Input: N/A
+    Output: Actions
     Alternate between scanning and flying until the drone is above water
     */
     private Actions scanning() {
@@ -101,6 +109,8 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
+    Input: N/A
+    Output: Actions
     Fly directly to ground from determined range
     */
     private Actions flyToGround() {
@@ -119,6 +129,8 @@ public class ScanIsland implements StateInterface {
     }
     
     /*
+    Input: N/A
+    Output: Actions
     Echo results decide if drone should continue scanning the island or determine if a U-turn should be taken
     */
     private Actions evaluateEcho() {
@@ -140,8 +152,10 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
-    Determines if drone should stop scanning or if it should begin the UTURN state. 
-    Determines the size of the UTURN if it is to occur
+    Input: int
+    Output: Actions
+    -Determines if drone should stop scanning or if it should begin the UTURN state.
+    -Determines the size of the UTURN if it is to occur
     */
     private Actions determineUturn(int range) {
         if (u_turned) {
@@ -159,6 +173,11 @@ public class ScanIsland implements StateInterface {
         return UTurn();
     }
 
+    /*
+    Input: N/A
+    Output: Actions
+    Performs U-Turn.
+     */
     private Actions UTurn() {
         // stop drone if it will go out of range mid turn
         if (uturn_idx == 5 && !drone.getFound().equals("GROUND")) {
@@ -184,6 +203,8 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
+    Input: N/A
+    Output: Actions
     Iterate through performing a CW or CCW U-turn with a counter to save the index
     */
     private Actions nextUturnMove() {
@@ -203,6 +224,8 @@ public class ScanIsland implements StateInterface {
     }
 
     /*
+    Input: Actions
+    Output: N/A
     Set flag to rememeber last U-turn direction. This allows the drone to "zig-zag" through the island
     */
     private void saveLastTurn(Actions last_turn) {
@@ -212,5 +235,4 @@ public class ScanIsland implements StateInterface {
             u_turned_left = false;
         }
     }
-
 }

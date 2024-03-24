@@ -39,7 +39,6 @@ public class Explorer implements IExplorerRaid {
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
         logger.info("** Response received:\n"+response.toString(2));
-
         String status = response.getString("status");
         logger.info("The status of the drone is {}", status);
 
