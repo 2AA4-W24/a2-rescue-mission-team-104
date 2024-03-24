@@ -2,12 +2,6 @@ package ca.mcmaster.se2aa4.island.team104.drone;
 
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
-
-import ca.mcmaster.se2aa4.island.team104.drone.Position;
-
-
-import java.util.ArrayList;
 
 public class PositionTest {
 

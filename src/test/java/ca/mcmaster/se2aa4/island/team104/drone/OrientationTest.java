@@ -1,9 +1,6 @@
 package ca.mcmaster.se2aa4.island.team104.drone;
 
 import org.junit.Test;
-
-import ca.mcmaster.se2aa4.island.team104.drone.Orientation;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrientationTest {
