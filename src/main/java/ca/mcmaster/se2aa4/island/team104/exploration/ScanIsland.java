@@ -64,7 +64,7 @@ public class ScanIsland implements StateInterface {
     */
     private Actions initializeScanIsland() {
         // if drone spawns facing island, it will turn into the first line
-        logger.info("drone facing island: " + drone.facing_island());
+        //logger.info("drone facing island: " + drone.facing_island());
         if (drone.facing_island()) {
             logger.info("DRONE TURNING INTO ISLAND TO INITIALIZE");
             last_action = Actions.HEADING_RIGHT;
@@ -120,7 +120,7 @@ public class ScanIsland implements StateInterface {
             last_action = Actions.FLY;
             return last_action;
         }
-        else {
+        else { 
             int range = drone.getRange();
             return determineUturn(range);
         }
@@ -135,7 +135,7 @@ public class ScanIsland implements StateInterface {
             return Actions.STOP;
         } else if (range <= 3) {
             logger.info("SMALL UTURN");
-            uturn_idx = 4 - range; //4 tiles forward in base UTURN
+            uturn_idx = 4 - range;
         }
         map.setState(State.UTURN);
         logger.info("Switching states: "+ map.getState());
@@ -146,7 +146,6 @@ public class ScanIsland implements StateInterface {
         // stop drone if it will go out of range mid turn
         if (uturn_idx == 5 && !drone.getFound().equals("GROUND")) {
             if (drone.getRange() < 2){
-                logger.info("Drone is unable to U-turn");
                 return Actions.STOP;
             }
         } 

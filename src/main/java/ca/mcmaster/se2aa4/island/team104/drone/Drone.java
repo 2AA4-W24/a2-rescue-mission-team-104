@@ -103,8 +103,6 @@ public class Drone {
 
         setBudget(initial);
         updateHeading(initial);
-//        logger.info("initialization complete. budget: " + budget + " heading: " + heading + " state: " + state);
-
     }
 
     //updates statistics with each response
